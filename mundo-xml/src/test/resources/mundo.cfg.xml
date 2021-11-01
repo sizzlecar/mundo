@@ -1,36 +1,19 @@
-<definitions>
+<mundo>
   <process id="process-001" name="简单流程">
-    <processNode id="SUP_CREATE" name="供应商创建"/>
-    <processNode id="SUP_SUBMIT" name="供应商提交"/>
-    <processNode id="BUYER_APPROVE" name="采购审批"/>
-    <processNode id="SUP_UPDATE" name="供应商修改"/>
-    <processNode id="end" name="审批结束"/>
-    <processExclusiveGateway id="buyer-approve-gateway" name="采购审批"/>
-    <processLink id="SUP_CREATE_SUP_SUBMIT" name="SUP_CREATE_SUP_SUBMIT" sourceId="SUP_CREATE" targetId="SUP_SUBMIT"/>
-    <processLink id="SUP_SUBMIT_BUYER_APPROVE" name="SUP_SUBMIT_BUYER_APPROVE" sourceId="SUP_SUBMIT" targetId="BUYER_APPROVE"/>
-    <processLink id="BUYER_APPROVE_buyer-approve-gateway" name="BUYER_APPROVE_buyer-approve-gateway" sourceId="BUYER_APPROVE" targetId="buyer-approve-gateway"/>
-    <processLink id="buyer-approve-gateway_SUP_UPDATE" name="buyer-approve-gateway_SUP_UPDATE" sourceId="buyer-approve-gateway" targetId="SUP_UPDATE">
-      <conditionExpress>approve == false</conditionExpress>
-    </processLink>
-    <processLink id="buyer-approve-gateway_end" name="buyer-approve-gateway_end" sourceId="buyer-approve-gateway" targetId="end">
-      <conditionExpress>approve == true</conditionExpress>
-    </processLink>
+    <activity id="SUP_CREATE" name="供应商创建"/>
+    <activity id="SUP_SUBMIT" name="供应商提交"/>
+    <activity id="BUYER_APPROVE" name="采购审批"/>
+    <activity id="SUP_UPDATE" name="供应商修改"/>
+    <activity id="end" name="审批结束"/>
+    <exclusiveGateway id="buyer-approve-gateway" name="采购审批"/>
+    <link id="SUP_CREATE_SUP_SUBMIT" name="SUP_CREATE_SUP_SUBMIT" sourceId="SUP_CREATE" targetId="SUP_SUBMIT"/>
+    <link id="SUP_SUBMIT_BUYER_APPROVE" name="SUP_SUBMIT_BUYER_APPROVE" sourceId="SUP_SUBMIT" targetId="BUYER_APPROVE"/>
+    <link id="BUYER_APPROVE_buyer-approve-gateway" name="BUYER_APPROVE_buyer-approve-gateway" sourceId="BUYER_APPROVE" targetId="buyer-approve-gateway"/>
+    <link id="buyer-approve-gateway_SUP_UPDATE" name="buyer-approve-gateway_SUP_UPDATE" sourceId="buyer-approve-gateway" targetId="SUP_UPDATE">
+      <conditionExpression>approve == false</conditionExpression>
+    </link>
+    <link id="buyer-approve-gateway_end" name="buyer-approve-gateway_end" sourceId="buyer-approve-gateway" targetId="end">
+      <conditionExpression>approve == true</conditionExpression>
+    </link>
   </process>
-  <process id="process-002" name="简单流程2">
-    <processNode id="SUP_CREATE" name="供应商创建"/>
-    <processNode id="SUP_SUBMIT" name="供应商提交"/>
-    <processNode id="BUYER_APPROVE" name="采购审批"/>
-    <processNode id="SUP_UPDATE" name="供应商修改"/>
-    <processNode id="end" name="审批结束"/>
-    <processExclusiveGateway id="buyer-approve-gateway" name="采购审批"/>
-    <processLink id="SUP_CREATE_SUP_SUBMIT" name="SUP_CREATE_SUP_SUBMIT" sourceId="SUP_CREATE" targetId="SUP_SUBMIT"/>
-    <processLink id="SUP_SUBMIT_BUYER_APPROVE" name="SUP_SUBMIT_BUYER_APPROVE" sourceId="SUP_SUBMIT" targetId="BUYER_APPROVE"/>
-    <processLink id="BUYER_APPROVE_buyer-approve-gateway" name="BUYER_APPROVE_buyer-approve-gateway" sourceId="BUYER_APPROVE" targetId="buyer-approve-gateway"/>
-    <processLink id="buyer-approve-gateway_SUP_UPDATE" name="buyer-approve-gateway_SUP_UPDATE" sourceId="buyer-approve-gateway" targetId="SUP_UPDATE">
-      <conditionExpress>approve == false</conditionExpress>
-    </processLink>
-    <processLink id="buyer-approve-gateway_end" name="buyer-approve-gateway_end" sourceId="buyer-approve-gateway" targetId="end">
-      <conditionExpress>approve == true</conditionExpress>
-    </processLink>
-  </process>
-</definitions>
+</mundo>

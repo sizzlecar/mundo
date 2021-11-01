@@ -18,7 +18,7 @@ import java.util.List;
  * @description XmlSchema 解析XML配置文件对应的bean
  */
 @Data
-@XStreamAlias("definitions")
+@XStreamAlias("mundo")
 public class XmlSchema {
 
     /**
@@ -44,7 +44,7 @@ public class XmlSchema {
         /**
          * 流程节点集合
          */
-        @XStreamImplicit(itemFieldName = "processNode")
+        @XStreamImplicit(itemFieldName = "activity")
         @Size(min = 1, max = 1000, message = "流程节点数量只能在{min}-{max}之间")
         @NotNull(message = "流程节点不能为空")
         protected List<ProcessNodeSchema> processNodeList;
@@ -52,14 +52,14 @@ public class XmlSchema {
         /**
          * 排他网关节点集合
          */
-        @XStreamImplicit(itemFieldName = "processExclusiveGateway")
+        @XStreamImplicit(itemFieldName = "exclusiveGateway")
         @Size(min = 1, max = 1000, message = "节点数量只能在{min}-{max}之间")
         protected List<ProcessExclusiveGatewaySchema> processExclusiveGatewayList;
 
         /**
          * 流程link集合
          */
-        @XStreamImplicit(itemFieldName = "processLink")
+        @XStreamImplicit(itemFieldName = "link")
         @Size(min = 1, max = 1000, message = "流程link数量只能在{min}-{max}之间")
         @NotNull(message = "流程link不能为空")
         protected List<ProcessLinkSchema> processLinkSchemaList;
@@ -138,7 +138,7 @@ public class XmlSchema {
          * 表达式
          */
         @Length(max = 200, message = "表达式长度不能超过{max}")
-        protected String conditionExpress;
+        protected String conditionExpression;
 
         public ProcessLinkSchema(String id, String name, String sourceId, String targetId) {
             super(id, name);
@@ -151,11 +151,11 @@ public class XmlSchema {
             this.targetId = targetId;
         }
 
-        public ProcessLinkSchema(String id, String name, String sourceId, String targetId, String conditionExpress) {
+        public ProcessLinkSchema(String id, String name, String sourceId, String targetId, String conditionExpression) {
             super(id, name);
             this.sourceId = sourceId;
             this.targetId = targetId;
-            this.conditionExpress = conditionExpress;
+            this.conditionExpression = conditionExpression;
         }
 
         public ProcessLinkSchema() {

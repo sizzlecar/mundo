@@ -11,6 +11,7 @@
     <modules>
         <module>mundo-core</module>
         <module>mundo-xml</module>
+        <module>mundo-process</module>
     </modules>
 
     <name>mundo</name>
