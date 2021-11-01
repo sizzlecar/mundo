@@ -4,9 +4,8 @@ package com.bluslee.mundo.core.process;
  * @author carl.che
  * @date 2021/11/1
  * @description BaseLink
- * @copyright COPYRIGHT © 2014 - 2021 VOYAGE ONE GROUP INC. ALL RIGHTS RESERVED.
  */
-public class BaseLink extends BaseProcessNode {
+public abstract class BaseLink extends BaseElement{
 
     /**
      * source node
@@ -23,19 +22,17 @@ public class BaseLink extends BaseProcessNode {
      */
     private String conditionExpression;
 
-    public BaseLink(String id, String name, BaseProcessNode source, BaseProcessNode target) {
+    public BaseLink(String id, String name, BaseProcessNode source, BaseProcessNode target, String conditionExpression) {
         super(id, name);
         this.source = source;
         this.target = target;
+        this.conditionExpression = conditionExpression;
     }
 
-    public BaseLink(BaseProcessNode source, BaseProcessNode target) {
+    public BaseLink(BaseProcessNode source, BaseProcessNode target, String conditionExpression) {
         this.source = source;
         this.target = target;
-    }
-
-    public BaseLink(String id, String name) {
-        super(id, name);
+        this.conditionExpression = conditionExpression;
     }
 
     public BaseLink() {
@@ -55,5 +52,13 @@ public class BaseLink extends BaseProcessNode {
 
     public void setTarget(BaseProcessNode target) {
         this.target = target;
+    }
+
+    public String getConditionExpression() {
+        return conditionExpression;
+    }
+
+    public void setConditionExpression(String conditionExpression) {
+        this.conditionExpression = conditionExpression;
     }
 }
