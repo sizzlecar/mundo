@@ -1,6 +1,7 @@
 package com.bluslee.mundo.core.configuration;
 
 import com.bluslee.mundo.core.process.BaseProcess;
+import com.bluslee.mundo.core.process.BaseProcessNode;
 
 /**
  * @author carl.che
@@ -15,5 +16,5 @@ public interface Configurator {
      * @param <V> 值类型
      * @return BaseProcess的示例
      */
-    <N, V> BaseProcess<N, V> build();
+    <N extends BaseProcessNode, V> BaseProcess<N, V> build();
 }

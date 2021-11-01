@@ -2,6 +2,7 @@ package com.bluslee.mundo.xml;
 
 import com.bluslee.mundo.core.configuration.Configurator;
 import com.bluslee.mundo.core.process.BaseProcess;
+import com.bluslee.mundo.core.process.BaseProcessNode;
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -23,9 +24,8 @@ public class XmlConfigurator implements Configurator {
     private final String DEFAULT_CONFIG_FILE_PATH = "/mundo.cfg.xml";
 
 
-
     @Override
-    public <N, V> BaseProcess<N, V> build() {
+    public <N extends BaseProcessNode, V> BaseProcess<N, V> build() {
         return null;
     }
 }
