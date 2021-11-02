@@ -29,6 +29,7 @@
         <junit.version>4.11</junit.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
+        <ognl.version>3.2.21</ognl.version>
     </properties>
 
     <dependencyManagement>
@@ -68,13 +69,19 @@
             <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
-                <version>2.0.1.Final</version>
+                <version>${validation-api.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>6.0.13.Final</version>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ognl</groupId>
+                <artifactId>ognl</artifactId>
+                <version>${ognl.version}</version>
             </dependency>
 
         </dependencies>
