@@ -8,12 +8,12 @@ package com.bluslee.mundo.core.process;
 public abstract class BaseElement {
 
     /**
-     * 节点id,一个流程图中唯一
+     * 元素id,一个流程图中唯一
      */
     protected String id;
 
     /**
-     * 节点名称
+     * 元素名称
      */
     protected String name;
 

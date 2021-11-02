@@ -10,6 +10,7 @@ import com.google.common.graph.ElementOrder;
 import javax.annotation.CheckForNull;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author carl.che
@@ -155,5 +156,31 @@ public abstract class BaseDirectedValueGraph<N extends BaseProcessNode, V> imple
     @Override
     public V edgeValueOrDefault(EndpointPair<N> endpoints, @CheckForNull V defaultValue) {
         return directedValueGraph.edgeValueOrDefault(endpoints, defaultValue);
+    }
+
+    /**
+     * 获取当前图中从指定节点出发的边
+     * @param node 指定节点
+     * @return 从指定节点出发的边
+     */
+    public Set<EndpointPair<N>> outgoingEdges(N node) {
+        //获取指定节点所有的边
+        Set<EndpointPair<N>> endpointPairs = incidentEdges(node);
+        //source == node 的就是outgoingEdges
+        return endpointPairs.stream()
+                .filter(pair -> pair.source().getId().equals(node.getId())).collect(Collectors.toSet());
+    }
+
+    /**
+     * 获取当前图中到达指定节点的边
+     * @param node 指定节点
+     * @return 到达指定节点的边
+     */
+    public Set<EndpointPair<N>> incomingEdges(N node) {
+        //获取指定节点所有的边
+        Set<EndpointPair<N>> endpointPairs = incidentEdges(node);
+        //target == node 的就是outgoingEdges
+        return endpointPairs.stream()
+                .filter(pair -> pair.target().getId().equals(node.getId())).collect(Collectors.toSet());
     }
 }
