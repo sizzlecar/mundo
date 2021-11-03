@@ -24,13 +24,12 @@ public class Executor implements Execute{
     private final OgnlContext context = (OgnlContext) Ognl.createDefaultContext(this, memberAccess, new DefaultClassResolver(),
             new DefaultTypeConverter());
 
-
     @Override
-    public <T> T executeExpression(String expression, Map<String, Object> parameterMap) {
+    public <T, E> T executeExpression(E expression, Map<String, Object> parameterMap) {
         context.setValues(parameterMap);
         T val = null;
         try{
-            val = (T) Ognl.getValue(Ognl.parseExpression(expression), context, context.getRoot());
+            val = (T) Ognl.getValue(Ognl.parseExpression(expression.toString()), context, context.getRoot());
         }catch (OgnlException e){
             return null;
         }

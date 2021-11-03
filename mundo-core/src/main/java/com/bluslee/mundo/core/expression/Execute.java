@@ -14,7 +14,8 @@ public interface Execute {
      * @param expression 表达式
      * @param parameterMap 参数map
      * @param <T> 返回值类型
+     * @param <E> 表达式类型
      * @return 执行结果
      */
-    <T> T executeExpression(String expression, Map<String, Object> parameterMap);
+    <T, E> T executeExpression(E expression, Map<String, Object> parameterMap);
 }

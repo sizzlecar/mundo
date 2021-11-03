@@ -2,6 +2,7 @@ package com.bluslee.mundo.core.process;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author carl.che
@@ -24,6 +25,14 @@ public interface BaseProcessEngine<N extends BaseProcessNode>{
      * @return 下一个节点
      */
     N getNextProcessNode(N currentNode, Map<String, Object> parameterMap);
+
+    /**
+     * 根据当前节点集合，以及参数找出下一个节点集合
+     * @param currentNodeSet 当前节点集合
+     * @param parameterMap 参数map
+     * @return 下一个节点集合
+     */
+    Set<N> getNextProcessNode(Set<N> currentNodeSet, Map<String, Object> parameterMap);
 
     /**
      * 根据当前节点，以及参数找出下一个节点

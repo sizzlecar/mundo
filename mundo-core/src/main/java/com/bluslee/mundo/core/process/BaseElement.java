@@ -5,7 +5,7 @@ package com.bluslee.mundo.core.process;
  * @date 2021/11/2
  * @description BaseElement process中基础元素
  */
-public abstract class BaseElement {
+abstract class BaseElement {
 
     /**
      * 元素id,一个流程图中唯一

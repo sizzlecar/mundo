@@ -5,7 +5,7 @@ package com.bluslee.mundo.core.process;
  * @date 2021/11/1
  * @description BaseLink
  */
-public abstract class BaseLink extends BaseElement{
+abstract class BaseLink extends BaseElement{
 
     /**
      * source node
