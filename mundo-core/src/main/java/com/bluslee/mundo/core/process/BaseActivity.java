@@ -7,5 +7,10 @@ package com.bluslee.mundo.core.process;
  */
 public abstract class BaseActivity extends BaseProcessNode {
 
+    public BaseActivity(String id, String name) {
+        super(id, name);
+    }
 
+    public BaseActivity() {
+    }
 }

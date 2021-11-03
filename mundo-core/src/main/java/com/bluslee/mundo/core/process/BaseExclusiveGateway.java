@@ -7,5 +7,10 @@ package com.bluslee.mundo.core.process;
  */
 public class BaseExclusiveGateway extends BaseGateway {
 
+    public BaseExclusiveGateway(String id, String name) {
+        super(id, name);
+    }
 
+    public BaseExclusiveGateway() {
+    }
 }

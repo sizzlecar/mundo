@@ -6,4 +6,11 @@ package com.bluslee.mundo.core.process;
  * @description Activity
  */
 public class Activity extends BaseActivity{
+
+    public Activity(String id, String name) {
+        super(id, name);
+    }
+
+    public Activity() {
+    }
 }

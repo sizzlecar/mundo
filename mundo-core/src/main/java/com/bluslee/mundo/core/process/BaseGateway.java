@@ -7,5 +7,10 @@ package com.bluslee.mundo.core.process;
  */
 public abstract class BaseGateway extends BaseProcessNode {
 
+    public BaseGateway(String id, String name) {
+        super(id, name);
+    }
 
+    public BaseGateway() {
+    }
 }

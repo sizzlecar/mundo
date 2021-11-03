@@ -21,7 +21,6 @@ public abstract class BaseDirectedValueGraph<N extends BaseProcessNode, V> imple
 
     protected final MutableValueGraph<N, V> directedValueGraph = ValueGraphBuilder.directed().allowsSelfLoops(true).build();
 
-
     @Override
     public boolean addNode(N node) {
         return directedValueGraph.addNode(node);

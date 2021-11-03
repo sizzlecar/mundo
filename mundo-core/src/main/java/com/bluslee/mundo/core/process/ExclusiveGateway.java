@@ -6,4 +6,11 @@ package com.bluslee.mundo.core.process;
  * @description ExclusiveGateway
  */
 public class ExclusiveGateway extends BaseExclusiveGateway{
+
+    public ExclusiveGateway(String id, String name) {
+        super(id, name);
+    }
+
+    public ExclusiveGateway() {
+    }
 }
