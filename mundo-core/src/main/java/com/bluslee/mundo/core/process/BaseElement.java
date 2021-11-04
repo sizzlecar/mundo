@@ -1,5 +1,7 @@
 package com.bluslee.mundo.core.process;
 
+import com.google.common.base.Objects;
+
 /**
  * @author carl.che
  * @date 2021/11/2
@@ -39,5 +41,18 @@ abstract class BaseElement {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BaseElement)) return false;
+        BaseElement that = (BaseElement) o;
+        return Objects.equal(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

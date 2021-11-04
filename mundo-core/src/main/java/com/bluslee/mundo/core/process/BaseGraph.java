@@ -1,4 +1,4 @@
-package com.bluslee.mundo.core.graph;
+package com.bluslee.mundo.core.process;
 
 
 import java.util.Set;
@@ -53,6 +53,18 @@ public interface BaseGraph<N> {
      * 无向图：获取指定节点的所有关联的边
      */
     Set<Edge<N>> incidentEdges(N node);
+
+    /**
+     * 有向图：获取指定节点的所有出边
+     * 无向图：获取指定节点的所有关联的边
+     */
+    Set<Edge<N>> outgoingEdges(N node);
+
+    /**
+     * 有向图：获取指定节点的所有入边
+     * 无向图：获取指定节点的所有关联的边
+     */
+    Set<Edge<N>> incomingEdges(N node);
 
     /**
      * 有向图：获取指定节点相关联边的数量(出边 + 入边)

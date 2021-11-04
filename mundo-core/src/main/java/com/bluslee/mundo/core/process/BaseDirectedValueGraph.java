@@ -1,6 +1,4 @@
-package com.bluslee.mundo.core.graph;
-
-import com.bluslee.mundo.core.process.BaseProcessNode;
+package com.bluslee.mundo.core.process;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,6 +16,7 @@ public abstract class BaseDirectedValueGraph<N extends BaseProcessNode, V> imple
      * @param node 指定节点
      * @return 从指定节点出发的边
      */
+    @Override
     public Set<Edge<N>> outgoingEdges(N node) {
         //获取指定节点所有的边
         Set<Edge<N>> endpointPairs = incidentEdges(node);
@@ -32,6 +31,7 @@ public abstract class BaseDirectedValueGraph<N extends BaseProcessNode, V> imple
      * @param node 指定节点
      * @return 到达指定节点的边
      */
+    @Override
     public Set<Edge<N>> incomingEdges(N node) {
         //获取指定节点所有的边
         Set<Edge<N>> endpointPairs = incidentEdges(node);

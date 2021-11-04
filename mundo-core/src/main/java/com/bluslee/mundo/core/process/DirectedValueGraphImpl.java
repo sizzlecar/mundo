@@ -1,6 +1,5 @@
-package com.bluslee.mundo.core.graph;
+package com.bluslee.mundo.core.process;
 
-import com.bluslee.mundo.core.process.BaseProcessNode;
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ValueGraphBuilder;
 

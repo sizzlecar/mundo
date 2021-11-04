@@ -13,4 +13,5 @@ public abstract class BaseActivity extends BaseProcessNode {
 
     public BaseActivity() {
     }
+
 }

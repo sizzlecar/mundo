@@ -16,7 +16,7 @@ public interface BaseProcessEngine<N extends BaseProcessNode>{
      * @param processNodeId id
      * @return 查找的结果
      */
-    N getProcessNode(String processNodeId);
+    ProcessNodeWrap<N> getProcessNode(String processNodeId);
 
     /**
      * 根据当前节点，以及参数找出下一个节点
@@ -24,15 +24,7 @@ public interface BaseProcessEngine<N extends BaseProcessNode>{
      * @param parameterMap 参数map
      * @return 下一个节点
      */
-    N getNextProcessNode(N currentNode, Map<String, Object> parameterMap);
-
-    /**
-     * 根据当前节点集合，以及参数找出下一个节点集合
-     * @param currentNodeSet 当前节点集合
-     * @param parameterMap 参数map
-     * @return 下一个节点集合
-     */
-    Set<N> getNextProcessNode(Set<N> currentNodeSet, Map<String, Object> parameterMap);
+    ProcessNodeWrap<N> getNextProcessNode(ProcessNodeWrap<N> currentNode, Map<String, Object> parameterMap);
 
     /**
      * 根据当前节点，以及参数找出下一个节点
@@ -40,7 +32,7 @@ public interface BaseProcessEngine<N extends BaseProcessNode>{
      * @param parameterMap 参数map
      * @return 下一个节点
      */
-    N getNextProcessNode(String currentNodeId, Map<String, Object> parameterMap);
+    ProcessNodeWrap<N> getNextProcessNode(String currentNodeId, Map<String, Object> parameterMap);
 
     /**
      * 预测当前节点的后续节点
@@ -48,7 +40,7 @@ public interface BaseProcessEngine<N extends BaseProcessNode>{
      * @param parameterMap 参数map
      * @return 当前节点根据参数map预测出后续的节点
      */
-    List<N> forecastProcessNode(N currentNode, Map<String, Object> parameterMap);
+    List<N> forecastProcessNode(ProcessNodeWrap<N> currentNode, Map<String, Object> parameterMap);
 
     /**
      * 预测当前节点的后续节点

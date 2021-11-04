@@ -1,7 +1,7 @@
 package com.bluslee.mundo.core.test.graph;
 
-import com.bluslee.mundo.core.graph.BaseDirectedValueGraph;
-import com.bluslee.mundo.core.graph.DirectedValueGraphImpl;
+import com.bluslee.mundo.core.process.BaseDirectedValueGraph;
+import com.bluslee.mundo.core.process.DirectedValueGraphImpl;
 import com.bluslee.mundo.core.process.Activity;
 import org.junit.Test;
 
