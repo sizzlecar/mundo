@@ -19,14 +19,12 @@ public abstract class BaseDefaultProcessEngine<N extends BaseProcessNode, V> ext
     }
 
     @Override
-    public ProcessNodeWrap<N> getProcessNode(String processNodeId) {
-        N processCode = nodes().stream().filter(node -> node.getId().equals(processNodeId)).findFirst().orElse(null);
-        return processCode == null ? null : ProcessNodeWrap.unParalle(processCode);
+    public N getProcessNode(String processNodeId) {
+        return nodes().stream().filter(node -> node.getId().equals(processNodeId)).findFirst().orElse(null);
     }
 
     @Override
-    public ProcessNodeWrap<N> getNextProcessNode(ProcessNodeWrap<N> currentNodeWrap, Map<String, Object> parameterMap) {
-        N currentNode = currentNodeWrap.get();
+    public ProcessNodeWrap<N> getNextProcessNode(N currentNode, Map<String, Object> parameterMap) {
         boolean contains = nodes().contains(currentNode);
         if (!contains) {
             //currentNode 在当前流程中不存在
@@ -41,29 +39,38 @@ public abstract class BaseDefaultProcessEngine<N extends BaseProcessNode, V> ext
     }
 
     @Override
-    public List<N> forecastProcessNode(ProcessNodeWrap<N> currentNodeWrap, Map<String, Object> parameterMap) {
-        N currentNode = currentNodeWrap.get();
+    public List<N> forecastProcessNode(N currentNode, Map<String, Object> parameterMap) {
         boolean contains = nodes().contains(currentNode);
         if (!contains) {
             //currentNode 在当前流程中不存在
             throw new MundoException("currentNode not in process");
         }
-        List<N> forecastProcessNodeList = new ArrayList<>();
-        N nextNode = null;
-        while (true){
-            ProcessNodeWrap<N> next = currentNode.next(this, parameterMap, execute);
-            nextNode = next.get();
-            forecastProcessNodeList.add(nextNode);
-            if(nextNode instanceof EndNode){
-                break;
-            }
-            currentNode = nextNode;
-        }
+        List<N> forecastProcessNodeList = new ArrayList<>(nodes().size());
+        forecastProcessNode(currentNode, parameterMap, forecastProcessNodeList);
         return forecastProcessNodeList;
     }
 
     @Override
     public List<N> forecastProcessNode(String currentNodeId, Map<String, Object> parameterMap) {
         return forecastProcessNode(getProcessNode(currentNodeId), parameterMap);
+    }
+
+    private void forecastProcessNode(N currentNode, Map<String, Object> parameterMap, List<N> forecastProcessNodeList) {
+        if (currentNode instanceof EndNode) {
+            return;
+        }
+        ProcessNodeWrap<N> next = currentNode.next(this, parameterMap, execute);
+        if (!next.parallel()) {
+            N nextNode = next.get();
+            forecastProcessNodeList.add(nextNode);
+            if (nextNode instanceof EndNode) {
+                return;
+            }
+            forecastProcessNode(nextNode, parameterMap, forecastProcessNodeList);
+        } else {
+            Set<N> parallelNodes = next.getParallelNodes();
+            forecastProcessNodeList.addAll(parallelNodes);
+            parallelNodes.forEach(nextNode -> forecastProcessNode(nextNode, parameterMap, forecastProcessNodeList));
+        }
     }
 }

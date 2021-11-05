@@ -46,14 +46,13 @@ public abstract class ProcessNodeWrap<N> {
         return parallelNodes;
     }
 
-    public static <N> ProcessNodeWrap<N> paralle(Set<N> parallelNodes) {
+    public static <N> ProcessNodeWrap<N> parallel(Set<N> parallelNodes) {
         return new ParallelNode<>(parallelNodes);
     }
 
-    public static <N> ProcessNodeWrap<N> unParalle(N node) {
+    public static <N> ProcessNodeWrap<N> unParallel(N node) {
         return new UnParallelNode<>(node);
     }
-
 
     public static class ParallelNode<N> extends ProcessNodeWrap<N> {
 
@@ -76,7 +75,6 @@ public abstract class ProcessNodeWrap<N> {
             return super.getParallelNodes();
         }
     }
-
 
     public static class UnParallelNode<N> extends ProcessNodeWrap<N> {
 

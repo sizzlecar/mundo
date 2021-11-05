@@ -41,6 +41,6 @@ public class ExclusiveGateway extends BaseExclusiveGateway{
         if (!matchPair.isPresent()) {
             throw new MundoException("no match next node");
         }
-        return ProcessNodeWrap.unParalle(matchPair.get().target());
+        return ProcessNodeWrap.unParallel(matchPair.get().target());
     }
 }

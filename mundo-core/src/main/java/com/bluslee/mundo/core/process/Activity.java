@@ -33,7 +33,7 @@ public class Activity extends BaseActivity {
         N nextNode = singleList.get(0);
         if (nextNode instanceof BaseActivity) {
             //下一个节点是活动节点直接返回
-            return ProcessNodeWrap.unParalle(nextNode);
+            return ProcessNodeWrap.unParallel(nextNode);
         } else {
             return nextNode.next(processGraph, parameterMap, execute);
         }
