@@ -1,4 +1,4 @@
-package com.bluslee.mundo.xml;
+package com.bluslee.mundo.xml.base;
 
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.hibernate.validator.constraints.Length;

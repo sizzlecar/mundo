@@ -1,20 +1,14 @@
 package com.bluslee.mundo.core.test.process.graph;
 
-import com.bluslee.mundo.core.expression.BaseExecutor;
 import com.bluslee.mundo.core.process.*;
-import com.bluslee.mundo.core.process.base.BaseDefaultProcessEngine;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
-import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
 import com.bluslee.mundo.core.process.graph.DirectedValueGraphImpl;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author carl.che
@@ -23,52 +17,53 @@ import java.util.Map;
  */
 public class BaseDirectedValueGraphTest {
 
-    private BaseDefaultProcessEngine<BaseProcessNode, String> baseDefaultProcessEngine;
+    private DirectedValueGraphImpl directedValueGraph = new DirectedValueGraphImpl();
+    private final Map<String, BaseProcessNode> processNodeMap = new HashMap<String, BaseProcessNode>() {{
+        put("start-node", new StartNode("start-node", "开始节点"));
+        put("supplier-create", new Activity("supplier-create", "供应商创建单据"));
+        put("supplier-submit", new Activity("supplier-submit", "供应商提交单据"));
+        put("buyer-approve", new Activity("buyer-approve", "采购审批"));
+        put("buyer-approve-gateway", new ExclusiveGateway("buyer-approve-gateway", "采购审批网关"));
+        put("supplier-update", new Activity("supplier-update", "供应商修改"));
+        put("approve-end", new EndNode("approve-end", "审批结束"));
+    }};
+    private final List<Link> processLinkList = new ArrayList<Link>() {{
+        add(new Link("start-node2supplier-create", "开始节点2供应商创建单据", processNodeMap.get("start-node"), processNodeMap.get("supplier-create"), ""));
+        add(new Link("supplier-create2supplier-submit", "供应商创建单据2供应商提交单据", processNodeMap.get("supplier-create"), processNodeMap.get("supplier-submit"), ""));
+        add(new Link("supplier-submit2buyer-approve", "供应商提交单据2采购审批", processNodeMap.get("supplier-submit"), processNodeMap.get("buyer-approve"), ""));
+        add(new Link("supplier-update2buyer-approve", "供应商修改2采购审批", processNodeMap.get("supplier-update"), processNodeMap.get("buyer-approve"), ""));
+        add(new Link("buyer-approve2buyer-approve-gateway", "采购审批2采购审批网关", processNodeMap.get("buyer-approve"), processNodeMap.get("buyer-approve-gateway"), ""));
+        add(new Link("buyer-approve-gateway2supplier-update", "采购审批网关2供应商修改", processNodeMap.get("buyer-approve-gateway"), processNodeMap.get("supplier-update"), "# approved == false"));
+        add(new Link("buyer-approve-gateway2approve-end", "采购审批网关2审批结束", processNodeMap.get("buyer-approve-gateway"), processNodeMap.get("approve-end"), "# approved == true"));
+    }};
+
 
     @Before
-    public void buildProcess() {
-        BaseExecutor baseExecutor = new BaseExecutor(){};
-        DirectedValueGraphImpl directedValueGraph = new DirectedValueGraphImpl();
-        StartNode startNode = new StartNode("start-node", "开始节点");
-        Activity supplierCreate = new Activity("supplier-create", "供应商创建单据");
-        Activity supplierSubmit = new Activity("supplier-submit", "供应商提交单据");
-        Activity buyerApprove = new Activity("buyer-approve", "采购审批");
-        ExclusiveGateway buyerApproveGateway = new ExclusiveGateway("buyer-approve-gateway", "采购审批网关");
-        Activity supplierUpdate = new Activity("supplier-update", "供应商修改");
-        EndNode approveEnd = new EndNode("approve-end", "审批结束");
-        Link startNode2supplierCreate = new Link("start-node2supplier-create", "开始节点2供应商创建单据" , startNode, supplierCreate, "");
-        Link supplierCreate2supplierSubmit = new Link("supplier-create2supplier-submit", "供应商创建单据2供应商提交单据" , supplierCreate, supplierSubmit, "");
-        Link supplierSubmit2buyerApprove = new Link("supplier-submit2buyer-approve", "供应商提交单据2采购审批" , supplierSubmit, buyerApprove, "");
-        Link buyerApprove2buyerApproveGateway = new Link("buyer-approve2buyer-approve-gateway", "采购审批2采购审批网关" , buyerApprove, buyerApproveGateway, "");
-        Link buyerApproveGateway2supplierUpdate = new Link("buyer-approve2supplier-update", "采购审批2供应商修改" , buyerApproveGateway, supplierUpdate, "# approved == false");
-        Link buyerApproveGateway2approveEnd = new Link("buyer-approve2approve-end", "采购审批2审批结束" , buyerApproveGateway, approveEnd, "# approved == true");
-        directedValueGraph.addNode(startNode);
-        directedValueGraph.addNode(supplierCreate);
-        directedValueGraph.addNode(supplierSubmit);
-        directedValueGraph.addNode(buyerApprove);
-        directedValueGraph.addNode(buyerApproveGateway);
-        directedValueGraph.addNode(supplierUpdate);
-        directedValueGraph.addNode(approveEnd);
-        directedValueGraph.putEdgeValue(startNode2supplierCreate.getSource(), startNode2supplierCreate.getTarget(), startNode2supplierCreate.getConditionExpression());
-        directedValueGraph.putEdgeValue(supplierCreate2supplierSubmit.getSource(), supplierCreate2supplierSubmit.getTarget(), supplierCreate2supplierSubmit.getConditionExpression());
-        directedValueGraph.putEdgeValue(supplierSubmit2buyerApprove.getSource(), supplierSubmit2buyerApprove.getTarget(), supplierSubmit2buyerApprove.getConditionExpression());
-        directedValueGraph.putEdgeValue(buyerApprove2buyerApproveGateway.getSource(), buyerApprove2buyerApproveGateway.getTarget(), buyerApprove2buyerApproveGateway.getConditionExpression());
-        directedValueGraph.putEdgeValue(buyerApproveGateway2supplierUpdate.getSource(), buyerApproveGateway2supplierUpdate.getTarget(), buyerApproveGateway2supplierUpdate.getConditionExpression());
-        directedValueGraph.putEdgeValue(buyerApproveGateway2approveEnd.getSource(), buyerApproveGateway2approveEnd.getTarget(), buyerApproveGateway2approveEnd.getConditionExpression());
-        baseDefaultProcessEngine = new BaseDefaultProcessEngine<BaseProcessNode, String>("test-process", baseExecutor, directedValueGraph) {};
+    public void buildGraph() {
+        processNodeMap.forEach((id, node) -> directedValueGraph.addNode(node));
+        processLinkList.forEach(link -> directedValueGraph.putEdgeValue(link.getSource(), link.getTarget(), link.getConditionExpression()));
     }
 
     @Test
-    public void test(){
-        String startNodeId = "start-node";
-        BaseProcessNode startNode = baseDefaultProcessEngine.getProcessNode(startNodeId);
-        Assert.assertThat(startNode.getId(), Matchers.is(startNodeId));
-        ProcessNodeWrap<BaseProcessNode> nextProcessNode = baseDefaultProcessEngine.getNextProcessNode(startNode, Collections.EMPTY_MAP);
-        System.out.println(nextProcessNode.get().toString());
-        Map<String, Object> map = new HashMap<>();
-        map.put("approved", true);
-        List<BaseProcessNode> baseProcessNodes = baseDefaultProcessEngine.forecastProcessNode(startNode, map);
-        baseProcessNodes.forEach(node -> System.out.println(node.toString()));
+    public void nodeSizeTest() {
+        Assert.assertThat(directedValueGraph.nodes().size(), Matchers.is(processNodeMap.size()));
+    }
 
+    @Test
+    public void edgeCountTest() {
+        Assert.assertThat(directedValueGraph.edges().size(), Matchers.is(processLinkList.size()));
+    }
+
+    @Test
+    public void relationTest() {
+        processLinkList.forEach(link -> {
+            Assert.assertTrue(directedValueGraph.hasEdgeConnecting(link.getSource(), link.getTarget()));
+            String conditionExpression = link.getConditionExpression();
+            if (conditionExpression != null && conditionExpression.trim().length() > 1) {
+                Optional<String> edgeValueOpt = directedValueGraph.edgeValue(link.getSource(), link.getTarget());
+                Assert.assertTrue(edgeValueOpt.isPresent());
+                Assert.assertThat(conditionExpression, Matchers.is(edgeValueOpt.get()));
+            }
+        });
     }
 }

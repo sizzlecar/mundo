@@ -1,64 +1,100 @@
 package com.bluslee.mundo.core.process.base;
 
-import java.util.List;
-import java.util.Map;
+import com.bluslee.mundo.core.exception.MundoException;
+import com.bluslee.mundo.core.expression.Execute;
+import com.bluslee.mundo.core.process.EndNode;
+import com.bluslee.mundo.core.process.graph.BaseDirectedValueGraph;
+
+import java.util.*;
 
 /**
  * @author carl.che
- * @date 2021/11/1
- * @description BaseProcess 基础流程接口
+ * @date 2021/11/2
+ * @description BaseDefaultProcessEngine 流程引擎基类，本质是一个提供了BaseProcessEngine服务的有向图
  */
-public interface BaseProcessEngine<N extends BaseProcessNode>{
+public abstract class BaseProcessEngine<N extends BaseProcessNode, V> implements ProcessEngine<N> {
 
-    /**
-     * 获取当前流程id
-     * @return 当前流程id
-     */
-    String getId();
+    private Execute execute;
+    private BaseDirectedValueGraph<N, V> baseDirectedValueGraph;
+    private final String id;
+    private int version;
+    public BaseProcessEngine(String id, Execute execute, BaseDirectedValueGraph<N, V> baseDirectedValueGraph) {
+        this.baseDirectedValueGraph = baseDirectedValueGraph;
+        this.execute = execute;
+        this.id = id;
+    }
 
-    /**
-     * 获取当前引擎版本号
-     * @return 版本号
-     */
-    int getVersion();
+    @Override
+    public N getProcessNode(String processNodeId) {
+        return baseDirectedValueGraph.nodes().stream().filter(node -> node.getId().equals(processNodeId)).findFirst().orElse(null);
+    }
 
-    /**
-     * 根据id在当前流程中寻找对应的node
-     * @param processNodeId id
-     * @return 查找的结果
-     */
-    N getProcessNode(String processNodeId);
+    @Override
+    public ProcessNodeWrap<N> getNextProcessNode(N currentNode, Map<String, Object> parameterMap) {
+        boolean contains = baseDirectedValueGraph.nodes().contains(currentNode);
+        if (!contains) {
+            //currentNode 在当前流程中不存在
+            throw new MundoException("currentNode not in process");
+        }
+        return currentNode.next(baseDirectedValueGraph, parameterMap, execute);
+    }
 
-    /**
-     * 根据当前节点，以及参数找出下一个节点
-     * @param currentNode 当前节点
-     * @param parameterMap 参数map
-     * @return 下一个节点
-     */
-    ProcessNodeWrap<N> getNextProcessNode(N currentNode, Map<String, Object> parameterMap);
+    @Override
+    public ProcessNodeWrap<N> getNextProcessNode(String currentNodeId, Map<String, Object> parameterMap) {
+        return getNextProcessNode(getProcessNode(currentNodeId), parameterMap);
+    }
 
-    /**
-     * 根据当前节点，以及参数找出下一个节点
-     * @param currentNodeId 当前节点id
-     * @param parameterMap 参数map
-     * @return 下一个节点
-     */
-    ProcessNodeWrap<N> getNextProcessNode(String currentNodeId, Map<String, Object> parameterMap);
+    @Override
+    public Set<N> forecastProcessNode(N currentNode, Map<String, Object> parameterMap) {
+        boolean contains = baseDirectedValueGraph.nodes().contains(currentNode);
+        if (!contains) {
+            //currentNode 在当前流程中不存在
+            throw new MundoException("currentNode not in process");
+        }
+        Set<N> forecastProcessNodeSet = new LinkedHashSet<>();
+        forecastProcessNode(currentNode, parameterMap, forecastProcessNodeSet);
+        return forecastProcessNodeSet;
+    }
 
-    /**
-     * 预测当前节点的后续节点
-     * @param currentNode 当前节点
-     * @param parameterMap 参数map
-     * @return 当前节点根据参数map预测出后续的节点
-     */
-    List<N> forecastProcessNode(N currentNode, Map<String, Object> parameterMap);
+    @Override
+    public Set<N> forecastProcessNode(String currentNodeId, Map<String, Object> parameterMap) {
+        return forecastProcessNode(getProcessNode(currentNodeId), parameterMap);
+    }
 
-    /**
-     * 预测当前节点的后续节点
-     * @param currentNodeId 当前节点id
-     * @param parameterMap 参数map
-     * @return 当前节点根据参数map预测出后续的节点
-     */
-    List<N> forecastProcessNode(String currentNodeId, Map<String, Object> parameterMap);
+    @Override
+    public String getId() {
+        return id;
+    }
 
+    @Override
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    void setExecute(Execute execute) {
+        this.execute = execute;
+    }
+
+    void setBaseDirectedValueGraph(BaseDirectedValueGraph<N, V> baseDirectedValueGraph) {
+        this.baseDirectedValueGraph = baseDirectedValueGraph;
+    }
+
+    private void forecastProcessNode(N currentNode, Map<String, Object> parameterMap, Set<N> forecastProcessNodeSet) {
+        if (currentNode instanceof EndNode || forecastProcessNodeSet.contains(currentNode)) {
+            return;
+        }
+        forecastProcessNodeSet.add(currentNode);
+        ProcessNodeWrap<N> next = currentNode.next(baseDirectedValueGraph, parameterMap, execute);
+        if (!next.parallel()) {
+            N nextNode = next.get();
+            forecastProcessNode(nextNode, parameterMap, forecastProcessNodeSet);
+        } else {
+            Set<N> parallelNodes = next.getParallelNodes();
+            parallelNodes.forEach(nextNode -> forecastProcessNode(nextNode, parameterMap, forecastProcessNodeSet));
+        }
+    }
 }

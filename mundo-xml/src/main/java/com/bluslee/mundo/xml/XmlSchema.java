@@ -1,5 +1,6 @@
 package com.bluslee.mundo.xml;
 
+import com.bluslee.mundo.xml.base.BaseXmlSchema;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -41,20 +42,25 @@ public class XmlSchema {
         public ProcessSchema() {
         }
 
+        @XStreamImplicit(itemFieldName = "start")
+        @Size(min = 1, max = 1000, message = "开始节点数量只能在{min}-{max}之间")
+        @NotNull(message = "开始节点不能为空")
+        protected List<ProcessStartNodeSchema> startList;
+
         /**
          * 流程节点集合
          */
         @XStreamImplicit(itemFieldName = "activity")
         @Size(min = 1, max = 1000, message = "流程节点数量只能在{min}-{max}之间")
         @NotNull(message = "流程节点不能为空")
-        protected List<ProcessNodeSchema> processNodeList;
+        protected List<ProcessNodeSchema> activityList;
 
         /**
          * 排他网关节点集合
          */
         @XStreamImplicit(itemFieldName = "exclusiveGateway")
         @Size(min = 1, max = 1000, message = "节点数量只能在{min}-{max}之间")
-        protected List<ProcessExclusiveGatewaySchema> processExclusiveGatewayList;
+        protected List<ProcessExclusiveGatewaySchema> exclusiveGatewayList;
 
         /**
          * 流程link集合
@@ -62,30 +68,64 @@ public class XmlSchema {
         @XStreamImplicit(itemFieldName = "link")
         @Size(min = 1, max = 1000, message = "流程link数量只能在{min}-{max}之间")
         @NotNull(message = "流程link不能为空")
-        protected List<ProcessLinkSchema> processLinkSchemaList;
+        protected List<ProcessLinkSchema> linkList;
 
-        public List<ProcessNodeSchema> getProcessNodeList() {
-            return processNodeList;
+        @XStreamImplicit(itemFieldName = "end")
+        @Size(min = 1, max = 1000, message = "结束节点数量只能在{min}-{max}之间")
+        @NotNull(message = "结束节点不能为空")
+        protected List<ProcessEndNodeSchema> endList;
+
+
+        public List<ProcessNodeSchema> getActivityList() {
+            return activityList;
         }
 
-        public void setProcessNodeList(List<ProcessNodeSchema> processNodeList) {
-            this.processNodeList = processNodeList;
+        public void setActivityList(List<ProcessNodeSchema> activityList) {
+            this.activityList = activityList;
         }
 
-        public List<ProcessExclusiveGatewaySchema> getProcessExclusiveGatewayList() {
-            return processExclusiveGatewayList;
+        public List<ProcessExclusiveGatewaySchema> getExclusiveGatewayList() {
+            return exclusiveGatewayList;
         }
 
-        public void setProcessExclusiveGatewayList(List<ProcessExclusiveGatewaySchema> processExclusiveGatewayList) {
-            this.processExclusiveGatewayList = processExclusiveGatewayList;
+        public void setExclusiveGatewayList(List<ProcessExclusiveGatewaySchema> exclusiveGatewayList) {
+            this.exclusiveGatewayList = exclusiveGatewayList;
         }
 
-        public List<ProcessLinkSchema> getProcessLinkSchemaList() {
-            return processLinkSchemaList;
+        public List<ProcessLinkSchema> getLinkList() {
+            return linkList;
         }
 
-        public void setProcessLinkSchemaList(List<ProcessLinkSchema> processLinkSchemaList) {
-            this.processLinkSchemaList = processLinkSchemaList;
+        public void setLinkList(List<ProcessLinkSchema> linkList) {
+            this.linkList = linkList;
+        }
+
+        public List<ProcessStartNodeSchema> getStartList() {
+            return startList;
+        }
+
+        public void setStartList(List<ProcessStartNodeSchema> startList) {
+            this.startList = startList;
+        }
+
+        public List<ProcessEndNodeSchema> getEndList() {
+            return endList;
+        }
+
+        public void setEndList(List<ProcessEndNodeSchema> endList) {
+            this.endList = endList;
+        }
+    }
+
+    /**
+     * 开始节点bean
+     */
+    public static class ProcessStartNodeSchema extends BaseXmlSchema {
+        public ProcessStartNodeSchema(String id, String name) {
+            super(id, name);
+        }
+
+        public ProcessStartNodeSchema() {
         }
     }
 
@@ -160,5 +200,50 @@ public class XmlSchema {
 
         public ProcessLinkSchema() {
         }
+
+        public String getSourceId() {
+            return sourceId;
+        }
+
+        public void setSourceId(String sourceId) {
+            this.sourceId = sourceId;
+        }
+
+        public String getTargetId() {
+            return targetId;
+        }
+
+        public void setTargetId(String targetId) {
+            this.targetId = targetId;
+        }
+
+        public String getConditionExpression() {
+            return conditionExpression;
+        }
+
+        public void setConditionExpression(String conditionExpression) {
+            this.conditionExpression = conditionExpression;
+        }
+    }
+
+    /**
+     * 结束节点bean
+     */
+    public static class ProcessEndNodeSchema extends BaseXmlSchema {
+        public ProcessEndNodeSchema(String id, String name) {
+            super(id, name);
+        }
+
+        public ProcessEndNodeSchema() {
+        }
+    }
+
+
+    public List<ProcessSchema> getProcessList() {
+        return processList;
+    }
+
+    public void setProcessList(List<ProcessSchema> processList) {
+        this.processList = processList;
     }
 }

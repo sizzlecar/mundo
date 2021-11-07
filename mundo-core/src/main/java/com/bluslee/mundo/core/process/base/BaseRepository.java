@@ -1,33 +1,40 @@
 package com.bluslee.mundo.core.process.base;
 
+import com.google.common.collect.ImmutableSet;
+
 import java.util.Set;
 
 /**
  * @author carl.che
  * @date 2021/11/6
- * @description Repository is a collection of BaseDefaultProcessEngine
+ * @description BaseDefaultRepository
  */
-public interface BaseRepository<N extends BaseProcessNode> {
+public abstract class BaseRepository<N extends BaseProcessNode> implements Repository<N> {
 
-    /**
-     * 获取所有的BaseProcessEngine
-     * @return 获取当前Repository管理的所有的BaseProcessEngine
-     */
-    Set<BaseProcessEngine<N>> processes();
+    private final Set<ProcessEngine<N>> processes;
 
-    /**
-     * 根据processId查询当前Repository匹配的BaseProcessEngine
-     * @param processId 引擎唯一id
-     * @return 匹配的 BaseProcessEngine
-     */
-    BaseProcessEngine<N> getProcess(String processId);
+    public BaseRepository(Set<ProcessEngine<N>> processes) {
+        this.processes = ImmutableSet.copyOf(processes);
+    }
 
-    /**
-     * 根据processId和版本号查询当前Repository匹配的BaseProcessEngine
-     * @param processId 引擎唯一id
-     * @param version 版本号
-     * @return 匹配的 BaseProcessEngine
-     */
-    BaseProcessEngine<N> getProcess(String processId, int version);
+    @Override
+    public Set<ProcessEngine<N>> processes() {
+        return processes;
+    }
 
+    @Override
+    public ProcessEngine<N> getProcess(String processId) {
+        return processes.stream()
+                .filter(process -> process.getId().equals(processId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public ProcessEngine<N> getProcess(String processId, int version) {
+        return processes.stream()
+                .filter(process -> process.getId().equals(processId) && process.getVersion() == version)
+                .findFirst()
+                .orElse(null);
+    }
 }

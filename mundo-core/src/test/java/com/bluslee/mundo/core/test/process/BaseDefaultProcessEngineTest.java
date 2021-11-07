@@ -2,7 +2,7 @@ package com.bluslee.mundo.core.test.process;
 
 import com.bluslee.mundo.core.expression.BaseExecutor;
 import com.bluslee.mundo.core.process.*;
-import com.bluslee.mundo.core.process.base.BaseDefaultProcessEngine;
+import com.bluslee.mundo.core.process.base.BaseProcessEngine;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
 import com.bluslee.mundo.core.process.graph.DirectedValueGraphImpl;
@@ -11,10 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author carl.che
@@ -23,7 +20,7 @@ import java.util.Map;
  */
 public class BaseDefaultProcessEngineTest {
 
-    private BaseDefaultProcessEngine<BaseProcessNode, String> baseDefaultProcessEngine;
+    private BaseProcessEngine<BaseProcessNode, String> baseDefaultProcessEngine;
     private final Map<String, BaseProcessNode> processNodeMap = new HashMap<String, BaseProcessNode>() {{
         put("start-node", new StartNode("start-node", "开始节点"));
         put("supplier-create", new Activity("supplier-create", "供应商创建单据"));
@@ -54,7 +51,7 @@ public class BaseDefaultProcessEngineTest {
         processLinkList.forEach(link -> {
             directedValueGraph.putEdgeValue(link.getSource(), link.getTarget(), link.getConditionExpression());
         });
-        baseDefaultProcessEngine = new BaseDefaultProcessEngine<BaseProcessNode, String>("test-process", baseExecutor, directedValueGraph) {
+        baseDefaultProcessEngine = new BaseProcessEngine<BaseProcessNode, String>("test-process", baseExecutor, directedValueGraph) {
         };
     }
 
@@ -97,9 +94,9 @@ public class BaseDefaultProcessEngineTest {
     @Test
     public void forecastProcessNodeTest() {
         Map<String, Object> paraMap = new HashMap<>();
-        paraMap.put("approved", true);
+        paraMap.put("approved", false);
         processNodeMap.forEach((id, node) -> {
-            List<BaseProcessNode> processNodeList = baseDefaultProcessEngine.forecastProcessNode(node, paraMap);
+            Set<BaseProcessNode> processNodeList = baseDefaultProcessEngine.forecastProcessNode(node, paraMap);
             System.out.println(processNodeList);
         });
     }

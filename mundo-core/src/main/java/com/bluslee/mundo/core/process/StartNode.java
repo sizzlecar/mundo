@@ -36,6 +36,6 @@ public class StartNode extends BaseProcessNode {
             throw new MundoException("当前节点没有后续节点");
         }
         List<N> singleList = new ArrayList<>(successors);
-        return singleList.get(0).next(processGraph, parameterMap, execute);
+        return ProcessNodeWrap.unParallel(singleList.get(0));
     }
 }
