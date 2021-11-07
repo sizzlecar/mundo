@@ -1,6 +1,7 @@
-package com.bluslee.mundo.core.process;
+package com.bluslee.mundo.core.process.base;
 
 import com.bluslee.mundo.core.expression.Execute;
+import com.bluslee.mundo.core.process.graph.MutableValueGraph;
 
 import java.util.Map;
 
@@ -26,4 +27,14 @@ public abstract class BaseProcessNode extends BaseElement{
      * @return 下一个节点包装器
      */
     public abstract <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(MutableValueGraph<N, V> processGraph, Map<String, Object> parameterMap, Execute execute);
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BaseProcessNode{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
 }

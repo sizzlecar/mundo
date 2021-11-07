@@ -2,6 +2,11 @@ package com.bluslee.mundo.core.process;
 
 import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.core.expression.Execute;
+import com.bluslee.mundo.core.process.base.BaseExclusiveGateway;
+import com.bluslee.mundo.core.process.base.BaseProcessNode;
+import com.bluslee.mundo.core.process.graph.Edge;
+import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
+import com.bluslee.mundo.core.process.graph.MutableValueGraph;
 
 import java.util.Map;
 import java.util.Optional;
@@ -12,7 +17,7 @@ import java.util.Set;
  * @date 2021/11/1
  * @description ExclusiveGateway
  */
-public class ExclusiveGateway extends BaseExclusiveGateway{
+public class ExclusiveGateway extends BaseExclusiveGateway {
 
     public ExclusiveGateway(String id, String name) {
         super(id, name);

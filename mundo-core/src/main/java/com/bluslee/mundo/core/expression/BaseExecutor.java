@@ -1,5 +1,6 @@
 package com.bluslee.mundo.core.expression;
 
+import com.bluslee.mundo.core.exception.MundoException;
 import ognl.*;
 
 import java.lang.reflect.Member;
@@ -11,7 +12,7 @@ import java.util.Map;
  * @date 2021/11/2
  * @description Executer
  */
-public class Executor implements Execute{
+public abstract class BaseExecutor implements Execute{
 
     private final MemberAccess memberAccess = new AbstractMemberAccess() {
         @Override
@@ -31,7 +32,7 @@ public class Executor implements Execute{
         try{
             val = (T) Ognl.getValue(Ognl.parseExpression(expression.toString()), context, context.getRoot());
         }catch (OgnlException e){
-            return null;
+            throw new MundoException("解析表达式发生错误", e);
         }
         return val;
     }

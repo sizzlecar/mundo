@@ -1,8 +1,5 @@
 package com.bluslee.mundo.xml;
 
-import com.bluslee.mundo.core.configuration.Configurator;
-import com.bluslee.mundo.core.process.BaseProcessEngine;
-import com.bluslee.mundo.core.process.BaseProcessNode;
 import com.thoughtworks.xstream.XStream;
 
 /**

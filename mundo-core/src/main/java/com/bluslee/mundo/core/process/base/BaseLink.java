@@ -1,11 +1,11 @@
-package com.bluslee.mundo.core.process;
+package com.bluslee.mundo.core.process.base;
 
 /**
  * @author carl.che
  * @date 2021/11/1
  * @description BaseLink
  */
-abstract class BaseLink extends BaseElement{
+public abstract class BaseLink extends BaseElement{
 
     /**
      * source node

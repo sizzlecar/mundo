@@ -1,4 +1,4 @@
-package com.bluslee.mundo.core.process;
+package com.bluslee.mundo.core.process.base;
 
 import com.bluslee.mundo.core.exception.MundoException;
 

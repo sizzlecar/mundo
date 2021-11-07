@@ -1,7 +1,9 @@
 package com.bluslee.mundo.core.configuration;
 
-import com.bluslee.mundo.core.process.BaseDefaultProcessEngine;
-import com.bluslee.mundo.core.process.BaseProcessNode;
+import com.bluslee.mundo.core.process.base.BaseProcessNode;
+import com.bluslee.mundo.core.process.base.BaseRepository;
+
+import java.util.Properties;
 
 /**
  * @author carl.che
@@ -11,11 +13,25 @@ import com.bluslee.mundo.core.process.BaseProcessNode;
 public interface Configurator {
 
     /**
+     * 批量设置属性
+     * @param properties 配置
+     */
+    void properties(Properties properties);
+
+    /**
+     * 设置属性
+     * @param key key
+     * @param value val
+     */
+    void setProperty(String key, String value);
+
+    /**
      * 根据配置构建出流程图BaseProcess的示例
      *
      * @param <N> 节点类型
-     * @param <V> 值类型
-     * @return BaseProcess的示例
+     * @return Repository 实例
      */
-    <N extends BaseProcessNode, V> BaseDefaultProcessEngine<N, V> build();
+    <N extends BaseProcessNode> BaseRepository<N> build();
+
+
 }

@@ -1,4 +1,4 @@
-package com.bluslee.mundo.core.process;
+package com.bluslee.mundo.core.process.graph;
 
 
 import java.util.Arrays;

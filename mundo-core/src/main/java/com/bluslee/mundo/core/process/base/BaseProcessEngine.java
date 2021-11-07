@@ -1,8 +1,7 @@
-package com.bluslee.mundo.core.process;
+package com.bluslee.mundo.core.process.base;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author carl.che
@@ -10,6 +9,18 @@ import java.util.Set;
  * @description BaseProcess 基础流程接口
  */
 public interface BaseProcessEngine<N extends BaseProcessNode>{
+
+    /**
+     * 获取当前流程id
+     * @return 当前流程id
+     */
+    String getId();
+
+    /**
+     * 获取当前引擎版本号
+     * @return 版本号
+     */
+    int getVersion();
 
     /**
      * 根据id在当前流程中寻找对应的node

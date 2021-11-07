@@ -1,4 +1,4 @@
-package com.bluslee.mundo.core.process;
+package com.bluslee.mundo.core.process.base;
 
 import com.google.common.base.Objects;
 
