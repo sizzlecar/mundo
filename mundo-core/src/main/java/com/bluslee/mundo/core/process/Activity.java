@@ -16,11 +16,11 @@ import java.util.*;
  */
 public class Activity extends BaseActivity {
 
-    public Activity(String id, String name) {
+    Activity(String id, String name) {
         super(id, name);
     }
 
-    public Activity() {
+    Activity() {
     }
 
     @Override

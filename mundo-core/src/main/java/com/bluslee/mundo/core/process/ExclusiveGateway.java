@@ -4,8 +4,8 @@ import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.core.expression.Execute;
 import com.bluslee.mundo.core.process.base.BaseExclusiveGateway;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
-import com.bluslee.mundo.core.process.graph.Edge;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
+import com.bluslee.mundo.core.process.graph.Edge;
 import com.bluslee.mundo.core.process.graph.MutableValueGraph;
 
 import java.util.Map;
@@ -19,20 +19,20 @@ import java.util.Set;
  */
 public class ExclusiveGateway extends BaseExclusiveGateway {
 
-    public ExclusiveGateway(String id, String name) {
+    ExclusiveGateway(String id, String name) {
         super(id, name);
     }
 
-    public ExclusiveGateway() {
+    ExclusiveGateway() {
     }
 
     @Override
     public <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(MutableValueGraph<N, V> processGraph, Map<String, Object> parameterMap, Execute execute) {
         boolean contains = processGraph.nodes().contains(this);
-        if(!contains){
+        if (!contains) {
             throw new MundoException("current node not in processGraph");
         }
-        Set<Edge<N>> outgoingEdges = processGraph.outgoingEdges((N)this);
+        Set<Edge<N>> outgoingEdges = processGraph.outgoingEdges((N) this);
         Optional<Edge<N>> matchPair = outgoingEdges
                 .stream().filter(pair -> {
                     Optional<V> edgeValueOpt = processGraph.edgeValue(pair);

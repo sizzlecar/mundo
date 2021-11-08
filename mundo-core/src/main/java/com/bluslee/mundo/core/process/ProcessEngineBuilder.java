@@ -20,8 +20,8 @@ public class ProcessEngineBuilder<N extends BaseProcessNode, V> {
         this.id = id;
     }
 
-    public static ProcessEngineBuilder instance(String id){
-        return new ProcessEngineBuilder(id);
+    public static <N extends BaseProcessNode, V> ProcessEngineBuilder<N, V> instance(String id){
+        return new ProcessEngineBuilder<>(id);
     }
 
     public ProcessEngineBuilder<N, V> execute(Execute execute){
@@ -39,9 +39,9 @@ public class ProcessEngineBuilder<N extends BaseProcessNode, V> {
         return this;
     }
 
-    public ProcessEngine<N, V> build() {
-        ProcessEngine<N, V> processEngine = new ProcessEngine<>(id, execute, baseDirectedValueGraph);
-        processEngine.setVersion(version);
-        return processEngine;
+    public ProcessEngineImpl<N, V> build() {
+        ProcessEngineImpl<N, V> processEngineImpl = new ProcessEngineImpl<>(id, execute, baseDirectedValueGraph);
+        processEngineImpl.setVersion(version);
+        return processEngineImpl;
     }
 }

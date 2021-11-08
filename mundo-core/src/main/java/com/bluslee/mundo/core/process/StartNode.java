@@ -18,11 +18,11 @@ import java.util.Set;
  */
 public class StartNode extends BaseProcessNode {
 
-    public StartNode(String id, String name) {
+    StartNode(String id, String name) {
         super(id, name);
     }
 
-    public StartNode() {
+    StartNode() {
     }
 
     @Override

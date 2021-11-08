@@ -84,10 +84,13 @@ public abstract class BaseProcessEngine<N extends BaseProcessNode, V> implements
     }
 
     private void forecastProcessNode(N currentNode, Map<String, Object> parameterMap, Set<N> forecastProcessNodeSet) {
-        if (currentNode instanceof EndNode || forecastProcessNodeSet.contains(currentNode)) {
+        if (forecastProcessNodeSet.contains(currentNode)) {
             return;
         }
         forecastProcessNodeSet.add(currentNode);
+        if(currentNode instanceof EndNode){
+            return;
+        }
         ProcessNodeWrap<N> next = currentNode.next(baseDirectedValueGraph, parameterMap, execute);
         if (!next.parallel()) {
             N nextNode = next.get();

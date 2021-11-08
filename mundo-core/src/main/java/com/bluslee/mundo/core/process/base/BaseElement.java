@@ -7,7 +7,7 @@ import com.google.common.base.Objects;
  * @date 2021/11/2
  * @description BaseElement process中基础元素
  */
-abstract class BaseElement {
+public abstract class BaseElement {
 
     /**
      * 元素id,一个流程图中唯一

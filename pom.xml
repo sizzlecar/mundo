@@ -15,22 +15,22 @@
     </modules>
 
     <name>mundo</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <url>http://www.bluslee.com</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <xstream.version>1.4.9</xstream.version>
-        <lombok.version>1.18.16</lombok.version>
         <guava.version>31.0.1-jre</guava.version>
         <mundo.version>1.0-SNAPSHOT</mundo.version>
-        <junit.version>4.11</junit.version>
+        <junit.version>4.12</junit.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
-        <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
+        <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
         <ognl.version>3.2.21</ognl.version>
-        <hamcrest.version>2.2</hamcrest.version>
+        <hamcrest.version>2.1</hamcrest.version>
+        <jakarta.el.version>4.0.0</jakarta.el.version>
+        <bval-jsr303.version>0.5</bval-jsr303.version>
     </properties>
 
     <dependencyManagement>
@@ -50,12 +50,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
@@ -64,6 +58,12 @@
             <dependency>
                 <groupId>com.bluslee</groupId>
                 <artifactId>mundo-core</artifactId>
+                <version>${mundo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.bluslee</groupId>
+                <artifactId>mundo-xml</artifactId>
                 <version>${mundo.version}</version>
             </dependency>
 
@@ -87,46 +87,20 @@
 
             <dependency>
                 <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-library</artifactId>
+                <artifactId>hamcrest</artifactId>
                 <version>${hamcrest.version}</version>
-                <scope>test</scope>
             </dependency>
 
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter</artifactId>
-                <version>5.5.2</version>
+                <groupId>org.glassfish</groupId>
+                <artifactId>jakarta.el</artifactId>
+                <version>${jakarta.el.version}</version>
             </dependency>
+
             <dependency>
-                <groupId>org.junit.vintage</groupId>
-                <artifactId>junit-vintage-engine</artifactId>
-                <version>5.5.2</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>hamcrest-core</artifactId>
-                        <groupId>org.hamcrest</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-junit-jupiter</artifactId>
-                <version>3.1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-core</artifactId>
-                <version>3.13.2</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest</artifactId>
-                <version>2.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>3.1.0</version>
+                <groupId>org.apache.bval</groupId>
+                <artifactId>bval-jsr303</artifactId>
+                <version>${bval-jsr303.version}</version>
             </dependency>
 
         </dependencies>
@@ -176,20 +150,5 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 </project>

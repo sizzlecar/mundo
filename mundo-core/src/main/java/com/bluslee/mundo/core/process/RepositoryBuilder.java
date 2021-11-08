@@ -10,7 +10,7 @@ import java.util.Set;
  * @date 2021/11/7
  * @description RepositoryBuilder
  */
-public class RepositoryBuilder<N extends BaseProcessNode> {
+public class RepositoryBuilder {
 
     public static <N extends BaseProcessNode> Repository<N> build(Set<ProcessEngine<N>> processes) {
         return new Repository<>(processes);

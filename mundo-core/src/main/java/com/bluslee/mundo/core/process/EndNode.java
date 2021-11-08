@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public class EndNode extends BaseProcessNode {
 
-    public EndNode(String id, String name) {
+    EndNode(String id, String name) {
         super(id, name);
     }
 
-    public EndNode() {
+    EndNode() {
     }
 
     @Override

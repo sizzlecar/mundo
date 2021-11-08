@@ -4,7 +4,6 @@ import com.bluslee.mundo.xml.base.BaseXmlSchema;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
@@ -18,7 +17,6 @@ import java.util.List;
  * @date 2021/10/29
  * @description XmlSchema 解析XML配置文件对应的bean
  */
-@Data
 @XStreamAlias("mundo")
 public class XmlSchema {
 

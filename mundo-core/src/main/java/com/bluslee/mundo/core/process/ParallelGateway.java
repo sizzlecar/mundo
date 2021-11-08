@@ -17,11 +17,11 @@ import java.util.Set;
  */
 public class ParallelGateway extends BaseParallelGateway {
 
-    public ParallelGateway(String id, String name) {
+    ParallelGateway(String id, String name) {
         super(id, name);
     }
 
-    public ParallelGateway() {
+    ParallelGateway() {
     }
 
     @Override

@@ -1,7 +1,8 @@
 package com.bluslee.mundo.core.test.process;
 
 import com.bluslee.mundo.core.expression.BaseExecutor;
-import com.bluslee.mundo.core.process.*;
+import com.bluslee.mundo.core.process.Link;
+import com.bluslee.mundo.core.process.ProcessElementBuilder;
 import com.bluslee.mundo.core.process.base.BaseProcessEngine;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
@@ -18,26 +19,26 @@ import java.util.*;
  * @date 2021/11/7
  * @description BaseDefaultProcessEngineTest
  */
-public class BaseDefaultProcessEngineTest {
+public class BaseDefaultProcessEngineImplTest {
 
     private BaseProcessEngine<BaseProcessNode, String> baseDefaultProcessEngine;
     private final Map<String, BaseProcessNode> processNodeMap = new HashMap<String, BaseProcessNode>() {{
-        put("start-node", new StartNode("start-node", "开始节点"));
-        put("supplier-create", new Activity("supplier-create", "供应商创建单据"));
-        put("supplier-submit", new Activity("supplier-submit", "供应商提交单据"));
-        put("buyer-approve", new Activity("buyer-approve", "采购审批"));
-        put("buyer-approve-gateway", new ExclusiveGateway("buyer-approve-gateway", "采购审批网关"));
-        put("supplier-update", new Activity("supplier-update", "供应商修改"));
-        put("approve-end", new EndNode("approve-end", "审批结束"));
+        put("start-node", ProcessElementBuilder.instance("start-node").name("开始节点").startNode());
+        put("supplier-create", ProcessElementBuilder.instance("supplier-create").name("供应商创建单据").activity());
+        put("supplier-submit", ProcessElementBuilder.instance("supplier-submit").name("供应商提交单据").activity());
+        put("buyer-approve", ProcessElementBuilder.instance("buyer-approve").name("采购审批").activity());
+        put("buyer-approve-gateway", ProcessElementBuilder.instance("buyer-approve-gateway").name("采购审批网关").exclusiveGateway());
+        put("supplier-update", ProcessElementBuilder.instance("supplier-update").name("供应商修改").activity());
+        put("approve-end", ProcessElementBuilder.instance("approve-end").name("审批结束").endNode());
     }};
     private final List<Link> processLinkList = new ArrayList<Link>() {{
-        add(new Link("start-node2supplier-create", "开始节点2供应商创建单据", processNodeMap.get("start-node"), processNodeMap.get("supplier-create"), ""));
-        add(new Link("supplier-create2supplier-submit", "供应商创建单据2供应商提交单据", processNodeMap.get("supplier-create"), processNodeMap.get("supplier-submit"), ""));
-        add(new Link("supplier-submit2buyer-approve", "供应商提交单据2采购审批", processNodeMap.get("supplier-submit"), processNodeMap.get("buyer-approve"), ""));
-        add(new Link("supplier-update2buyer-approve", "供应商修改2采购审批", processNodeMap.get("supplier-update"), processNodeMap.get("buyer-approve"), ""));
-        add(new Link("buyer-approve2buyer-approve-gateway", "采购审批2采购审批网关", processNodeMap.get("buyer-approve"), processNodeMap.get("buyer-approve-gateway"), ""));
-        add(new Link("buyer-approve-gateway2supplier-update", "采购审批网关2供应商修改", processNodeMap.get("buyer-approve-gateway"), processNodeMap.get("supplier-update"), "# approved == false"));
-        add(new Link("buyer-approve-gateway2approve-end", "采购审批网关2审批结束", processNodeMap.get("buyer-approve-gateway"), processNodeMap.get("approve-end"), "# approved == true"));
+        add(ProcessElementBuilder.instance("start-node2supplier-create").name("开始节点2供应商创建单据").source(processNodeMap.get("start-node")).target(processNodeMap.get("supplier-create")).conditionExpression("").link());
+        add(ProcessElementBuilder.instance("supplier-create2supplier-submit").name("供应商创建单据2供应商提交单据").source(processNodeMap.get("supplier-create")).target(processNodeMap.get("supplier-submit")).conditionExpression("").link());
+        add(ProcessElementBuilder.instance("supplier-submit2buyer-approve").name("供应商提交单据2采购审批").source(processNodeMap.get("supplier-submit")).target(processNodeMap.get("buyer-approve")).conditionExpression("").link());
+        add(ProcessElementBuilder.instance("supplier-update2buyer-approve").name("供应商修改2采购审批").source(processNodeMap.get("supplier-update")).target(processNodeMap.get("buyer-approve")).conditionExpression("").link());
+        add(ProcessElementBuilder.instance("buyer-approve2buyer-approve-gateway").name("采购审批2采购审批网关").source(processNodeMap.get("buyer-approve")).target(processNodeMap.get("buyer-approve-gateway")).conditionExpression("").link());
+        add(ProcessElementBuilder.instance("buyer-approve-gateway2supplier-update").name("采购审批网关2供应商修改").source(processNodeMap.get("buyer-approve-gateway")).target(processNodeMap.get("supplier-update")).conditionExpression("# approved == false").link());
+        add(ProcessElementBuilder.instance("buyer-approve-gateway2approve-end").name("采购审批网关2审批结束").source(processNodeMap.get("buyer-approve-gateway")).target(processNodeMap.get("approve-end")).conditionExpression("# approved == true").link());
     }};
 
     @Before

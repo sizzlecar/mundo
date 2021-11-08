@@ -16,4 +16,29 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>com.bluslee</groupId>
+            <artifactId>mundo-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bluslee</groupId>
+            <artifactId>mundo-xml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+        </dependency>
+
+    </dependencies>
+
 </project>

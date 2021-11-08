@@ -14,49 +14,49 @@ import java.util.stream.Collectors;
  * @date 2021/11/3
  * @description DirectedValueGraphImpl 有向值图实现类
  */
-public class DirectedValueGraphImpl extends BaseDirectedValueGraph<BaseProcessNode, String> {
+public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDirectedValueGraph<N, V> {
 
-    protected final com.google.common.graph.MutableValueGraph<BaseProcessNode, String> directedValueGraph =
+    protected final com.google.common.graph.MutableValueGraph<N, V> directedValueGraph =
             ValueGraphBuilder.directed().allowsSelfLoops(true).build();
 
     @Override
-    public boolean addNode(BaseProcessNode node) {
+    public boolean addNode(N node) {
         return directedValueGraph.addNode(node);
     }
 
     @Override
-    public String putEdgeValue(BaseProcessNode nodeU, BaseProcessNode nodeV, String value) {
+    public V  putEdgeValue(N nodeU, N nodeV, V  value) {
         return directedValueGraph.putEdgeValue(nodeU, nodeV, value);
     }
 
     @Override
-    public String putEdgeValue(Edge<BaseProcessNode> edge, String value) {
+    public V  putEdgeValue(Edge<N> edge, V  value) {
         return directedValueGraph.putEdgeValue(EndpointPair.ordered(edge.source(), edge.target()), value);
     }
 
     @Override
-    public boolean removeNode(BaseProcessNode node) {
+    public boolean removeNode(N node) {
         return directedValueGraph.removeNode(node);
     }
 
     @Override
-    public String removeEdge(BaseProcessNode nodeU, BaseProcessNode nodeV) {
+    public V  removeEdge(N nodeU, N nodeV) {
         return directedValueGraph.removeEdge(nodeU, nodeV);
     }
 
     @Override
-    public String removeEdge(Edge<BaseProcessNode> edge) {
+    public V  removeEdge(Edge<N> edge) {
         return directedValueGraph.removeEdge(EndpointPair.ordered(edge.source(), edge.target()));
     }
 
     @Override
-    public Set<BaseProcessNode> nodes() {
+    public Set<N> nodes() {
         return directedValueGraph.nodes();
     }
 
     @Override
-    public Set<Edge<BaseProcessNode>> edges() {
-        Set<EndpointPair<BaseProcessNode>> edges = directedValueGraph.edges();
+    public Set<Edge<N>> edges() {
+        Set<EndpointPair<N>> edges = directedValueGraph.edges();
         if (edges != null && edges.size() > 0) {
             return edges.stream().map(pair -> Edge.ordered(pair.source(), pair.target())).collect(Collectors.toSet());
         }
@@ -74,23 +74,23 @@ public class DirectedValueGraphImpl extends BaseDirectedValueGraph<BaseProcessNo
     }
 
     @Override
-    public Set<BaseProcessNode> adjacentNodes(BaseProcessNode node) {
+    public Set<N> adjacentNodes(N node) {
         return directedValueGraph.adjacentNodes(node);
     }
 
     @Override
-    public Set<BaseProcessNode> predecessors(BaseProcessNode node) {
+    public Set<N> predecessors(N node) {
         return directedValueGraph.predecessors(node);
     }
 
     @Override
-    public Set<BaseProcessNode> successors(BaseProcessNode node) {
+    public Set<N> successors(N node) {
         return directedValueGraph.successors(node);
     }
 
     @Override
-    public Set<Edge<BaseProcessNode>> incidentEdges(BaseProcessNode node) {
-        Set<EndpointPair<BaseProcessNode>> endpointPairs = directedValueGraph.incidentEdges(node);
+    public Set<Edge<N>> incidentEdges(N node) {
+        Set<EndpointPair<N>> endpointPairs = directedValueGraph.incidentEdges(node);
         if (endpointPairs != null && endpointPairs.size() > 0) {
             return endpointPairs.stream().map(pair -> Edge.ordered(pair.source(), pair.target())).collect(Collectors.toSet());
         }
@@ -98,47 +98,47 @@ public class DirectedValueGraphImpl extends BaseDirectedValueGraph<BaseProcessNo
     }
 
     @Override
-    public int degree(BaseProcessNode node) {
+    public int degree(N node) {
         return directedValueGraph.degree(node);
     }
 
     @Override
-    public int inDegree(BaseProcessNode node) {
+    public int inDegree(N node) {
         return directedValueGraph.inDegree(node);
     }
 
     @Override
-    public int outDegree(BaseProcessNode node) {
+    public int outDegree(N node) {
         return directedValueGraph.outDegree(node);
     }
 
     @Override
-    public boolean hasEdgeConnecting(BaseProcessNode nodeU, BaseProcessNode nodeV) {
+    public boolean hasEdgeConnecting(N nodeU, N nodeV) {
         return directedValueGraph.hasEdgeConnecting(nodeU, nodeV);
     }
 
     @Override
-    public boolean hasEdgeConnecting(Edge<BaseProcessNode> edge) {
+    public boolean hasEdgeConnecting(Edge<N> edge) {
         return directedValueGraph.hasEdgeConnecting(EndpointPair.ordered(edge.source(), edge.target()));
     }
 
     @Override
-    public Optional<String> edgeValue(BaseProcessNode nodeU, BaseProcessNode nodeV) {
+    public Optional<V> edgeValue(N nodeU, N nodeV) {
         return directedValueGraph.edgeValue(nodeU, nodeV);
     }
 
     @Override
-    public Optional<String> edgeValue(Edge<BaseProcessNode> edge) {
+    public Optional<V> edgeValue(Edge<N> edge) {
         return directedValueGraph.edgeValue(EndpointPair.ordered(edge.source(), edge.target()));
     }
 
     @Override
-    public String edgeValueOrDefault(BaseProcessNode nodeU, BaseProcessNode nodeV, String defaultValue) {
+    public V  edgeValueOrDefault(N nodeU, N nodeV, V  defaultValue) {
         return directedValueGraph.edgeValueOrDefault(nodeU, nodeV, defaultValue);
     }
 
     @Override
-    public String edgeValueOrDefault(Edge<BaseProcessNode> edge, String defaultValue) {
+    public V  edgeValueOrDefault(Edge<N> edge, V  defaultValue) {
         return directedValueGraph.edgeValueOrDefault(EndpointPair.ordered(edge.source(), edge.target()), defaultValue);
     }
 
