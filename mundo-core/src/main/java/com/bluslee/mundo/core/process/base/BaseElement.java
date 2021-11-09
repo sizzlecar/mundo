@@ -45,8 +45,12 @@ public abstract class BaseElement {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BaseElement)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BaseElement)) {
+            return false;
+        }
         BaseElement that = (BaseElement) o;
         return Objects.equal(id, that.id);
     }

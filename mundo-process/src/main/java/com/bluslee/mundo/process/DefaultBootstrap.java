@@ -12,24 +12,26 @@ import com.thoughtworks.xstream.XStream;
  * @date 2021/11/9
  * @description BaseBootstrap
  */
-public class BaseBootstrap implements Bootstrap<BaseProcessNode> {
+public class DefaultBootstrap implements Bootstrap<BaseProcessNode> {
 
-    private static volatile BaseBootstrap BOOTSTRAP;
+    private static volatile DefaultBootstrap bootstrap;
     private final XStream xStream = new XStream();
     private final Configurator<BaseProcessNode> xmlConfigurator = new XmlConfiguratorImpl(new BaseXmlParser(xStream) {
     });
 
-    private BaseBootstrap() {
+    private DefaultBootstrap() {
     }
 
-    public static BaseBootstrap getInstance() {
-        if (BOOTSTRAP == null) {
-            synchronized (BaseBootstrap.class) {
-                if (BOOTSTRAP == null)
-                    BOOTSTRAP = new BaseBootstrap();
+
+    public static DefaultBootstrap getInstance() {
+        if (bootstrap == null) {
+            synchronized (DefaultBootstrap.class) {
+                if (bootstrap == null) {
+                    bootstrap = new DefaultBootstrap();
+                }
             }
         }
-        return BOOTSTRAP;
+        return bootstrap;
     }
 
     @Override

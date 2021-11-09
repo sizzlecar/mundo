@@ -4,13 +4,13 @@ package com.bluslee.mundo.core.process.graph;
 import java.util.Optional;
 
 /**
+ * @param <N> Node parameter type
+ * @param <V> Value parameter type
  * @author carl.che
  * @date 2021/11/4
  * @description MutableValueGraph
- * @param <N> Node parameter type
- * @param <V> Value parameter type
  */
-public interface MutableValueGraph<N, V> extends BaseGraph<N>{
+public interface MutableValueGraph<N, V> extends BaseGraph<N> {
 
     /**
      * 有向图：如果途中存在 nodeU -> nodeV 则返回该边的值，否则返回null

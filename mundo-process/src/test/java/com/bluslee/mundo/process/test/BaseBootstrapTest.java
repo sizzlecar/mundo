@@ -4,7 +4,7 @@ import com.bluslee.mundo.core.configuration.Configurator;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessEngine;
 import com.bluslee.mundo.core.process.base.Repository;
-import com.bluslee.mundo.process.BaseBootstrap;
+import com.bluslee.mundo.process.DefaultBootstrap;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class BaseBootstrapTest {
 
     @Test
     public void defaultConfiguratorTest() {
-        Configurator<BaseProcessNode> defaultConfigurator = BaseBootstrap.getInstance().defaultConfigurator();
+        Configurator<BaseProcessNode> defaultConfigurator = DefaultBootstrap.getInstance().defaultConfigurator();
         defaultConfigurator.setProperty("mundo.xml-path", "/mundo.cfg.xml");
         Repository<BaseProcessNode> repository = defaultConfigurator.build();
         Set<ProcessEngine<BaseProcessNode>> processes = repository.processes();

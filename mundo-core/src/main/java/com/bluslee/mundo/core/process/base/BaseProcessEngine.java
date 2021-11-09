@@ -5,7 +5,10 @@ import com.bluslee.mundo.core.expression.Execute;
 import com.bluslee.mundo.core.process.EndNode;
 import com.bluslee.mundo.core.process.graph.BaseDirectedValueGraph;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * @author carl.che
@@ -18,6 +21,7 @@ public abstract class BaseProcessEngine<N extends BaseProcessNode, V> implements
     private BaseDirectedValueGraph<N, V> baseDirectedValueGraph;
     private final String id;
     private int version;
+
     public BaseProcessEngine(String id, Execute execute, BaseDirectedValueGraph<N, V> baseDirectedValueGraph) {
         this.baseDirectedValueGraph = baseDirectedValueGraph;
         this.execute = execute;
@@ -88,7 +92,7 @@ public abstract class BaseProcessEngine<N extends BaseProcessNode, V> implements
             return;
         }
         forecastProcessNodeSet.add(currentNode);
-        if(currentNode instanceof EndNode){
+        if (currentNode instanceof EndNode) {
             return;
         }
         ProcessNodeWrap<N> next = currentNode.next(baseDirectedValueGraph, parameterMap, execute);

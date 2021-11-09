@@ -8,7 +8,7 @@ import com.bluslee.mundo.xml.base.XmlParser;
  * @date 2021/11/8
  * @description XmlConfiguratorImpl
  */
-public class XmlConfiguratorImpl extends XmlConfigurator<BaseProcessNode>{
+public class XmlConfiguratorImpl extends XmlConfigurator<BaseProcessNode> {
 
     public XmlConfiguratorImpl(XmlParser xmlParser) {
         super(xmlParser);

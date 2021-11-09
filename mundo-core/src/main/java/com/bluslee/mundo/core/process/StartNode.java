@@ -31,7 +31,7 @@ public class StartNode extends BaseProcessNode {
         if (!contains) {
             throw new MundoException("当前节点不在指定图中");
         }
-        Set<N> successors = processGraph.successors((N)this);
+        Set<N> successors = processGraph.successors((N) this);
         if (successors == null || successors.size() < 1) {
             throw new MundoException("当前节点没有后续节点");
         }

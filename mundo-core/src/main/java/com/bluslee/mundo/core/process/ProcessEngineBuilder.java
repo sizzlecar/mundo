@@ -20,21 +20,21 @@ public class ProcessEngineBuilder<N extends BaseProcessNode, V> {
         this.id = id;
     }
 
-    public static <N extends BaseProcessNode, V> ProcessEngineBuilder<N, V> instance(String id){
+    public static <N extends BaseProcessNode, V> ProcessEngineBuilder<N, V> instance(String id) {
         return new ProcessEngineBuilder<>(id);
     }
 
-    public ProcessEngineBuilder<N, V> execute(Execute execute){
+    public ProcessEngineBuilder<N, V> execute(Execute execute) {
         this.execute = execute;
         return this;
     }
 
-    public ProcessEngineBuilder<N, V> directedValueGraph(BaseDirectedValueGraph<N, V> directedValueGraph){
+    public ProcessEngineBuilder<N, V> directedValueGraph(BaseDirectedValueGraph<N, V> directedValueGraph) {
         this.baseDirectedValueGraph = directedValueGraph;
         return this;
     }
 
-    public ProcessEngineBuilder<N, V> version(int version){
+    public ProcessEngineBuilder<N, V> version(int version) {
         this.version = version;
         return this;
     }

@@ -25,12 +25,12 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     @Override
-    public V  putEdgeValue(N nodeU, N nodeV, V  value) {
+    public V putEdgeValue(N nodeU, N nodeV, V value) {
         return directedValueGraph.putEdgeValue(nodeU, nodeV, value);
     }
 
     @Override
-    public V  putEdgeValue(Edge<N> edge, V  value) {
+    public V putEdgeValue(Edge<N> edge, V value) {
         return directedValueGraph.putEdgeValue(EndpointPair.ordered(edge.source(), edge.target()), value);
     }
 
@@ -40,12 +40,12 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     @Override
-    public V  removeEdge(N nodeU, N nodeV) {
+    public V removeEdge(N nodeU, N nodeV) {
         return directedValueGraph.removeEdge(nodeU, nodeV);
     }
 
     @Override
-    public V  removeEdge(Edge<N> edge) {
+    public V removeEdge(Edge<N> edge) {
         return directedValueGraph.removeEdge(EndpointPair.ordered(edge.source(), edge.target()));
     }
 
@@ -133,12 +133,12 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     @Override
-    public V  edgeValueOrDefault(N nodeU, N nodeV, V  defaultValue) {
+    public V edgeValueOrDefault(N nodeU, N nodeV, V defaultValue) {
         return directedValueGraph.edgeValueOrDefault(nodeU, nodeV, defaultValue);
     }
 
     @Override
-    public V  edgeValueOrDefault(Edge<N> edge, V  defaultValue) {
+    public V edgeValueOrDefault(Edge<N> edge, V defaultValue) {
         return directedValueGraph.edgeValueOrDefault(EndpointPair.ordered(edge.source(), edge.target()), defaultValue);
     }
 

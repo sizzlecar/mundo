@@ -5,7 +5,7 @@ package com.bluslee.mundo.core.exception;
  * @date 2021/11/2
  * @description MundoException
  */
-public class MundoException extends RuntimeException{
+public class MundoException extends RuntimeException {
 
     public MundoException() {
     }

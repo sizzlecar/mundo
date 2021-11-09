@@ -7,7 +7,11 @@ import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
 import com.bluslee.mundo.core.process.graph.MutableValueGraph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * @author carl.che
@@ -29,7 +33,7 @@ public class Activity extends BaseActivity {
         if (!contains) {
             throw new MundoException("当前节点不在指定图中");
         }
-        Set<N> successors = processGraph.successors((N)this);
+        Set<N> successors = processGraph.successors((N) this);
         if (successors == null || successors.size() < 1) {
             throw new MundoException("当前节点没有后续节点");
         }

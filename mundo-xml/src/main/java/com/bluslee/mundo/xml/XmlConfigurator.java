@@ -3,7 +3,15 @@ package com.bluslee.mundo.xml;
 import com.bluslee.mundo.core.configuration.Configurator;
 import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.core.expression.BaseExecutor;
-import com.bluslee.mundo.core.process.*;
+import com.bluslee.mundo.core.process.ExclusiveGateway;
+import com.bluslee.mundo.core.process.ProcessEngineBuilder;
+import com.bluslee.mundo.core.process.ProcessEngineImpl;
+import com.bluslee.mundo.core.process.RepositoryBuilder;
+import com.bluslee.mundo.core.process.ProcessElementBuilder;
+import com.bluslee.mundo.core.process.Activity;
+import com.bluslee.mundo.core.process.StartNode;
+import com.bluslee.mundo.core.process.EndNode;
+import com.bluslee.mundo.core.process.Link;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessEngine;
 import com.bluslee.mundo.core.process.base.Repository;
@@ -16,7 +24,11 @@ import javax.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +41,7 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Conf
     private final XmlParser xmlParser;
     private final Properties properties = new Properties();
     private final Validator validation = Validation.buildDefaultValidatorFactory().getValidator();
-    private final static String XML_PATH_CONFIG_NAME = "mundo.xml-path";
+    private static final String XML_PATH_CONFIG_NAME = "mundo.xml-path";
 
     /**
      * xml字符串

@@ -11,7 +11,7 @@ import java.io.OutputStream;
  * @date 2021/11/7
  * @description BaseXmlParser
  */
-public abstract class BaseXmlParser implements XmlParser{
+public abstract class BaseXmlParser implements XmlParser {
 
     private final XStream xStream;
 
