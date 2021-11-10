@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
 
 
 /**
@@ -39,11 +40,27 @@ public class Activity extends BaseActivity {
         }
         List<N> singleList = new ArrayList<>(successors);
         N nextNode = singleList.get(0);
-        if (nextNode instanceof BaseActivity) {
-            //下一个节点是活动节点直接返回
-            return ProcessNodeWrap.unParallel(nextNode);
+        Optional<V> expressionOpt = processGraph.edgeValue((N) this, nextNode);
+        if (expressionOpt.isPresent() && expressionOpt.get().toString().trim().length() > 1) {
+            //有条件
+            boolean flag = execute.executeExpression(expressionOpt.get(), parameterMap);
+            if (flag) {
+                if (nextNode instanceof BaseActivity) {
+                    //下一个节点是活动节点直接返回
+                    return ProcessNodeWrap.unParallel(nextNode);
+                } else {
+                    return nextNode.next(processGraph, parameterMap, execute);
+                }
+            } else {
+                return nextNode.next(processGraph, parameterMap, execute);
+            }
         } else {
-            return nextNode.next(processGraph, parameterMap, execute);
+            if (nextNode instanceof BaseActivity) {
+                //下一个节点是活动节点直接返回
+                return ProcessNodeWrap.unParallel(nextNode);
+            } else {
+                return nextNode.next(processGraph, parameterMap, execute);
+            }
         }
     }
 }
