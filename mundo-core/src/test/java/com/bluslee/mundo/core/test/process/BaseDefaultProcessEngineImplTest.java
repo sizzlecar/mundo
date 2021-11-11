@@ -1,8 +1,7 @@
 package com.bluslee.mundo.core.test.process;
 
 import com.bluslee.mundo.core.expression.BaseExecutor;
-import com.bluslee.mundo.core.process.Link;
-import com.bluslee.mundo.core.process.ProcessElementBuilder;
+import com.bluslee.mundo.core.process.*;
 import com.bluslee.mundo.core.process.base.BaseProcessEngine;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
@@ -75,13 +74,24 @@ public class BaseDefaultProcessEngineImplTest {
                 .conditionExpression("# approved == true")
                 .link());
     }};
+    private final Map<String, BaseProcessNode> processNextNodeMap = new HashMap<String, BaseProcessNode>() {{
+        put("start-node", processNodeMap.get("supplier-create"));
+        put("supplier-create", processNodeMap.get("supplier-submit"));
+        put("supplier-submit", processNodeMap.get("buyer-approve"));
+        put("buyer-approve-true", processNodeMap.get("approve-end"));
+        put("buyer-approve-false", processNodeMap.get("supplier-update"));
+        put("supplier-update", processNodeMap.get("buyer-approve"));
+        put("approve-end", processNodeMap.get("approve-end"));
+    }};
 
     @Before
     public void buildProcess() {
         DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
         processNodeMap.forEach((id, node) -> directedValueGraph.addNode(node));
         processLinkList.forEach(link -> directedValueGraph.putEdgeValue(link.getSource(), link.getTarget(), link.getConditionExpression()));
-        baseDefaultProcessEngine = new BaseProcessEngine<BaseProcessNode, String>("test-process", new BaseExecutor() {}, directedValueGraph) {};
+        baseDefaultProcessEngine = new BaseProcessEngine<BaseProcessNode, String>("test-process", new BaseExecutor() {
+        }, directedValueGraph) {
+        };
     }
 
     @Test
@@ -96,14 +106,19 @@ public class BaseDefaultProcessEngineImplTest {
     public void getNextProcessNodeTest() {
         Map<String, Object> paraMap = new HashMap<>();
         paraMap.put("approved", true);
-        processNodeMap.forEach((id, node) -> {
-            ProcessNodeWrap<BaseProcessNode> processNodeWrap = baseDefaultProcessEngine.getNextProcessNode(id, paraMap);
-            if (processNodeWrap.parallel()) {
-                System.out.println(processNodeWrap.getParallelNodes());
-            } else {
-                System.out.println(processNodeWrap.get());
-            }
-        });
+        processNodeMap
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() instanceof Activity || entry.getValue() instanceof StartNode || entry.getValue() instanceof EndNode)
+                .forEach((entry) -> {
+                    ProcessNodeWrap<BaseProcessNode> processNodeWrap = baseDefaultProcessEngine.getNextProcessNode(entry.getKey(), paraMap);
+                    if (!processNodeWrap.parallel()) {
+                        BaseProcessNode actualNextNode = processNodeWrap.get();
+                        Assert.assertThat(actualNextNode, Matchers.equalTo(processNextNodeMap.get(entry.getKey())));
+                    } else {
+                        throw new UnsupportedOperationException("current not support");
+                    }
+                });
     }
 
     @Test
