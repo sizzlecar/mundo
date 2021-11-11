@@ -1,5 +1,3 @@
-# mundo
-
 ## mundo是什么？
 mundo是一个轻量级，灵活的，高性能的流程引擎。mundo的设计原则是保持简单，职责单一。
 
@@ -17,6 +15,7 @@ mundo是一个轻量级，灵活的，高性能的流程引擎。mundo的设计�
                 <version>last.version</version>
             </dependency>
 ```
+
 2. 定义流程
 mundo目前支持XML定义流程，XML的格式示例如下，根标签为mundo，mundo标签可以有多个process标签，一个process就对应一个流程，
 process标签有两个属性，id与name，id是流程的唯一标识，不同的流程id不可以重复。一个process标签可以有多个子标签，比如start标签代表流程的开始，
@@ -25,6 +24,7 @@ process标签有两个属性，id与name，id是流程的唯一标识，不同�
 只有业务节点还是不完整的，还需要一些连接，来明确节点与节点之间的流转，这就link标签，通过指定link标签的sourceId，targetId来描述业务节点的流转情况
 由网关发出的link需要指定一个表达式，mundo会根据表达式以及参数计算出走哪一个link,process中所有的子标签都有id与name属性，同一个process中，不同的
 标签id不可以重复。
+
 ```xml
 <mundo>
     <process id="process-001" name="简单流程">
@@ -49,7 +49,9 @@ process标签有两个属性，id与name，id是流程的唯一标识，不同�
     </process>
 </mundo>
 ```   
+
 3. 启动流程
+
 ```java
 package com.bluslee.mundo.process.test;
 
@@ -96,6 +98,7 @@ public class BaseBootstrapTest {
     }
 }
 ```
+
 ## 为什么要选择mundo
 目前市面上主流的流程引擎有Flowable，Activiti 以Flowable为例，Flowable是一个基于BPMN规范，功能强大的框架， Flowable流程引擎可用于
 部署BPMN 2.0流程定义（用于定义流程的行业XML标准），创建这些流程定义的流程实例，进行查询，访问运行中或历史的流程实例与相关数据，除此之外
