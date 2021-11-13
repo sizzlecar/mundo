@@ -6,19 +6,21 @@ import com.bluslee.mundo.core.process.base.BaseProcessEngine;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
 import com.bluslee.mundo.core.process.graph.DirectedValueGraphImpl;
+import com.bluslee.mundo.core.process.graph.Edge;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author carl.che
  * @date 2021/11/7
  * @description BaseDefaultProcessEngineTest
  */
-public class BaseDefaultProcessEngineImplTest {
+public class BaseDefaultProcessEngineImplTest<processNodeWrap> {
 
     private BaseProcessEngine<BaseProcessNode, String> baseDefaultProcessEngine;
     private final Map<String, BaseProcessNode> processNodeMap = new HashMap<String, BaseProcessNode>() {{
@@ -83,14 +85,16 @@ public class BaseDefaultProcessEngineImplTest {
         put("supplier-update", processNodeMap.get("buyer-approve"));
         put("approve-end", processNodeMap.get("approve-end"));
     }};
+    private final DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+    private final BaseExecutor baseExecutor = new BaseExecutor() {
+    };
 
     @Before
     public void buildProcess() {
-        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
         processNodeMap.forEach((id, node) -> directedValueGraph.addNode(node));
         processLinkList.forEach(link -> directedValueGraph.putEdgeValue(link.getSource(), link.getTarget(), link.getConditionExpression()));
-        baseDefaultProcessEngine = new BaseProcessEngine<BaseProcessNode, String>("test-process", new BaseExecutor() {
-        }, directedValueGraph) {
+        baseDefaultProcessEngine = new BaseProcessEngine<BaseProcessNode, String>
+                ("test-process", baseExecutor, directedValueGraph) {
         };
     }
 
@@ -107,17 +111,10 @@ public class BaseDefaultProcessEngineImplTest {
         Map<String, Object> paraMap = new HashMap<>();
         paraMap.put("approved", true);
         processNodeMap
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() instanceof Activity || entry.getValue() instanceof StartNode || entry.getValue() instanceof EndNode)
-                .forEach((entry) -> {
-                    ProcessNodeWrap<BaseProcessNode> processNodeWrap = baseDefaultProcessEngine.getNextProcessNode(entry.getKey(), paraMap);
-                    if (!processNodeWrap.parallel()) {
-                        BaseProcessNode actualNextNode = processNodeWrap.get();
-                        Assert.assertThat(actualNextNode, Matchers.equalTo(processNextNodeMap.get(entry.getKey())));
-                    } else {
-                        throw new UnsupportedOperationException("current not support");
-                    }
+                .forEach((key, value) -> {
+                    ProcessNodeWrap<BaseProcessNode> processNodeWrap = baseDefaultProcessEngine.getNextProcessNode(key, paraMap);
+                    ProcessNodeWrap<BaseProcessNode> expectNode = this.directGraphNext(value, paraMap);
+                    Assert.assertEquals(expectNode, processNodeWrap);
                 });
     }
 
@@ -144,4 +141,38 @@ public class BaseDefaultProcessEngineImplTest {
             System.out.println(processNodeList);
         });
     }
+
+    private ProcessNodeWrap<BaseProcessNode> directGraphNext(BaseProcessNode currentNode, Map<String, Object> paraMap) {
+        boolean containsFlag = directedValueGraph.nodes().contains(currentNode);
+        if (!containsFlag) {
+            return null;
+        }
+        Set<Edge<BaseProcessNode>> edges = directedValueGraph.outgoingEdges(currentNode);
+        if (edges != null && edges.size() > 0) {
+            if (currentNode instanceof ParallelGateway) {
+                //并行网关
+                return ProcessNodeWrap.parallel(edges.stream()
+                        .filter(edge -> {
+                            Optional<String> expressStrOpt = directedValueGraph.edgeValue(edge);
+                            if (expressStrOpt.isPresent() && expressStrOpt.get().trim().length() > 0) {
+                                return baseExecutor.executeExpression(expressStrOpt.get(), paraMap);
+                            }
+                            return true;
+                        }).map(Edge::target).collect(Collectors.toSet()));
+            } else {
+                Set<BaseProcessNode> nextSet = edges.stream()
+                        .filter(edge -> {
+                            Optional<String> expressStrOpt = directedValueGraph.edgeValue(edge);
+                            if (expressStrOpt.isPresent() && expressStrOpt.get().trim().length() > 0) {
+                                return baseExecutor.executeExpression(expressStrOpt.get(), paraMap);
+                            }
+                            return true;
+                        }).map(Edge::target).collect(Collectors.toSet());
+                List<BaseProcessNode> nextNodeList = new ArrayList<>(nextSet);
+                return ProcessNodeWrap.unParallel(nextNodeList.get(0));
+            }
+        }
+        return null;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.bluslee.mundo.core.process.base;
 
 import com.bluslee.mundo.core.exception.MundoException;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -98,5 +99,16 @@ public abstract class ProcessNodeWrap<N> {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProcessNodeWrap<?> that = (ProcessNodeWrap<?>) o;
+        return Objects.equals(node, that.node) && Objects.equals(parallelNodes, that.parallelNodes);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(node, parallelNodes);
+    }
 }
