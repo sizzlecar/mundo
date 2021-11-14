@@ -3,32 +3,20 @@ package com.bluslee.mundo.xml;
 import com.bluslee.mundo.core.configuration.Configurator;
 import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.core.expression.BaseExecutor;
-import com.bluslee.mundo.core.process.ExclusiveGateway;
-import com.bluslee.mundo.core.process.ProcessEngineBuilder;
-import com.bluslee.mundo.core.process.ProcessEngineImpl;
-import com.bluslee.mundo.core.process.RepositoryBuilder;
-import com.bluslee.mundo.core.process.ProcessElementBuilder;
-import com.bluslee.mundo.core.process.Activity;
-import com.bluslee.mundo.core.process.StartNode;
-import com.bluslee.mundo.core.process.EndNode;
-import com.bluslee.mundo.core.process.Link;
+import com.bluslee.mundo.core.process.*;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessEngine;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.core.process.graph.DirectedValueGraphImpl;
 import com.bluslee.mundo.xml.base.XmlParser;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,7 +28,7 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Conf
 
     private final XmlParser xmlParser;
     private final Properties properties = new Properties();
-    private final Validator validation = Validation.buildDefaultValidatorFactory().getValidator();
+    private Validator validation = Validation.buildDefaultValidatorFactory().getValidator();
     private static final String XML_PATH_CONFIG_NAME = "mundo.xml-path";
 
     /**
@@ -98,10 +86,12 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Conf
 
     @Override
     public Repository<N> build() {
-        XmlSchema xmlSchema = parseXml();
-        validate(xmlSchema);
-        List<XmlSchema.ProcessSchema> processList = xmlSchema.getProcessList();
-        return processSchema2Repository(processList);
+        synchronized (XmlConfigurator.class) {
+            XmlSchema xmlSchema = parseXml();
+            validate(xmlSchema);
+            List<XmlSchema.ProcessSchema> processList = xmlSchema.getProcessList();
+            return processSchema2Repository(processList);
+        }
     }
 
     private XmlSchema parseXml() throws MundoException {
@@ -162,18 +152,20 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Conf
             baseProcessNodes.addAll(startNodeList);
             Map<String, N> processNodeMap = baseProcessNodes.stream().collect(Collectors.toMap(BaseProcessNode::getId, item -> (N) item));
             List<Link> linkList = processLinkSchemaList.stream().map(link -> ProcessElementBuilder
-                    .instance(link.getId())
-                    .name(link.getName())
-                    .source(processNodeMap.get(link.getSourceId()))
-                    .target(processNodeMap.get(link.getTargetId()))
-                    .conditionExpression(link.getConditionExpression())
-                    .link())
+                            .instance(link.getId())
+                            .name(link.getName())
+                            .source(processNodeMap.get(link.getSourceId()))
+                            .target(processNodeMap.get(link.getTargetId()))
+                            .conditionExpression(link.getConditionExpression())
+                            .link())
                     .collect(Collectors.toList());
             DirectedValueGraphImpl<BaseProcessNode, Object> directedValueGraph = new DirectedValueGraphImpl<>();
             processNodeMap.forEach((id, node) -> directedValueGraph.addNode(node));
             linkList.forEach(link -> directedValueGraph.putEdgeValue(link.getSource(), link.getTarget(), link.getConditionExpression() == null ? "" : link.getConditionExpression()));
             ProcessEngineImpl<BaseProcessNode, Object> processEngineImpl = ProcessEngineBuilder
-                    .instance(process.getId()).execute(new BaseExecutor() {
+                    .instance(process.getId())
+                    .version(process.getVersion())
+                    .execute(new BaseExecutor() {
                         @Override
                         public <T, E> T executeExpression(E expression, Map<String, Object> parameterMap) {
                             return super.executeExpression(expression, parameterMap);

@@ -2,6 +2,7 @@ package com.bluslee.mundo.core.process.base;
 
 import com.google.common.collect.ImmutableSet;
 
+import java.util.Comparator;
 import java.util.Set;
 
 /**
@@ -26,7 +27,7 @@ public abstract class BaseRepository<N extends BaseProcessNode> implements Repos
     public ProcessEngine<N> getProcess(String processId) {
         return processes.stream()
                 .filter(process -> process.getId().equals(processId))
-                .findFirst()
+                .max(Comparator.comparing(ProcessEngine::getVersion))
                 .orElse(null);
     }
 

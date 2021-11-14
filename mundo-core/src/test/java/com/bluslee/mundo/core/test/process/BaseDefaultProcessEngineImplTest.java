@@ -2,6 +2,7 @@ package com.bluslee.mundo.core.test.process;
 
 import com.bluslee.mundo.core.expression.BaseExecutor;
 import com.bluslee.mundo.core.process.*;
+import com.bluslee.mundo.core.process.base.BaseGateway;
 import com.bluslee.mundo.core.process.base.BaseProcessEngine;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
@@ -76,15 +77,6 @@ public class BaseDefaultProcessEngineImplTest<processNodeWrap> {
                 .conditionExpression("# approved == true")
                 .link());
     }};
-    private final Map<String, BaseProcessNode> processNextNodeMap = new HashMap<String, BaseProcessNode>() {{
-        put("start-node", processNodeMap.get("supplier-create"));
-        put("supplier-create", processNodeMap.get("supplier-submit"));
-        put("supplier-submit", processNodeMap.get("buyer-approve"));
-        put("buyer-approve-true", processNodeMap.get("approve-end"));
-        put("buyer-approve-false", processNodeMap.get("supplier-update"));
-        put("supplier-update", processNodeMap.get("buyer-approve"));
-        put("approve-end", processNodeMap.get("approve-end"));
-    }};
     private final DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
     private final BaseExecutor baseExecutor = new BaseExecutor() {
     };
@@ -113,7 +105,7 @@ public class BaseDefaultProcessEngineImplTest<processNodeWrap> {
         processNodeMap
                 .forEach((key, value) -> {
                     ProcessNodeWrap<BaseProcessNode> processNodeWrap = baseDefaultProcessEngine.getNextProcessNode(key, paraMap);
-                    ProcessNodeWrap<BaseProcessNode> expectNode = this.directGraphNext(value, paraMap);
+                    ProcessNodeWrap<BaseProcessNode> expectNode = this.graphNext(baseDefaultProcessEngine.getProcessNode(key), paraMap);
                     Assert.assertEquals(expectNode, processNodeWrap);
                 });
     }
@@ -122,13 +114,10 @@ public class BaseDefaultProcessEngineImplTest<processNodeWrap> {
     public void getNextProcessNodeByNodeTest() {
         Map<String, Object> paraMap = new HashMap<>();
         paraMap.put("approved", true);
-        processNodeMap.forEach((id, node) -> {
+        processNodeMap.forEach((key, node) -> {
             ProcessNodeWrap<BaseProcessNode> processNodeWrap = baseDefaultProcessEngine.getNextProcessNode(node, paraMap);
-            if (processNodeWrap.parallel()) {
-                System.out.println(processNodeWrap.getParallelNodes());
-            } else {
-                System.out.println(processNodeWrap.get());
-            }
+            ProcessNodeWrap<BaseProcessNode> expectNode = this.graphNext(node, paraMap);
+            Assert.assertEquals(expectNode, processNodeWrap);
         });
     }
 
@@ -138,13 +127,15 @@ public class BaseDefaultProcessEngineImplTest<processNodeWrap> {
         paraMap.put("approved", false);
         processNodeMap.forEach((id, node) -> {
             Set<BaseProcessNode> processNodeList = baseDefaultProcessEngine.forecastProcessNode(node, paraMap);
-            System.out.println(processNodeList);
+            Set<BaseProcessNode> expectNodeList = new HashSet<>();
+            graphForecast(node, paraMap, expectNodeList);
+            Assert.assertEquals(expectNodeList, processNodeList);
         });
     }
 
-    private ProcessNodeWrap<BaseProcessNode> directGraphNext(BaseProcessNode currentNode, Map<String, Object> paraMap) {
+    private ProcessNodeWrap<BaseProcessNode> graphNext(BaseProcessNode currentNode, Map<String, Object> paraMap) {
         boolean containsFlag = directedValueGraph.nodes().contains(currentNode);
-        if (!containsFlag) {
+        if (!containsFlag || currentNode instanceof EndNode) {
             return null;
         }
         Set<Edge<BaseProcessNode>> edges = directedValueGraph.outgoingEdges(currentNode);
@@ -159,8 +150,21 @@ public class BaseDefaultProcessEngineImplTest<processNodeWrap> {
                             }
                             return true;
                         }).map(Edge::target).collect(Collectors.toSet()));
+            } else if (currentNode instanceof ExclusiveGateway) {
+                //
+                Optional<Edge<BaseProcessNode>> nextNodeOpt = edges.stream()
+                        .filter(edge -> {
+                            Optional<String> expressStrOpt = directedValueGraph.edgeValue(edge);
+                            if (expressStrOpt.isPresent() && expressStrOpt.get().trim().length() > 0) {
+                                return baseExecutor.executeExpression(expressStrOpt.get(), paraMap);
+                            }
+                            return false;
+                        }).findFirst();
+                if (nextNodeOpt.isPresent()) {
+                    return ProcessNodeWrap.unParallel(nextNodeOpt.get().target());
+                }
             } else {
-                Set<BaseProcessNode> nextSet = edges.stream()
+                Set<BaseProcessNode> nextNodes = edges.stream()
                         .filter(edge -> {
                             Optional<String> expressStrOpt = directedValueGraph.edgeValue(edge);
                             if (expressStrOpt.isPresent() && expressStrOpt.get().trim().length() > 0) {
@@ -168,11 +172,38 @@ public class BaseDefaultProcessEngineImplTest<processNodeWrap> {
                             }
                             return true;
                         }).map(Edge::target).collect(Collectors.toSet());
-                List<BaseProcessNode> nextNodeList = new ArrayList<>(nextSet);
-                return ProcessNodeWrap.unParallel(nextNodeList.get(0));
+                if (nextNodes != null && nextNodes.size() > 0) {
+                    List<BaseProcessNode> nextNodeList = new ArrayList<>(nextNodes);
+                    BaseProcessNode next = nextNodeList.get(0);
+                    if (next instanceof BaseGateway) {
+                        return graphNext(next, paraMap);
+                    } else {
+                        return ProcessNodeWrap.unParallel(next);
+                    }
+                }
             }
         }
         return null;
+    }
+
+    private void graphForecast(BaseProcessNode currentNode,
+                               Map<String, Object> paraMap,
+                               Set<BaseProcessNode> forecastNodes) {
+        if (forecastNodes.contains(currentNode)) {
+            return;
+        }
+        forecastNodes.add(currentNode);
+        if (currentNode instanceof EndNode) {
+            return;
+        }
+        ProcessNodeWrap<BaseProcessNode> nextNodeWrap = graphNext(currentNode, paraMap);
+        if (nextNodeWrap != null) {
+            if (!nextNodeWrap.parallel()) {
+                graphForecast(nextNodeWrap.get(), paraMap, forecastNodes);
+            } else {
+                nextNodeWrap.getParallelNodes().forEach(node -> graphForecast(node, paraMap, forecastNodes));
+            }
+        }
     }
 
 }

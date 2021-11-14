@@ -23,6 +23,6 @@ public class EndNode extends BaseProcessNode {
 
     @Override
     public <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(MutableValueGraph<N, V> processGraph, Map<String, Object> parameterMap, Execute execute) {
-        return ProcessNodeWrap.unParallel((N) this);
+        return null;
     }
 }

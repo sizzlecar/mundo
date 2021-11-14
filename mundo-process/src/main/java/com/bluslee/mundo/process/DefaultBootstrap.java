@@ -22,7 +22,6 @@ public class DefaultBootstrap implements Bootstrap<BaseProcessNode> {
     private DefaultBootstrap() {
     }
 
-
     public static DefaultBootstrap getInstance() {
         if (bootstrap == null) {
             synchronized (DefaultBootstrap.class) {
@@ -37,6 +36,9 @@ public class DefaultBootstrap implements Bootstrap<BaseProcessNode> {
     @Override
     public Configurator<BaseProcessNode> defaultConfigurator() {
         xStream.processAnnotations(XmlSchema.class);
+        xStream.allowTypesByWildcard(new String[] {
+                "com.bluslee.mundo.**"
+        });
         return xmlConfigurator;
     }
 

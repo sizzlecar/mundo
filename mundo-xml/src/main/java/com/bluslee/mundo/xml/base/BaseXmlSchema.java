@@ -3,7 +3,8 @@ package com.bluslee.mundo.xml.base;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
+import java.util.Objects;
 
 /**
  * @author carl.che
@@ -49,5 +50,18 @@ public abstract class BaseXmlSchema {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseXmlSchema that = (BaseXmlSchema) o;
+        return id.equals(that.id) && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

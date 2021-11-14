@@ -14,7 +14,7 @@ public class ProcessEngineBuilder<N extends BaseProcessNode, V> {
     private final String id;
     private Execute execute;
     private BaseDirectedValueGraph<N, V> baseDirectedValueGraph;
-    private int version;
+    private Integer version = 0;
 
     private ProcessEngineBuilder(String id) {
         this.id = id;
@@ -34,7 +34,7 @@ public class ProcessEngineBuilder<N extends BaseProcessNode, V> {
         return this;
     }
 
-    public ProcessEngineBuilder<N, V> version(int version) {
+    public ProcessEngineBuilder<N, V> version(Integer version) {
         this.version = version;
         return this;
     }

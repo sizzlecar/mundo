@@ -7,6 +7,7 @@ import com.bluslee.mundo.core.process.graph.BaseDirectedValueGraph;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -20,7 +21,7 @@ public abstract class BaseProcessEngine<N extends BaseProcessNode, V> implements
     private Execute execute;
     private BaseDirectedValueGraph<N, V> baseDirectedValueGraph;
     private final String id;
-    private int version;
+    private Integer version;
 
     public BaseProcessEngine(String id, Execute execute, BaseDirectedValueGraph<N, V> baseDirectedValueGraph) {
         this.baseDirectedValueGraph = baseDirectedValueGraph;
@@ -71,11 +72,11 @@ public abstract class BaseProcessEngine<N extends BaseProcessNode, V> implements
     }
 
     @Override
-    public int getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 
@@ -103,5 +104,18 @@ public abstract class BaseProcessEngine<N extends BaseProcessNode, V> implements
             Set<N> parallelNodes = next.getParallelNodes();
             parallelNodes.forEach(nextNode -> forecastProcessNode(nextNode, parameterMap, forecastProcessNodeSet));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseProcessEngine<?, ?> that = (BaseProcessEngine<?, ?>) o;
+        return version == that.version && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, version);
     }
 }

@@ -111,4 +111,12 @@ public abstract class ProcessNodeWrap<N> {
     public int hashCode() {
         return Objects.hash(node, parallelNodes);
     }
+
+    @Override
+    public String toString() {
+        return "ProcessNodeWrap{" +
+                "node=" + node +
+                ", parallelNodes=" + parallelNodes +
+                '}';
+    }
 }

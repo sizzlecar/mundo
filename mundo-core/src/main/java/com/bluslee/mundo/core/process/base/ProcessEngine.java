@@ -22,7 +22,7 @@ public interface ProcessEngine<N extends BaseProcessNode> {
      *
      * @return 版本号
      */
-    int getVersion();
+    Integer getVersion();
 
     /**
      * 根据id在当前流程中寻找对应的node

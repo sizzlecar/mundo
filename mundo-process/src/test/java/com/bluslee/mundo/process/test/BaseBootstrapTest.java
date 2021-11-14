@@ -2,14 +2,10 @@ package com.bluslee.mundo.process.test;
 
 import com.bluslee.mundo.core.configuration.Configurator;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
-import com.bluslee.mundo.core.process.base.ProcessEngine;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.process.DefaultBootstrap;
+import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author carl.che
@@ -18,21 +14,13 @@ import java.util.Set;
  */
 public class BaseBootstrapTest {
 
-
     @Test
     public void defaultConfiguratorTest() {
         Configurator<BaseProcessNode> defaultConfigurator = DefaultBootstrap.getInstance().defaultConfigurator();
+        Assert.assertNotNull(defaultConfigurator);
         defaultConfigurator.setProperty("mundo.xml-path", "/mundo.cfg.xml");
         Repository<BaseProcessNode> repository = defaultConfigurator.build();
-        Set<ProcessEngine<BaseProcessNode>> processes = repository.processes();
-        processes.forEach(process -> {
-            System.out.println(process.getId());
-            BaseProcessNode processNode = process.getProcessNode("START");
-            System.out.println(processNode.toString());
-            Map<String, Object> map = new HashMap<>();
-            map.put("approve", true);
-            Set<BaseProcessNode> baseProcessNodes = process.forecastProcessNode(processNode, map);
-            System.out.println(baseProcessNodes.toString());
-        });
+        Assert.assertNotNull(defaultConfigurator);
+        Assert.assertEquals(1, repository.processes().size());
     }
 }

@@ -15,4 +15,14 @@ public class ProcessEngineImpl<N extends BaseProcessNode, V> extends BaseProcess
     ProcessEngineImpl(String id, Execute execute, BaseDirectedValueGraph<N, V> baseDirectedValueGraph) {
         super(id, execute, baseDirectedValueGraph);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

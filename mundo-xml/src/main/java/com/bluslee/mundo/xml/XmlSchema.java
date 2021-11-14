@@ -6,11 +6,12 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author carl.che
@@ -28,10 +29,23 @@ public class XmlSchema {
     @Valid
     protected List<ProcessSchema> processList;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        XmlSchema xmlSchema = (XmlSchema) o;
+        return processList.equals(xmlSchema.processList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(processList);
+    }
+
     /**
      * 流程xml定义
      */
-    public static class ProcessSchema extends BaseXmlSchema {
+    public static class ProcessSchema extends BaseXmlSchema implements Cloneable{
 
         public ProcessSchema(String id, String name) {
             super(id, name);
@@ -39,6 +53,12 @@ public class XmlSchema {
 
         public ProcessSchema() {
         }
+
+        /**
+         * 版本号
+         */
+        @XStreamAsAttribute
+        protected Integer version = 0;
 
         @XStreamImplicit(itemFieldName = "start")
         @Size(min = 1, max = 1000, message = "开始节点数量只能在{min}-{max}之间")
@@ -113,6 +133,38 @@ public class XmlSchema {
         public void setEndList(List<ProcessEndNodeSchema> endList) {
             this.endList = endList;
         }
+
+        public Integer getVersion() {
+            return version;
+        }
+
+        public void setVersion(Integer version) {
+            this.version = version;
+        }
+
+        @Override
+        public ProcessSchema clone() {
+            try {
+                return (ProcessSchema) super.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new AssertionError();
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ProcessSchema that = (ProcessSchema) o;
+            return Objects.equals(version, that.version) && Objects.equals(startList, that.startList) && Objects.equals(activityList, that.activityList) && Objects.equals(exclusiveGatewayList, that.exclusiveGatewayList) && Objects.equals(linkList, that.linkList) && Objects.equals(endList, that.endList);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(version, startList, activityList, exclusiveGatewayList, linkList, endList);
+        }
+
+
     }
 
     /**
@@ -221,6 +273,20 @@ public class XmlSchema {
 
         public void setConditionExpression(String conditionExpression) {
             this.conditionExpression = conditionExpression;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+            ProcessLinkSchema that = (ProcessLinkSchema) o;
+            return sourceId.equals(that.sourceId) && targetId.equals(that.targetId) && Objects.equals(conditionExpression, that.conditionExpression);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(super.hashCode(), sourceId, targetId, conditionExpression);
         }
     }
 
