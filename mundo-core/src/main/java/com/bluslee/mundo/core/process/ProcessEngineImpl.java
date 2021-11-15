@@ -6,23 +6,24 @@ import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.graph.BaseDirectedValueGraph;
 
 /**
+ * {@link BaseProcessEngine}默认实现.
+ *
  * @author carl.che
- * @date 2021/11/7
- * @description ProcessEngine
+ * @see BaseProcessEngine
  */
 public class ProcessEngineImpl<N extends BaseProcessNode, V> extends BaseProcessEngine<N, V> {
 
-    ProcessEngineImpl(String id, Execute execute, BaseDirectedValueGraph<N, V> baseDirectedValueGraph) {
+    ProcessEngineImpl(final String id, final Execute execute, final BaseDirectedValueGraph<N, V> baseDirectedValueGraph) {
         super(id, execute, baseDirectedValueGraph);
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(final Object o) {
         return super.equals(o);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return super.hashCode();
     }
 }

@@ -1,28 +1,28 @@
 package com.bluslee.mundo.core.exception;
 
 /**
+ * mundo异常基类.
+ *
  * @author carl.che
- * @date 2021/11/2
- * @description MundoException
  */
 public class MundoException extends RuntimeException {
 
     public MundoException() {
     }
 
-    public MundoException(String message) {
+    public MundoException(final String message) {
         super(message);
     }
 
-    public MundoException(String message, Throwable cause) {
+    public MundoException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public MundoException(Throwable cause) {
+    public MundoException(final Throwable cause) {
         super(cause);
     }
 
-    public MundoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public MundoException(final String message, final Throwable cause, final boolean enableSuppression, final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

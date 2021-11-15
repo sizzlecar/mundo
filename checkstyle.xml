@@ -3,7 +3,7 @@
         "http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
 <module name="Checker">
     <property name="charset" value="UTF-8"/>
-    <property name="severity" value="warning"/>
+    <property name="severity" value="error"/>
     <property name="fileExtensions" value="java, properties, xml"/>
     <module name="Header">
         <property name="fileExtensions" value="java"/>
@@ -183,7 +183,7 @@
         <module name="RightCurly"/>
 
         <!-- Class Design -->
-        <module name="DesignForExtension"/>
+        <!--<module name="DesignForExtension"/>-->
         <module name="FinalClass"/>
         <!-- cannot recognize for lombok @NoArgsConstructor(access = AccessLevel.PRIVATE), just ignore -->
         <!--<module name="HideUtilityClassConstructor"/>-->

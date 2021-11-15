@@ -5,20 +5,19 @@ import com.bluslee.mundo.core.expression.Execute;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
 import com.bluslee.mundo.core.process.graph.MutableValueGraph;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
+ * 开始节点.
+ *
  * @author carl.che
- * @date 2021/11/3
- * @description StartNode
  */
 public class StartNode extends BaseProcessNode {
 
-    StartNode(String id, String name) {
+    StartNode(final String id, final String name) {
         super(id, name);
     }
 
@@ -26,7 +25,7 @@ public class StartNode extends BaseProcessNode {
     }
 
     @Override
-    public <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(MutableValueGraph<N, V> processGraph, Map<String, Object> parameterMap, Execute execute) {
+    public final <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(final MutableValueGraph<N, V> processGraph, final Map<String, Object> parameterMap, final Execute execute) {
         boolean contains = processGraph.nodes().contains(this);
         if (!contains) {
             throw new MundoException("当前节点不在指定图中");

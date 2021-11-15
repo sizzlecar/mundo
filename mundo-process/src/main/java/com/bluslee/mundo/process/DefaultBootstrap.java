@@ -8,14 +8,16 @@ import com.bluslee.mundo.xml.base.BaseXmlParser;
 import com.thoughtworks.xstream.XStream;
 
 /**
+ * Bootstrap 默认实现
+ *
  * @author carl.che
- * @date 2021/11/9
- * @description BaseBootstrap
  */
 public class DefaultBootstrap implements Bootstrap<BaseProcessNode> {
 
     private static volatile DefaultBootstrap bootstrap;
+
     private final XStream xStream = new XStream();
+
     private final Configurator<BaseProcessNode> xmlConfigurator = new XmlConfiguratorImpl(new BaseXmlParser(xStream) {
     });
 
@@ -36,19 +38,17 @@ public class DefaultBootstrap implements Bootstrap<BaseProcessNode> {
     @Override
     public Configurator<BaseProcessNode> defaultConfigurator() {
         xStream.processAnnotations(XmlSchema.class);
-        xStream.allowTypesByWildcard(new String[] {
-                "com.bluslee.mundo.**"
-        });
+        xStream.allowTypesByWildcard(new String[]{"com.bluslee.mundo.**"});
         return xmlConfigurator;
     }
 
     @Override
-    public Configurator<BaseProcessNode> getConfigurator(String name) {
+    public Configurator<BaseProcessNode> getConfigurator(final String name) {
         return null;
     }
 
     @Override
-    public <T> Configurator<BaseProcessNode> getConfigurator(Class<T> clazz) {
+    public <T> Configurator<BaseProcessNode> getConfigurator(final Class<T> clazz) {
         return null;
     }
 }

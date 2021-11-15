@@ -2,17 +2,16 @@ package com.bluslee.mundo.core.process;
 
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessEngine;
-
 import java.util.Set;
 
 /**
+ * RepositoryBuilder.
+ *
  * @author carl.che
- * @date 2021/11/7
- * @description RepositoryBuilder
  */
 public class RepositoryBuilder {
 
-    public static <N extends BaseProcessNode> Repository<N> build(Set<ProcessEngine<N>> processes) {
+    public static <N extends BaseProcessNode> Repository<N> build(final Set<ProcessEngine<N>> processes) {
         return new Repository<>(processes);
     }
 }

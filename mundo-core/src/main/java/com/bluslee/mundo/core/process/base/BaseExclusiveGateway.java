@@ -1,13 +1,14 @@
 package com.bluslee.mundo.core.process.base;
 
 /**
+ * 流程图中基本节点类型 - 排他网关，代表只会选择后续的某一条 {@link com.bluslee.mundo.core.process.Link}.
+ *
  * @author carl.che
- * @date 2021/10/30
- * @description BaseGateway 流程图中基本节点类型 - 排他网关，只会走某一条link
+ * @see com.bluslee.mundo.core.process.Link
  */
 public abstract class BaseExclusiveGateway extends BaseGateway {
 
-    public BaseExclusiveGateway(String id, String name) {
+    public BaseExclusiveGateway(final String id, final String name) {
         super(id, name);
     }
 

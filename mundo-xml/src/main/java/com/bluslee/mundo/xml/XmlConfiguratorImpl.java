@@ -4,13 +4,12 @@ import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.xml.base.XmlParser;
 
 /**
+ *  默认配置器.
  * @author carl.che
- * @date 2021/11/8
- * @description XmlConfiguratorImpl
  */
 public class XmlConfiguratorImpl extends XmlConfigurator<BaseProcessNode> {
 
-    public XmlConfiguratorImpl(XmlParser xmlParser) {
+    public XmlConfiguratorImpl(final XmlParser xmlParser) {
         super(xmlParser);
     }
 }

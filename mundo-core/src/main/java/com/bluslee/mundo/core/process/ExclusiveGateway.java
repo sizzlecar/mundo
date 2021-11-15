@@ -7,19 +7,18 @@ import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
 import com.bluslee.mundo.core.process.graph.Edge;
 import com.bluslee.mundo.core.process.graph.MutableValueGraph;
-
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 /**
+ * 流程基础元素排他网关.
+ *
  * @author carl.che
- * @date 2021/11/1
- * @description ExclusiveGateway
  */
 public class ExclusiveGateway extends BaseExclusiveGateway {
 
-    ExclusiveGateway(String id, String name) {
+    ExclusiveGateway(final String id, final String name) {
         super(id, name);
     }
 
@@ -27,7 +26,7 @@ public class ExclusiveGateway extends BaseExclusiveGateway {
     }
 
     @Override
-    public <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(MutableValueGraph<N, V> processGraph, Map<String, Object> parameterMap, Execute execute) {
+    public final <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(final MutableValueGraph<N, V> processGraph, final Map<String, Object> parameterMap, final Execute execute) {
         boolean contains = processGraph.nodes().contains(this);
         if (!contains) {
             throw new MundoException("current node not in processGraph");

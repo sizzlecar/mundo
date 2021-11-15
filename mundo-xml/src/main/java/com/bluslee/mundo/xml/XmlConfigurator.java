@@ -12,7 +12,6 @@ import com.bluslee.mundo.xml.base.XmlParser;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,63 +19,94 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * XmlParserImpl.
  * @author carl.che
- * @date 2021/11/7
- * @description XmlParserImpl
  */
 public abstract class XmlConfigurator<N extends BaseProcessNode> implements Configurator<N> {
 
     private final XmlParser xmlParser;
+
     private final Properties properties = new Properties();
-    private Validator validation = Validation.buildDefaultValidatorFactory().getValidator();
-    private static final String XML_PATH_CONFIG_NAME = "mundo.xml-path";
+
+    private final Validator validation = Validation.buildDefaultValidatorFactory().getValidator();
+
+    private final static String XML_PATH_CONFIG_NAME = "mundo.xml-path";
 
     /**
-     * xml字符串
+     * xml字符串.
      */
     private String xmlStr;
 
     /**
-     * xml文件inputStream
+     * xml文件inputStream.
      */
     private InputStream inputStream;
 
     /**
-     * xml文件file
+     * xml文件file.
      */
     private File file;
 
-    public XmlConfigurator(XmlParser xmlParser) {
+    public XmlConfigurator(final XmlParser xmlParser) {
         this.xmlParser = xmlParser;
     }
 
-    public XmlConfigurator<N> xmlStr(String xmlStr) {
+    /**
+     * 配置 xmlStr.
+     * @param xmlStr xmlStr
+     * @return this
+     */
+    public XmlConfigurator<N> xmlStr(final String xmlStr) {
         this.xmlStr = xmlStr;
         return this;
     }
 
-    public XmlConfigurator<N> inputStream(InputStream inputStream) {
+    /**
+     * 配置 inputStream.
+     * @param inputStream inputStream
+     * @return this
+     */
+    public XmlConfigurator<N> inputStream(final InputStream inputStream) {
         this.inputStream = inputStream;
         return this;
     }
 
-    public XmlConfigurator<N> file(File file) {
+    /**
+     * 配置 file.
+     * @param file file
+     * @return this
+     */
+    public XmlConfigurator<N> file(final File file) {
         this.file = file;
         return this;
     }
 
+    /**
+     * setProperty.
+     * @param key   属性名
+     * @param value 值
+     */
     @Override
-    public void setProperty(String key, String value) {
+    public void setProperty(final String key, final String value) {
         this.properties.setProperty(key, value);
     }
 
+    /**
+     * getProperty.
+     * @param key 属性key
+     * @return Object
+     */
     @Override
-    public Object getProperty(String key) {
+    public Object getProperty(final String key) {
         return this.properties.getProperty(key);
     }
 
+    /**
+     * load inStream
+     * @param inStream 配置文件InputStream
+     */
     @Override
-    public void load(InputStream inStream) {
+    public void load(final InputStream inStream) {
         try {
             properties.load(inStream);
         } catch (IOException e) {
@@ -84,6 +114,10 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Conf
         }
     }
 
+    /**
+     * 根据配置构建出流程图BaseProcess的示例.
+     * @return Repository
+     */
     @Override
     public Repository<N> build() {
         synchronized (XmlConfigurator.class) {
@@ -111,7 +145,7 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Conf
         return xmlSchema;
     }
 
-    private void validate(XmlSchema xmlSchema) throws MundoException {
+    private void validate(final XmlSchema xmlSchema) throws MundoException {
         Set<ConstraintViolation<XmlSchema>> violationSet = validation.validate(xmlSchema);
         if (violationSet != null && violationSet.size() > 0) {
             String errorMsg = "";
@@ -126,7 +160,7 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Conf
         }
     }
 
-    private Repository<N> processSchema2Repository(List<XmlSchema.ProcessSchema> processList) {
+    private Repository<N> processSchema2Repository(final List<XmlSchema.ProcessSchema> processList) {
         Set<ProcessEngine<BaseProcessNode>> processEngineImpls = processList.stream().map(process -> {
             List<XmlSchema.ProcessExclusiveGatewaySchema> exclusiveGatewayList = process.getExclusiveGatewayList();
             List<XmlSchema.ProcessLinkSchema> processLinkSchemaList = process.getLinkList();
@@ -167,7 +201,7 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Conf
                     .version(process.getVersion())
                     .execute(new BaseExecutor() {
                         @Override
-                        public <T, E> T executeExpression(E expression, Map<String, Object> parameterMap) {
+                        public <T, E> T executeExpression(final E expression, final Map<String, Object> parameterMap) {
                             return super.executeExpression(expression, parameterMap);
                         }
                     }).directedValueGraph(directedValueGraph).build();
@@ -175,6 +209,5 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Conf
         }).collect(Collectors.toSet());
         return (Repository<N>) RepositoryBuilder.build(processEngineImpls);
     }
-
 
 }

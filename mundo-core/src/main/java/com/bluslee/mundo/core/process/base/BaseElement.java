@@ -3,23 +3,23 @@ package com.bluslee.mundo.core.process.base;
 import com.google.common.base.Objects;
 
 /**
+ * 流程中元素基类.
+ *
  * @author carl.che
- * @date 2021/11/2
- * @description BaseElement process中基础元素
  */
 public abstract class BaseElement {
 
     /**
-     * 元素id,一个流程图中唯一
+     * 元素id,一个流程图中唯一.
      */
-    protected String id;
+    private String id;
 
     /**
-     * 元素名称
+     * 元素名称.
      */
-    protected String name;
+    private String name;
 
-    public BaseElement(String id, String name) {
+    public BaseElement(final String id, final String name) {
         this.id = id;
         this.name = name;
     }
@@ -27,24 +27,50 @@ public abstract class BaseElement {
     public BaseElement() {
     }
 
+    /**
+     * 获取元素id.
+     *
+     * @return id
+     */
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    /**
+     * 设置元素id.
+     *
+     * @param id id
+     */
+    public void setId(final String id) {
         this.id = id;
     }
 
+    /**
+     * 获取元素的名称.
+     *
+     * @return 元素名称
+     */
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    /**
+     * 设置元素名称.
+     *
+     * @param name 设置的名称
+     */
+    public void setName(final String name) {
         this.name = name;
     }
 
+    /**
+     * equals方法，使用id作为判断.
+     *
+     * @param o 比较的对象
+     * @return true 相等，false 不相等
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -55,6 +81,11 @@ public abstract class BaseElement {
         return Objects.equal(id, that.id);
     }
 
+    /**
+     * 根据id生成hashcode.
+     *
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(id);

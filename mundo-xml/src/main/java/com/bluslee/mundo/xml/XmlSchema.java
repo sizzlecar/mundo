@@ -4,101 +4,114 @@ import com.bluslee.mundo.xml.base.BaseXmlSchema;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import org.hibernate.validator.constraints.Length;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 import java.util.List;
 import java.util.Objects;
 
 /**
+ * 解析XML配置文件对应的bean.
+ *
  * @author carl.che
- * @date 2021/10/29
- * @description XmlSchema 解析XML配置文件对应的bean
  */
 @XStreamAlias("mundo")
 public class XmlSchema {
 
     /**
-     * 多个流程定义
+     * 多个流程定义.
      */
     @XStreamImplicit(itemFieldName = "process")
     @Size(min = 1, max = 1000, message = "process最多配置{min}-{max}个流程")
     @Valid
-    protected List<ProcessSchema> processList;
+    private List<ProcessSchema> processList;
 
+    /**
+     * 根据processList判断是否相等.
+     *
+     * @param o 比较的对象
+     * @return true 相等，false 不相等
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         XmlSchema xmlSchema = (XmlSchema) o;
         return processList.equals(xmlSchema.processList);
     }
 
+    /**
+     * 根据processList生成hashcode.
+     *
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return Objects.hash(processList);
     }
 
     /**
-     * 流程xml定义
+     * 流程xml定义.
      */
-    public static class ProcessSchema extends BaseXmlSchema implements Cloneable{
+    public static class ProcessSchema extends BaseXmlSchema implements Cloneable {
 
-        public ProcessSchema(String id, String name) {
+        public ProcessSchema(final String id, final String name) {
             super(id, name);
         }
 
         public ProcessSchema() {
         }
 
-        /**
-         * 版本号
-         */
-        @XStreamAsAttribute
-        protected Integer version = 0;
-
         @XStreamImplicit(itemFieldName = "start")
         @Size(min = 1, max = 1000, message = "开始节点数量只能在{min}-{max}之间")
         @NotNull(message = "开始节点不能为空")
-        protected List<ProcessStartNodeSchema> startList;
+        private List<ProcessStartNodeSchema> startList;
 
         /**
-         * 流程节点集合
+         * 流程节点集合.
          */
         @XStreamImplicit(itemFieldName = "activity")
         @Size(min = 1, max = 1000, message = "流程节点数量只能在{min}-{max}之间")
         @NotNull(message = "流程节点不能为空")
-        protected List<ProcessNodeSchema> activityList;
+        private List<ProcessNodeSchema> activityList;
 
         /**
-         * 排他网关节点集合
+         * 排他网关节点集合.
          */
         @XStreamImplicit(itemFieldName = "exclusiveGateway")
         @Size(min = 1, max = 1000, message = "节点数量只能在{min}-{max}之间")
-        protected List<ProcessExclusiveGatewaySchema> exclusiveGatewayList;
+        private List<ProcessExclusiveGatewaySchema> exclusiveGatewayList;
 
         /**
-         * 流程link集合
+         * 流程link集合.
          */
         @XStreamImplicit(itemFieldName = "link")
         @Size(min = 1, max = 1000, message = "流程link数量只能在{min}-{max}之间")
         @NotNull(message = "流程link不能为空")
-        protected List<ProcessLinkSchema> linkList;
+        private List<ProcessLinkSchema> linkList;
 
         @XStreamImplicit(itemFieldName = "end")
         @Size(min = 1, max = 1000, message = "结束节点数量只能在{min}-{max}之间")
         @NotNull(message = "结束节点不能为空")
-        protected List<ProcessEndNodeSchema> endList;
+        private List<ProcessEndNodeSchema> endList;
 
+        /**
+         * 版本号.
+         */
+        @XStreamAsAttribute
+        private Integer version = 0;
 
         public List<ProcessNodeSchema> getActivityList() {
             return activityList;
         }
 
-        public void setActivityList(List<ProcessNodeSchema> activityList) {
+        public void setActivityList(final List<ProcessNodeSchema> activityList) {
             this.activityList = activityList;
         }
 
@@ -106,7 +119,7 @@ public class XmlSchema {
             return exclusiveGatewayList;
         }
 
-        public void setExclusiveGatewayList(List<ProcessExclusiveGatewaySchema> exclusiveGatewayList) {
+        public void setExclusiveGatewayList(final List<ProcessExclusiveGatewaySchema> exclusiveGatewayList) {
             this.exclusiveGatewayList = exclusiveGatewayList;
         }
 
@@ -114,7 +127,7 @@ public class XmlSchema {
             return linkList;
         }
 
-        public void setLinkList(List<ProcessLinkSchema> linkList) {
+        public void setLinkList(final List<ProcessLinkSchema> linkList) {
             this.linkList = linkList;
         }
 
@@ -122,7 +135,7 @@ public class XmlSchema {
             return startList;
         }
 
-        public void setStartList(List<ProcessStartNodeSchema> startList) {
+        public void setStartList(final List<ProcessStartNodeSchema> startList) {
             this.startList = startList;
         }
 
@@ -130,7 +143,7 @@ public class XmlSchema {
             return endList;
         }
 
-        public void setEndList(List<ProcessEndNodeSchema> endList) {
+        public void setEndList(final List<ProcessEndNodeSchema> endList) {
             this.endList = endList;
         }
 
@@ -138,23 +151,18 @@ public class XmlSchema {
             return version;
         }
 
-        public void setVersion(Integer version) {
+        public void setVersion(final Integer version) {
             this.version = version;
         }
 
         @Override
-        public ProcessSchema clone() {
-            try {
-                return (ProcessSchema) super.clone();
-            } catch (CloneNotSupportedException e) {
-                throw new AssertionError();
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
             }
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             ProcessSchema that = (ProcessSchema) o;
             return Objects.equals(version, that.version) && Objects.equals(startList, that.startList) && Objects.equals(activityList, that.activityList) && Objects.equals(exclusiveGatewayList, that.exclusiveGatewayList) && Objects.equals(linkList, that.linkList) && Objects.equals(endList, that.endList);
         }
@@ -164,14 +172,13 @@ public class XmlSchema {
             return Objects.hash(version, startList, activityList, exclusiveGatewayList, linkList, endList);
         }
 
-
     }
 
     /**
-     * 开始节点bean
+     * 开始节点bean.
      */
     public static class ProcessStartNodeSchema extends BaseXmlSchema {
-        public ProcessStartNodeSchema(String id, String name) {
+        public ProcessStartNodeSchema(final String id, final String name) {
             super(id, name);
         }
 
@@ -180,10 +187,10 @@ public class XmlSchema {
     }
 
     /**
-     * 流程节点bean
+     * 流程节点bean.
      */
     public static class ProcessNodeSchema extends BaseXmlSchema {
-        public ProcessNodeSchema(String id, String name) {
+        public ProcessNodeSchema(final String id, final String name) {
             super(id, name);
         }
 
@@ -192,10 +199,10 @@ public class XmlSchema {
     }
 
     /**
-     * 流程网关节点bean
+     * 流程网关节点bean.
      */
     public static class ProcessExclusiveGatewaySchema extends BaseXmlSchema {
-        public ProcessExclusiveGatewaySchema(String id, String name) {
+        public ProcessExclusiveGatewaySchema(final String id, final String name) {
             super(id, name);
         }
 
@@ -204,44 +211,44 @@ public class XmlSchema {
     }
 
     /**
-     * 流程link bean
+     * 流程link bean.
      */
     public static class ProcessLinkSchema extends BaseXmlSchema {
 
         /**
-         * from node id
+         * from node id.
          */
         @XStreamAsAttribute
         @NotBlank(message = "sourceId不能为空")
         @Length(max = 100, message = "sourceId长度不能超过{max}")
-        protected String sourceId;
+        private String sourceId;
 
         /**
-         * to node id
+         * to node id.
          */
         @XStreamAsAttribute
         @NotBlank(message = "targetId不能为空")
         @Length(max = 100, message = "targetId长度不能超过{max}")
-        protected String targetId;
+        private String targetId;
 
         /**
-         * 表达式
+         * 表达式.
          */
         @Length(max = 200, message = "表达式长度不能超过{max}")
-        protected String conditionExpression;
+        private String conditionExpression;
 
-        public ProcessLinkSchema(String id, String name, String sourceId, String targetId) {
+        public ProcessLinkSchema(final String id, final String name, final String sourceId, final String targetId) {
             super(id, name);
             this.sourceId = sourceId;
             this.targetId = targetId;
         }
 
-        public ProcessLinkSchema(String sourceId, String targetId) {
+        public ProcessLinkSchema(final String sourceId, final String targetId) {
             this.sourceId = sourceId;
             this.targetId = targetId;
         }
 
-        public ProcessLinkSchema(String id, String name, String sourceId, String targetId, String conditionExpression) {
+        public ProcessLinkSchema(final String id, final String name, final String sourceId, final String targetId, final String conditionExpression) {
             super(id, name);
             this.sourceId = sourceId;
             this.targetId = targetId;
@@ -255,7 +262,7 @@ public class XmlSchema {
             return sourceId;
         }
 
-        public void setSourceId(String sourceId) {
+        public void setSourceId(final String sourceId) {
             this.sourceId = sourceId;
         }
 
@@ -263,7 +270,7 @@ public class XmlSchema {
             return targetId;
         }
 
-        public void setTargetId(String targetId) {
+        public void setTargetId(final String targetId) {
             this.targetId = targetId;
         }
 
@@ -271,15 +278,21 @@ public class XmlSchema {
             return conditionExpression;
         }
 
-        public void setConditionExpression(String conditionExpression) {
+        public void setConditionExpression(final String conditionExpression) {
             this.conditionExpression = conditionExpression;
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            if (!super.equals(o)) return false;
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            if (!super.equals(o)) {
+                return false;
+            }
             ProcessLinkSchema that = (ProcessLinkSchema) o;
             return sourceId.equals(that.sourceId) && targetId.equals(that.targetId) && Objects.equals(conditionExpression, that.conditionExpression);
         }
@@ -291,10 +304,10 @@ public class XmlSchema {
     }
 
     /**
-     * 结束节点bean
+     * 结束节点bean.
      */
     public static class ProcessEndNodeSchema extends BaseXmlSchema {
-        public ProcessEndNodeSchema(String id, String name) {
+        public ProcessEndNodeSchema(final String id, final String name) {
             super(id, name);
         }
 
@@ -302,12 +315,11 @@ public class XmlSchema {
         }
     }
 
-
     public List<ProcessSchema> getProcessList() {
         return processList;
     }
 
-    public void setProcessList(List<ProcessSchema> processList) {
+    public void setProcessList(final List<ProcessSchema> processList) {
         this.processList = processList;
     }
 }

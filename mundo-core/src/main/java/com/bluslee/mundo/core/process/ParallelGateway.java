@@ -6,18 +6,17 @@ import com.bluslee.mundo.core.process.base.BaseParallelGateway;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
 import com.bluslee.mundo.core.process.graph.MutableValueGraph;
-
 import java.util.Map;
 import java.util.Set;
 
 /**
+ * 并行网关.
+ *
  * @author carl.che
- * @date 2021/11/5
- * @description ParallelGateway
  */
 public class ParallelGateway extends BaseParallelGateway {
 
-    ParallelGateway(String id, String name) {
+    ParallelGateway(final String id, final String name) {
         super(id, name);
     }
 
@@ -25,7 +24,7 @@ public class ParallelGateway extends BaseParallelGateway {
     }
 
     @Override
-    public <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(MutableValueGraph<N, V> processGraph, Map<String, Object> parameterMap, Execute execute) {
+    public final <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(final MutableValueGraph<N, V> processGraph, final Map<String, Object> parameterMap, final Execute execute) {
         boolean contains = processGraph.nodes().contains(this);
         if (!contains) {
             throw new MundoException("current node is not in process");
@@ -36,6 +35,5 @@ public class ParallelGateway extends BaseParallelGateway {
         }
         return ProcessNodeWrap.parallel(successors);
     }
-
 
 }

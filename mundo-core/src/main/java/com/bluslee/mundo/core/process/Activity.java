@@ -6,22 +6,20 @@ import com.bluslee.mundo.core.process.base.BaseActivity;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
 import com.bluslee.mundo.core.process.graph.MutableValueGraph;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Optional;
 
-
 /**
+ * 流程基础元素 Activity.
+ *
  * @author carl.che
- * @date 2021/11/1
- * @description Activity
  */
 public class Activity extends BaseActivity {
 
-    Activity(String id, String name) {
+    Activity(final String id, final String name) {
         super(id, name);
     }
 
@@ -29,7 +27,7 @@ public class Activity extends BaseActivity {
     }
 
     @Override
-    public <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(MutableValueGraph<N, V> processGraph, Map<String, Object> parameterMap, Execute execute) {
+    public final <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(final MutableValueGraph<N, V> processGraph, final Map<String, Object> parameterMap, final Execute execute) {
         boolean contains = processGraph.nodes().contains(this);
         if (!contains) {
             throw new MundoException("当前节点不在指定图中");

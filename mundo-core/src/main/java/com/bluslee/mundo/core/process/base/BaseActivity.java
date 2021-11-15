@@ -1,13 +1,13 @@
 package com.bluslee.mundo.core.process.base;
 
 /**
+ * 流程图中基本节点类型:活动，类似于BPMN规范中的activity.
+ *
  * @author carl.che
- * @date 2021/11/1
- * @description BaseProcessActivity 流程图中基本节点类型 - 活动
  */
 public abstract class BaseActivity extends BaseProcessNode {
 
-    public BaseActivity(String id, String name) {
+    public BaseActivity(final String id, final String name) {
         super(id, name);
     }
 

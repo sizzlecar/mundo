@@ -69,14 +69,13 @@ public class XmlSchemaTest {
         XmlSchema.ProcessLinkSchema gateway2end =
                 new XmlSchema.ProcessLinkSchema("buyer-approve-gateway_end", "buyer-approve-gateway_end", processExclusiveGatewaySchema.getId(), end.getId(), "#approve == true");
         processSchema.setLinkList(Arrays.asList(start2supCreate, supCreate2submit, supSubmit2buyerApprove, buyerApprove2Gateway, gateway2supUpdate, supUpdate2buyerApprove, gateway2end));
-        XmlSchema.ProcessSchema processSchema1 = processSchema.clone();
+        XmlSchema.ProcessSchema processSchema1 = (XmlSchema.ProcessSchema) processSchema.clone();
         processSchema1.setVersion(1);
-        XmlSchema.ProcessSchema processSchema2 = processSchema.clone();
+        XmlSchema.ProcessSchema processSchema2 = (XmlSchema.ProcessSchema) processSchema.clone();
         processSchema2.setId("process-002");
         processSchema2.setName("简单流程2");
         xmlSchema.setProcessList(Arrays.asList(processSchema, processSchema1, processSchema2));
         return xmlSchema;
     }
-
 
 }

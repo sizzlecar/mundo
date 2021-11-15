@@ -3,11 +3,11 @@ package com.bluslee.mundo.core.process;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 
 /**
+ * BaseProcessNode builder.
+ *
  * @author carl.che
- * @date 2021/11/8
- * @description ProcessNodeBuilder
  */
-public class ProcessElementBuilder<N extends BaseProcessNode> {
+public final class ProcessElementBuilder<N extends BaseProcessNode> {
 
     private final String id;
 
@@ -19,30 +19,30 @@ public class ProcessElementBuilder<N extends BaseProcessNode> {
 
     private N target;
 
-    private ProcessElementBuilder(String id) {
+    private ProcessElementBuilder(final String id) {
         this.id = id;
     }
 
-    public static <N extends BaseProcessNode> ProcessElementBuilder<N> instance(String id) {
+    public static <N extends BaseProcessNode> ProcessElementBuilder<N> instance(final String id) {
         return new ProcessElementBuilder<>(id);
     }
 
-    public ProcessElementBuilder<N> name(String name) {
+    public ProcessElementBuilder<N> name(final String name) {
         this.name = name;
         return this;
     }
 
-    public ProcessElementBuilder<N> conditionExpression(String conditionExpression) {
+    public ProcessElementBuilder<N> conditionExpression(final String conditionExpression) {
         this.conditionExpression = conditionExpression;
         return this;
     }
 
-    public ProcessElementBuilder<N> source(N source) {
+    public ProcessElementBuilder<N> source(final N source) {
         this.source = source;
         return this;
     }
 
-    public ProcessElementBuilder<N> target(N target) {
+    public ProcessElementBuilder<N> target(final N target) {
         this.target = target;
         return this;
     }
@@ -66,6 +66,5 @@ public class ProcessElementBuilder<N extends BaseProcessNode> {
     public StartNode startNode() {
         return new StartNode(id, name);
     }
-
 
 }

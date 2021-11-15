@@ -3,14 +3,12 @@ package com.bluslee.mundo.core.test.expression;
 import com.bluslee.mundo.core.expression.BaseExecutor;
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *
  * @author carl.che
- * @date 2021/11/2
- * @description OgnlTest
  */
 public class BaseExecutorTest {
 

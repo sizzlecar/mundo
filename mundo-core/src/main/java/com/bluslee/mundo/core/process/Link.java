@@ -4,17 +4,17 @@ import com.bluslee.mundo.core.process.base.BaseLink;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 
 /**
+ * 流程Link类型.
+ *
  * @author carl.che
- * @date 2021/11/1
- * @description Link
  */
 public class Link extends BaseLink {
 
-    Link(String id, String name, BaseProcessNode source, BaseProcessNode target, String conditionExpression) {
+    Link(final String id, final String name, final BaseProcessNode source, final BaseProcessNode target, final String conditionExpression) {
         super(id, name, source, target, conditionExpression);
     }
 
-    Link(BaseProcessNode source, BaseProcessNode target, String conditionExpression) {
+    Link(final BaseProcessNode source, final BaseProcessNode target, final String conditionExpression) {
         super(source, target, conditionExpression);
     }
 
