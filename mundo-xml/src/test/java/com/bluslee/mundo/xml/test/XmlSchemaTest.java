@@ -4,15 +4,13 @@ import com.bluslee.mundo.xml.XmlSchema;
 import com.thoughtworks.xstream.XStream;
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 
 /**
+ * XmlSchemaTest.
  * @author carl.che
- * @date 2021/10/30
- * @description XmlSchemaTest
  */
 public class XmlSchemaTest {
 
@@ -21,9 +19,7 @@ public class XmlSchemaTest {
         InputStream mundoXmlStream = XmlSchemaTest.class.getResourceAsStream("/mundo.cfg.xml");
         XStream xStream = new XStream();
         xStream.processAnnotations(XmlSchema.class);
-        xStream.allowTypesByWildcard(new String[]{
-                "com.bluslee.mundo.**"
-        });
+        xStream.allowTypesByWildcard(new String[]{"com.bluslee.mundo.**"});
         XmlSchema xmlSchema = (XmlSchema) xStream.fromXML(mundoXmlStream);
         XmlSchema expectXmlSchema = expectXmlSchema();
         Assert.assertEquals(expectXmlSchema.getProcessList().size(), xmlSchema.getProcessList().size());
@@ -41,7 +37,7 @@ public class XmlSchemaTest {
     }
 
     public XmlSchema expectXmlSchema() {
-        XmlSchema xmlSchema = new XmlSchema();
+        final XmlSchema xmlSchema = new XmlSchema();
         XmlSchema.ProcessSchema processSchema = new XmlSchema.ProcessSchema();
         processSchema.setId("process-001");
         processSchema.setVersion(0);
@@ -60,7 +56,8 @@ public class XmlSchemaTest {
         XmlSchema.ProcessLinkSchema start2supCreate = new XmlSchema.ProcessLinkSchema("START_SUP_CREATE", "START_SUP_CREATE", start.getId(), supCreate.getId());
         XmlSchema.ProcessLinkSchema supCreate2submit = new XmlSchema.ProcessLinkSchema("SUP_CREATE_SUP_SUBMIT", "SUP_CREATE_SUP_SUBMIT", supCreate.getId(), supSubmit.getId());
         XmlSchema.ProcessLinkSchema supSubmit2buyerApprove = new XmlSchema.ProcessLinkSchema("SUP_SUBMIT_BUYER_APPROVE", "SUP_SUBMIT_BUYER_APPROVE", supSubmit.getId(), buyerApprove.getId());
-        XmlSchema.ProcessLinkSchema buyerApprove2Gateway = new XmlSchema.ProcessLinkSchema("BUYER_APPROVE_buyer-approve-gateway", "BUYER_APPROVE_buyer-approve-gateway", buyerApprove.getId(), processExclusiveGatewaySchema.getId());
+        XmlSchema.ProcessLinkSchema buyerApprove2Gateway = new XmlSchema.ProcessLinkSchema("BUYER_APPROVE_buyer-approve-gateway", "BUYER_APPROVE_buyer-approve-gateway",
+                buyerApprove.getId(), processExclusiveGatewaySchema.getId());
         XmlSchema.ProcessLinkSchema gateway2supUpdate =
                 new XmlSchema.ProcessLinkSchema("buyer-approve-gateway_SUP_UPDATE", "buyer-approve-gateway_SUP_UPDATE", processExclusiveGatewaySchema.getId(), supUpdate.getId(), "#approve == false");
         XmlSchema.ProcessLinkSchema supUpdate2buyerApprove =

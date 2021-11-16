@@ -11,32 +11,36 @@ import com.thoughtworks.xstream.XStream;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.io.InputStream;
-import java.util.*;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
+ * XmlConfiguratorImplTest.
  * @author carl.che
- * @date 2021/11/8
- * @description XmlConfiguratorImplTest
  */
 public class XmlConfiguratorImplTest {
 
     private final XStream xStream = new XStream();
-    private final BaseXmlParser baseXmlParser = new BaseXmlParser(xStream) {};
+
+    private final BaseXmlParser baseXmlParser = new BaseXmlParser(xStream) { };
+
     private final XmlConfigurator<BaseProcessNode> xmlConfigurator = new XmlConfiguratorImpl(baseXmlParser);
-    private final Map<String, List<Integer>> expectProcess = new HashMap<String, List<Integer>>(){{
-        put("process-001", Arrays.asList(0, 1));
-        put("process-002", Collections.singletonList(0));
-    }};
+
+    private final Map<String, List<Integer>> expectProcess = new HashMap<String, List<Integer>>() {{
+            put("process-001", Arrays.asList(0, 1));
+            put("process-002", Collections.singletonList(0));
+        }};
 
     @Test
-    public void XmlConfiguratorImplBuildTest(){
+    public void xmlConfiguratorImplBuildTest() {
         InputStream mundoXmlStream = XmlSchemaTest.class.getResourceAsStream("/mundo.cfg.xml");
         xStream.processAnnotations(XmlSchema.class);
-        xStream.allowTypesByWildcard(new String[] {
-                "com.bluslee.mundo.**"
-        });
+        xStream.allowTypesByWildcard(new String[] {"com.bluslee.mundo.**"});
         Repository<BaseProcessNode> repository = xmlConfigurator.inputStream(mundoXmlStream).build();
         Set<ProcessEngine<BaseProcessNode>> processes = repository.processes();
         //mundo.cfg.xml 配置了3个流程

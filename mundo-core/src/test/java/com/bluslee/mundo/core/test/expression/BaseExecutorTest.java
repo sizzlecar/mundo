@@ -7,13 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * BaseExecutorTest.
  * @author carl.che
  */
 public class BaseExecutorTest {
 
-    private BaseExecutor baseExecutor = new BaseExecutor() {
-    };
+    private final BaseExecutor baseExecutor = new BaseExecutor() { };
 
     @Test
     public void executeExpressionTest() {

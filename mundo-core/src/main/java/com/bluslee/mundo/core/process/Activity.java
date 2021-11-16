@@ -39,26 +39,15 @@ public class Activity extends BaseActivity {
         List<N> singleList = new ArrayList<>(successors);
         N nextNode = singleList.get(0);
         Optional<V> expressionOpt = processGraph.edgeValue((N) this, nextNode);
-        if (expressionOpt.isPresent() && expressionOpt.get().toString().trim().length() > 1) {
+        boolean expressFlag = expressionOpt.isPresent() && expressionOpt.get().toString().trim().length() > 1;
+        boolean baseActivityFlag = nextNode instanceof BaseActivity;
+        if (expressFlag) {
             //有条件
             boolean flag = execute.executeExpression(expressionOpt.get(), parameterMap);
-            if (flag) {
-                if (nextNode instanceof BaseActivity) {
-                    //下一个节点是活动节点直接返回
-                    return ProcessNodeWrap.unParallel(nextNode);
-                } else {
-                    return nextNode.next(processGraph, parameterMap, execute);
-                }
-            } else {
-                return nextNode.next(processGraph, parameterMap, execute);
-            }
-        } else {
-            if (nextNode instanceof BaseActivity) {
-                //下一个节点是活动节点直接返回
-                return ProcessNodeWrap.unParallel(nextNode);
-            } else {
+            if (!flag) {
                 return nextNode.next(processGraph, parameterMap, execute);
             }
         }
+        return baseActivityFlag ? ProcessNodeWrap.unParallel(nextNode) : nextNode.next(processGraph, parameterMap, execute);
     }
 }

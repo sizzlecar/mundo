@@ -56,17 +56,24 @@ public class XmlSchema {
         return Objects.hash(processList);
     }
 
+    public List<ProcessSchema> getProcessList() {
+        return processList;
+    }
+
+    public void setProcessList(final List<ProcessSchema> processList) {
+        this.processList = processList;
+    }
+
     /**
      * 流程xml定义.
      */
     public static class ProcessSchema extends BaseXmlSchema implements Cloneable {
 
-        public ProcessSchema(final String id, final String name) {
-            super(id, name);
-        }
-
-        public ProcessSchema() {
-        }
+        /**
+         * 版本号.
+         */
+        @XStreamAsAttribute
+        private Integer version = 0;
 
         @XStreamImplicit(itemFieldName = "start")
         @Size(min = 1, max = 1000, message = "开始节点数量只能在{min}-{max}之间")
@@ -101,11 +108,12 @@ public class XmlSchema {
         @NotNull(message = "结束节点不能为空")
         private List<ProcessEndNodeSchema> endList;
 
-        /**
-         * 版本号.
-         */
-        @XStreamAsAttribute
-        private Integer version = 0;
+        public ProcessSchema(final String id, final String name) {
+            super(id, name);
+        }
+
+        public ProcessSchema() {
+        }
 
         public List<ProcessNodeSchema> getActivityList() {
             return activityList;
@@ -164,7 +172,12 @@ public class XmlSchema {
                 return false;
             }
             ProcessSchema that = (ProcessSchema) o;
-            return Objects.equals(version, that.version) && Objects.equals(startList, that.startList) && Objects.equals(activityList, that.activityList) && Objects.equals(exclusiveGatewayList, that.exclusiveGatewayList) && Objects.equals(linkList, that.linkList) && Objects.equals(endList, that.endList);
+            return Objects.equals(version, that.version)
+                    && Objects.equals(startList, that.startList)
+                    && Objects.equals(activityList, that.activityList)
+                    && Objects.equals(exclusiveGatewayList, that.exclusiveGatewayList)
+                    && Objects.equals(linkList, that.linkList)
+                    && Objects.equals(endList, that.endList);
         }
 
         @Override
@@ -315,11 +328,4 @@ public class XmlSchema {
         }
     }
 
-    public List<ProcessSchema> getProcessList() {
-        return processList;
-    }
-
-    public void setProcessList(final List<ProcessSchema> processList) {
-        this.processList = processList;
-    }
 }
