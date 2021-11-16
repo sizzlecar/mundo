@@ -16,6 +16,12 @@
 
     <name>mundo</name>
     <url>http://www.bluslee.com</url>
+    <scm>
+        <connection>scm:git:https://github.com/sizzlecar/mundo.git</connection>
+        <developerConnection>scm:git:https://github.com/sizzlecar/mundo.git</developerConnection>
+        <url>https://github.com/sizzlecar/mundo.git</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
