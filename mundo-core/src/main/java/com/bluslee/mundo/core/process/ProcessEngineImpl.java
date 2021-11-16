@@ -17,6 +17,11 @@ public class ProcessEngineImpl<N extends BaseProcessNode, V> extends BaseProcess
         super(id, execute, baseDirectedValueGraph);
     }
 
+    public ProcessEngineImpl(final Execute execute, final BaseDirectedValueGraph<N, V> baseDirectedValueGraph,
+                             final String id, final Integer version) {
+        super(execute, baseDirectedValueGraph, id, version);
+    }
+
     @Override
     public final boolean equals(final Object o) {
         return super.equals(o);

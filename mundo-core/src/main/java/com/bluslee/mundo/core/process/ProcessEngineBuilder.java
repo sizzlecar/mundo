@@ -43,6 +43,6 @@ public final class ProcessEngineBuilder<N extends BaseProcessNode, V> {
     }
 
     public ProcessEngineImpl<N, V> build() {
-        return new ProcessEngineImpl<>(id, execute, baseDirectedValueGraph);
+        return new ProcessEngineImpl<>(execute, baseDirectedValueGraph, id, version);
     }
 }

@@ -8,9 +8,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ * BaseBootstrapTest.
  * @author carl.che
  * @date 2021/11/9
- * @description BaseBootstrapTest
  */
 public class BaseBootstrapTest {
 

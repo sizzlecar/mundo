@@ -8,11 +8,11 @@ import com.bluslee.mundo.xml.base.BaseXmlParser;
 import com.thoughtworks.xstream.XStream;
 
 /**
- * Bootstrap 默认实现
+ * Bootstrap 默认实现.
  *
  * @author carl.che
  */
-public class DefaultBootstrap implements Bootstrap<BaseProcessNode> {
+public final class DefaultBootstrap implements Bootstrap<BaseProcessNode> {
 
     private static volatile DefaultBootstrap bootstrap;
 

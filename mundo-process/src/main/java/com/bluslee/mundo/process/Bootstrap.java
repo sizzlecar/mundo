@@ -34,5 +34,4 @@ public interface Bootstrap<N extends BaseProcessNode> {
      */
     <T> Configurator<N> getConfigurator(Class<T> clazz);
 
-
 }

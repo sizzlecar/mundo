@@ -2,9 +2,11 @@ package com.bluslee.mundo.xml.test;
 
 import com.bluslee.mundo.xml.XmlSchema;
 import com.thoughtworks.xstream.XStream;
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -15,7 +17,7 @@ import java.util.Collections;
 public class XmlSchemaTest {
 
     @Test
-    public void xml2BeanTest() {
+    public void xml2BeanTest() throws InvocationTargetException, IllegalAccessException {
         InputStream mundoXmlStream = XmlSchemaTest.class.getResourceAsStream("/mundo.cfg.xml");
         XStream xStream = new XStream();
         xStream.processAnnotations(XmlSchema.class);
@@ -36,7 +38,7 @@ public class XmlSchemaTest {
         }
     }
 
-    public XmlSchema expectXmlSchema() {
+    public XmlSchema expectXmlSchema() throws InvocationTargetException, IllegalAccessException {
         final XmlSchema xmlSchema = new XmlSchema();
         XmlSchema.ProcessSchema processSchema = new XmlSchema.ProcessSchema();
         processSchema.setId("process-001");
@@ -66,9 +68,11 @@ public class XmlSchemaTest {
         XmlSchema.ProcessLinkSchema gateway2end =
                 new XmlSchema.ProcessLinkSchema("buyer-approve-gateway_end", "buyer-approve-gateway_end", processExclusiveGatewaySchema.getId(), end.getId(), "#approve == true");
         processSchema.setLinkList(Arrays.asList(start2supCreate, supCreate2submit, supSubmit2buyerApprove, buyerApprove2Gateway, gateway2supUpdate, supUpdate2buyerApprove, gateway2end));
-        XmlSchema.ProcessSchema processSchema1 = (XmlSchema.ProcessSchema) processSchema.clone();
+        XmlSchema.ProcessSchema processSchema1 = new XmlSchema.ProcessSchema();
+        XmlSchema.ProcessSchema processSchema2 = new XmlSchema.ProcessSchema();
+        BeanUtils.copyProperties(processSchema1, processSchema);
         processSchema1.setVersion(1);
-        XmlSchema.ProcessSchema processSchema2 = (XmlSchema.ProcessSchema) processSchema.clone();
+        BeanUtils.copyProperties(processSchema2, processSchema);
         processSchema2.setId("process-002");
         processSchema2.setName("简单流程2");
         xmlSchema.setProcessList(Arrays.asList(processSchema, processSchema1, processSchema2));

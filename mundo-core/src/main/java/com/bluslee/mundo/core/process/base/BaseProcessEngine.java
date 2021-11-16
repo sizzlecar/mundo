@@ -34,6 +34,14 @@ public abstract class BaseProcessEngine<N extends BaseProcessNode, V> implements
         this.version = 0;
     }
 
+    public BaseProcessEngine(final Execute execute, final BaseDirectedValueGraph<N, V> baseDirectedValueGraph,
+                             final String id, final Integer version) {
+        this.execute = execute;
+        this.baseDirectedValueGraph = baseDirectedValueGraph;
+        this.id = id;
+        this.version = version;
+    }
+
     /**
      * 通过流程元素id，获取对应的节点对象.
      *
