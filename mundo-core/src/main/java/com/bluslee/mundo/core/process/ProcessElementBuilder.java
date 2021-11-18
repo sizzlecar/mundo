@@ -59,6 +59,10 @@ public final class ProcessElementBuilder<N extends BaseProcessNode> {
         return new ExclusiveGateway(id, name);
     }
 
+    public ParallelGateway parallelGateway() {
+        return new ParallelGateway(id, name);
+    }
+
     public Link link() {
         return new Link(id, name, source, target, conditionExpression);
     }
