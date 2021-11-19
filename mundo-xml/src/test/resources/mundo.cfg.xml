@@ -64,21 +64,26 @@
 
   <process id="parallel-process-1" name="并行流程" version="0">
     <start id="START" name="开始"/>
-    <activity id="SUP_CREATE" name="供应商创建"/>
-    <activity id="SUP_SUBMIT" name="供应商提交"/>
+    <activity id="SUP_CREATE" name="供应商新建"/>
     <activity id="BUYER_APPROVE" name="采购审批"/>
     <activity id="SUP_UPDATE" name="供应商修改"/>
     <activity id="BUYER_MANAGEMENT_APPROVE" name="采购经理审批"/>
-    <activity id="BUYER_VP_APPROVE" name="采购副总审批"/>
-    <exclusiveGateway id="buyer-approve-gateway" name="采购审批"/>
-    <link id="START_SUP_CREATE" name="START_SUP_CREATE" sourceId="START" targetId="SUP_CREATE"/>
-    <link id="SUP_CREATE_SUP_SUBMIT" name="SUP_CREATE_SUP_SUBMIT" sourceId="SUP_CREATE" targetId="SUP_SUBMIT"/>
-    <link id="SUP_SUBMIT_BUYER_APPROVE" name="SUP_SUBMIT_BUYER_APPROVE" sourceId="SUP_SUBMIT" targetId="BUYER_APPROVE"/>
-    <link id="BUYER_APPROVE_buyer-approve-gateway" name="BUYER_APPROVE_buyer-approve-gateway" sourceId="BUYER_APPROVE" targetId="buyer-approve-gateway"/>
-    <link id="buyer-approve-gateway_SUP_UPDATE" name="buyer-approve-gateway_SUP_UPDATE" sourceId="buyer-approve-gateway" targetId="SUP_UPDATE">
+    <activity id="BUYER_DIRECTOR_APPROVE" name="采购总监审批"/>
+    <exclusiveGateway id="BUYER-APPROVE-GATEWAY" name="采购审批网关"/>
+    <parallelGateway id="PARALLEL-GATEWAY" name="并行审批网关"/>
+    <link id="START->SUP_CREATE" name="START->SUP_CREATE" sourceId="START" targetId="SUP_CREATE"/>
+    <link id="SUP_CREATE->BUYER_APPROVE" name="SUP_CREATE->BUYER_APPROVE" sourceId="SUP_CREATE" targetId="BUYER_APPROVE"/>
+    <link id="BUYER_APPROVE->BUYER-APPROVE-GATEWAY" name="BUYER_APPROVE->BUYER-APPROVE-GATEWAY" sourceId="BUYER_APPROVE" targetId="BUYER-APPROVE-GATEWAY"/>
+    <link id="BUYER-APPROVE-GATEWAY->SUP_UPDATE" name="BUYER-APPROVE-GATEWAY->SUP_UPDATE" sourceId="BUYER-APPROVE-GATEWAY" targetId="SUP_UPDATE">
       <conditionExpression>#approve == false</conditionExpression>
     </link>
-    <link id="SUP_UPDATE_BUYER_APPROVE" name="SUP_UPDATE_BUYER_APPROVE" sourceId="SUP_UPDATE" targetId="BUYER_APPROVE"/>
+    <link id="BUYER-APPROVE->PARALLEL-GATEWAY" name="BUYER-APPROVE->PARALLEL-GATEWAY" sourceId="BUYER-APPROVE-GATEWAY" targetId="PARALLEL-GATEWAY">
+      <conditionExpression>#approve == true</conditionExpression>
+    </link>
+    <link id="PARALLEL-GATEWAY->BUYER_MANAGEMENT_APPROVE" name="PARALLEL-GATEWAY->BUYER_MANAGEMENT_APPROVE" sourceId="PARALLEL-GATEWAY" targetId="BUYER_MANAGEMENT_APPROVE"/>
+    <link id="PARALLEL-GATEWAY->BUYER_DIRECTOR_APPROVE" name="PARALLEL-GATEWAY->BUYER_DIRECTOR_APPROVE" sourceId="PARALLEL-GATEWAY" targetId="BUYER_DIRECTOR_APPROVE"/>
+
+
     <link id="buyer-approve-gateway_end" name="buyer-approve-gateway_end" sourceId="buyer-approve-gateway" targetId="end">
       <conditionExpression>#approve == true</conditionExpression>
     </link>
