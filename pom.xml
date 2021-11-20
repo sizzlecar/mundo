@@ -38,7 +38,8 @@
         <jakarta.el.version>4.0.0</jakarta.el.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
-        <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <dom4j.version>2.1.3</dom4j.version>
+        <jaxen.version>1.2.0</jaxen.version>
     </properties>
 
     <dependencyManagement>
@@ -113,9 +114,16 @@
             </dependency>
 
             <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>${commons-beanutils.version}</version>
+                <groupId>org.dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>${jaxen.version}</version>
                 <scope>test</scope>
             </dependency>
 

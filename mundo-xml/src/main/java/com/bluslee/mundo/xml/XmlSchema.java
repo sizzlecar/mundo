@@ -67,7 +67,7 @@ public class XmlSchema {
     /**
      * 流程xml定义.
      */
-    public static class ProcessSchema extends BaseXmlSchema implements Cloneable {
+    public static class ProcessSchema extends BaseXmlSchema {
 
         /**
          * 版本号.
@@ -76,7 +76,7 @@ public class XmlSchema {
         private Integer version = 0;
 
         @XStreamImplicit(itemFieldName = "start")
-        @Size(min = 1, max = 1000, message = "开始节点数量只能在{min}-{max}之间")
+        @Size(min = 1, max = 1000, message = "start开始节点数量只能在{min}-{max}之间")
         @NotNull(message = "开始节点不能为空")
         private List<ProcessStartNodeSchema> startList;
 
@@ -84,7 +84,7 @@ public class XmlSchema {
          * 流程节点集合.
          */
         @XStreamImplicit(itemFieldName = "activity")
-        @Size(min = 1, max = 1000, message = "流程节点数量只能在{min}-{max}之间")
+        @Size(min = 1, max = 1000, message = "activity流程节点数量只能在{min}-{max}之间")
         @NotNull(message = "流程节点不能为空")
         private List<ProcessNodeSchema> activityList;
 
@@ -92,19 +92,29 @@ public class XmlSchema {
          * 排他网关节点集合.
          */
         @XStreamImplicit(itemFieldName = "exclusiveGateway")
-        @Size(min = 1, max = 1000, message = "节点数量只能在{min}-{max}之间")
+        @Size(min = 1, max = 1000, message = "exclusiveGateway节点数量只能在{min}-{max}之间")
         private List<ProcessExclusiveGatewaySchema> exclusiveGatewayList;
+
+        /**
+         * 并行网关节点集合.
+         */
+        @XStreamImplicit(itemFieldName = "parallelGateway")
+        @Size(min = 1, max = 1000, message = "parallelGateway节点数量只能在{min}-{max}之间")
+        private List<ProcessParallelGatewaySchema> parallelGatewayList;
 
         /**
          * 流程link集合.
          */
         @XStreamImplicit(itemFieldName = "link")
-        @Size(min = 1, max = 1000, message = "流程link数量只能在{min}-{max}之间")
+        @Size(min = 1, max = 1000, message = "link数量只能在{min}-{max}之间")
         @NotNull(message = "流程link不能为空")
         private List<ProcessLinkSchema> linkList;
 
+        /**
+         * 结束节点集合.
+         */
         @XStreamImplicit(itemFieldName = "end")
-        @Size(min = 1, max = 1000, message = "结束节点数量只能在{min}-{max}之间")
+        @Size(min = 1, max = 1000, message = "end节点数量只能在{min}-{max}之间")
         @NotNull(message = "结束节点不能为空")
         private List<ProcessEndNodeSchema> endList;
 
@@ -129,6 +139,14 @@ public class XmlSchema {
 
         public void setExclusiveGatewayList(final List<ProcessExclusiveGatewaySchema> exclusiveGatewayList) {
             this.exclusiveGatewayList = exclusiveGatewayList;
+        }
+
+        public List<ProcessParallelGatewaySchema> getParallelGatewayList() {
+            return parallelGatewayList;
+        }
+
+        public void setParallelGatewayList(final List<ProcessParallelGatewaySchema> parallelGatewayList) {
+            this.parallelGatewayList = parallelGatewayList;
         }
 
         public List<ProcessLinkSchema> getLinkList() {
@@ -212,7 +230,7 @@ public class XmlSchema {
     }
 
     /**
-     * 流程网关节点bean.
+     * 流程排他网关节点bean.
      */
     public static class ProcessExclusiveGatewaySchema extends BaseXmlSchema {
         public ProcessExclusiveGatewaySchema(final String id, final String name) {
@@ -220,6 +238,18 @@ public class XmlSchema {
         }
 
         public ProcessExclusiveGatewaySchema() {
+        }
+    }
+
+    /**
+     * 流程并行网关节点bean.
+     */
+    public static class ProcessParallelGatewaySchema extends BaseXmlSchema {
+        public ProcessParallelGatewaySchema(final String id, final String name) {
+            super(id, name);
+        }
+
+        public ProcessParallelGatewaySchema() {
         }
     }
 
