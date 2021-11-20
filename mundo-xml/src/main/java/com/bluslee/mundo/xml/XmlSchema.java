@@ -67,7 +67,7 @@ public class XmlSchema {
     /**
      * 流程xml定义.
      */
-    public static class ProcessSchema extends BaseXmlSchema implements Cloneable {
+    public static class ProcessSchema extends BaseXmlSchema {
 
         /**
          * 版本号.
@@ -110,6 +110,9 @@ public class XmlSchema {
         @NotNull(message = "流程link不能为空")
         private List<ProcessLinkSchema> linkList;
 
+        /**
+         * 结束节点集合.
+         */
         @XStreamImplicit(itemFieldName = "end")
         @Size(min = 1, max = 1000, message = "end节点数量只能在{min}-{max}之间")
         @NotNull(message = "结束节点不能为空")

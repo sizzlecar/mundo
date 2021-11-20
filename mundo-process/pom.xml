@@ -39,6 +39,18 @@
             <artifactId>hamcrest</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

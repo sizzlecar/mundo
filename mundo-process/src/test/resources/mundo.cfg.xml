@@ -1,5 +1,5 @@
 <mundo>
-  <process id="process-001" name="简单流程">
+  <process id="process-001" name="简单流程" version="0">
     <start id="START" name="开始"/>
     <activity id="SUP_CREATE" name="供应商创建"/>
     <activity id="SUP_SUBMIT" name="供应商提交"/>
@@ -13,10 +13,104 @@
     <link id="buyer-approve-gateway_SUP_UPDATE" name="buyer-approve-gateway_SUP_UPDATE" sourceId="buyer-approve-gateway" targetId="SUP_UPDATE">
       <conditionExpression>#approve == false</conditionExpression>
     </link>
-    <link id="SUP_UPDATE_BUYER_APPROVE" name="SUP_UPDATE_BUYER_APPROVE-approve-gateway" sourceId="SUP_UPDATE" targetId="BUYER_APPROVE"/>
+    <link id="SUP_UPDATE_BUYER_APPROVE" name="SUP_UPDATE_BUYER_APPROVE" sourceId="SUP_UPDATE" targetId="BUYER_APPROVE"/>
     <link id="buyer-approve-gateway_end" name="buyer-approve-gateway_end" sourceId="buyer-approve-gateway" targetId="end">
       <conditionExpression>#approve == true</conditionExpression>
     </link>
     <end id="end" name="审批结束"/>
+  </process>
+
+  <process id="process-001" name="简单流程" version="1">
+    <start id="START" name="开始"/>
+    <activity id="SUP_CREATE" name="供应商创建"/>
+    <activity id="SUP_SUBMIT" name="供应商提交"/>
+    <activity id="BUYER_APPROVE" name="采购审批"/>
+    <activity id="SUP_UPDATE" name="供应商修改"/>
+    <exclusiveGateway id="buyer-approve-gateway" name="采购审批"/>
+    <link id="START_SUP_CREATE" name="START_SUP_CREATE" sourceId="START" targetId="SUP_CREATE"/>
+    <link id="SUP_CREATE_SUP_SUBMIT" name="SUP_CREATE_SUP_SUBMIT" sourceId="SUP_CREATE" targetId="SUP_SUBMIT"/>
+    <link id="SUP_SUBMIT_BUYER_APPROVE" name="SUP_SUBMIT_BUYER_APPROVE" sourceId="SUP_SUBMIT" targetId="BUYER_APPROVE"/>
+    <link id="BUYER_APPROVE_buyer-approve-gateway" name="BUYER_APPROVE_buyer-approve-gateway" sourceId="BUYER_APPROVE" targetId="buyer-approve-gateway"/>
+    <link id="buyer-approve-gateway_SUP_UPDATE" name="buyer-approve-gateway_SUP_UPDATE" sourceId="buyer-approve-gateway" targetId="SUP_UPDATE">
+      <conditionExpression>#approve == false</conditionExpression>
+    </link>
+    <link id="SUP_UPDATE_BUYER_APPROVE" name="SUP_UPDATE_BUYER_APPROVE" sourceId="SUP_UPDATE" targetId="BUYER_APPROVE"/>
+    <link id="buyer-approve-gateway_end" name="buyer-approve-gateway_end" sourceId="buyer-approve-gateway" targetId="end">
+      <conditionExpression>#approve == true</conditionExpression>
+    </link>
+    <end id="end" name="审批结束"/>
+  </process>
+
+  <process id="process-002" name="简单流程2" version="0">
+    <start id="START" name="开始"/>
+    <activity id="SUP_CREATE" name="供应商创建"/>
+    <activity id="SUP_SUBMIT" name="供应商提交"/>
+    <activity id="BUYER_APPROVE" name="采购审批"/>
+    <activity id="SUP_UPDATE" name="供应商修改"/>
+    <exclusiveGateway id="buyer-approve-gateway" name="采购审批"/>
+    <link id="START_SUP_CREATE" name="START_SUP_CREATE" sourceId="START" targetId="SUP_CREATE"/>
+    <link id="SUP_CREATE_SUP_SUBMIT" name="SUP_CREATE_SUP_SUBMIT" sourceId="SUP_CREATE" targetId="SUP_SUBMIT"/>
+    <link id="SUP_SUBMIT_BUYER_APPROVE" name="SUP_SUBMIT_BUYER_APPROVE" sourceId="SUP_SUBMIT" targetId="BUYER_APPROVE"/>
+    <link id="BUYER_APPROVE_buyer-approve-gateway" name="BUYER_APPROVE_buyer-approve-gateway" sourceId="BUYER_APPROVE" targetId="buyer-approve-gateway"/>
+    <link id="buyer-approve-gateway_SUP_UPDATE" name="buyer-approve-gateway_SUP_UPDATE" sourceId="buyer-approve-gateway" targetId="SUP_UPDATE">
+      <conditionExpression>#approve == false</conditionExpression>
+    </link>
+    <link id="SUP_UPDATE_BUYER_APPROVE" name="SUP_UPDATE_BUYER_APPROVE" sourceId="SUP_UPDATE" targetId="BUYER_APPROVE"/>
+    <link id="buyer-approve-gateway_end" name="buyer-approve-gateway_end" sourceId="buyer-approve-gateway" targetId="end">
+      <conditionExpression>#approve == true</conditionExpression>
+    </link>
+    <end id="end" name="审批结束"/>
+  </process>
+
+  <process id="parallel-process-1" name="并行流程" version="0">
+    <start id="START" name="开始"/>
+    <activity id="SUP_CREATE" name="供应商新建"/>
+    <activity id="BUYER_APPROVE" name="采购审批"/>
+    <activity id="SUP_UPDATE" name="供应商修改"/>
+    <activity id="BUYER_MANAGEMENT_APPROVE" name="采购经理审批"/>
+    <activity id="BUYER_DIRECTOR_APPROVE" name="采购总监审批"/>
+    <activity id="BUYER_MANAGEMENT_BUYER_UPDATE" name="总监驳回采购修改"/>
+    <activity id="BUYER_DIRECTOR_BUYER_UPDATE" name="经理驳回采购修改"/>
+    <activity id="MASTER_BUYER_UPDATE" name="主档驳回采购修改"/>
+    <activity id="MASTER_APPROVE" name="主档审批"/>
+    <exclusiveGateway id="BUYER-APPROVE-GATEWAY" name="采购审批网关"/>
+    <exclusiveGateway id="BUYER-MANAGEMENT-GATEWAY" name="采购经历审批网关"/>
+    <exclusiveGateway id="BUYER-DIRECTOR-GATEWAY" name="采购总监审批网关"/>
+    <exclusiveGateway id="MASTER-GATEWAY" name="主档审批网关"/>
+    <parallelGateway id="PARALLEL-GATEWAY" name="并行审批网关"/>
+    <link id="START->SUP_CREATE" name="START->SUP_CREATE" sourceId="START" targetId="SUP_CREATE"/>
+    <link id="SUP_CREATE->BUYER_APPROVE" name="SUP_CREATE->BUYER_APPROVE" sourceId="SUP_CREATE" targetId="BUYER_APPROVE"/>
+    <link id="BUYER_APPROVE->BUYER-APPROVE-GATEWAY" name="BUYER_APPROVE->BUYER-APPROVE-GATEWAY" sourceId="BUYER_APPROVE" targetId="BUYER-APPROVE-GATEWAY"/>
+    <link id="BUYER-APPROVE-GATEWAY->SUP_UPDATE" name="BUYER-APPROVE-GATEWAY->SUP_UPDATE" sourceId="BUYER-APPROVE-GATEWAY" targetId="SUP_UPDATE">
+      <conditionExpression>#buyerApprove == false</conditionExpression>
+    </link>
+    <link id="SUP_UPDATE->BUYER_APPROVE" name="SUP_UPDATE->BUYER_APPROVE" sourceId="SUP_UPDATE" targetId="BUYER_APPROVE" />
+    <link id="BUYER-APPROVE->PARALLEL-GATEWAY" name="BUYER-APPROVE->PARALLEL-GATEWAY" sourceId="BUYER-APPROVE-GATEWAY" targetId="PARALLEL-GATEWAY">
+      <conditionExpression>#buyerApprove == true</conditionExpression>
+    </link>
+    <link id="PARALLEL-GATEWAY->BUYER_MANAGEMENT_APPROVE" name="PARALLEL-GATEWAY->BUYER_MANAGEMENT_APPROVE" sourceId="PARALLEL-GATEWAY" targetId="BUYER_MANAGEMENT_APPROVE"/>
+    <link id="PARALLEL-GATEWAY->BUYER_DIRECTOR_APPROVE" name="PARALLEL-GATEWAY->BUYER_DIRECTOR_APPROVE" sourceId="PARALLEL-GATEWAY" targetId="BUYER_DIRECTOR_APPROVE"/>
+    <link id="BUYER_MANAGEMENT_APPROVE->BUYER_MANAGEMENT_BUYER_UPDATE" name="BUYER_MANAGEMENT_APPROVE->BUYER_MANAGEMENT_BUYER_UPDATE" sourceId="BUYER_MANAGEMENT_APPROVE" targetId="BUYER_MANAGEMENT_BUYER_UPDATE">
+      <conditionExpression>#buyerManagementApprove == false</conditionExpression>
+    </link>
+    <link id="BUYER_MANAGEMENT_BUYER_UPDATE->BUYER_MANAGEMENT_APPROVE" name="BUYER_MANAGEMENT_BUYER_UPDATE->BUYER_MANAGEMENT_APPROVE" sourceId="BUYER_MANAGEMENT_BUYER_UPDATE" targetId="BUYER_MANAGEMENT_APPROVE"/>
+    <link id="BUYER_MANAGEMENT_APPROVE->MASTER_APPROVE" name="BUYER_MANAGEMENT_APPROVE->MASTER_APPROVE" sourceId="BUYER_MANAGEMENT_APPROVE" targetId="MASTER_APPROVE">
+      <conditionExpression>#buyerManagementApprove == true</conditionExpression>
+    </link>
+    <link id="BUYER_DIRECTOR_APPROVE->BUYER_DIRECTOR_BUYER_UPDATE" name="BUYER_DIRECTOR_APPROVE->BUYER_UPDATE" sourceId="BUYER_DIRECTOR_APPROVE" targetId="BUYER_DIRECTOR_BUYER_UPDATE">
+      <conditionExpression>#buyerDirectorApprove == false</conditionExpression>
+    </link>
+    <link id="BUYER_DIRECTOR_APPROVE->MASTER_APPROVE" name="BUYER_DIRECTOR_APPROVE->MASTER_APPROVE" sourceId="BUYER_DIRECTOR_APPROVE" targetId="MASTER_APPROVE">
+      <conditionExpression>#buyerDirectorApprove == true</conditionExpression>
+    </link>
+    <link id="MASTER_APPROVE->MASTER_BUYER_UPDATE" name="MASTER_APPROVE->MASTER_BUYER_UPDATE" sourceId="MASTER_APPROVE" targetId="MASTER_BUYER_UPDATE">
+      <conditionExpression>#masterApprove == false</conditionExpression>
+    </link>
+    <link id="MASTER_APPROVE->END" name="MASTER_APPROVE->END" sourceId="MASTER_APPROVE" targetId="END">
+      <conditionExpression>#masterApprove == true</conditionExpression>
+    </link>
+    <link id="MASTER_BUYER_UPDATE->MASTER_APPROVE" name="MASTER_BUYER_UPDATE->MASTER_APPROVE" sourceId="MASTER_BUYER_UPDATE" targetId="MASTER_APPROVE"/>
+    <link id="BUYER_DIRECTOR_BUYER_UPDATE->BUYER_DIRECTOR_APPROVE" name="BUYER_DIRECTOR_BUYER_UPDATE->BUYER_DIRECTOR_APPROVE" sourceId="BUYER_DIRECTOR_BUYER_UPDATE" targetId="BUYER_DIRECTOR_APPROVE"/>
+    <end id="END" name="审批结束"/>
   </process>
 </mundo>

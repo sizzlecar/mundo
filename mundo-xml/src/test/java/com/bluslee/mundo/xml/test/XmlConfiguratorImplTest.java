@@ -14,16 +14,17 @@ import org.junit.Test;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * XmlConfiguratorImplTest.
  * @author carl.che
  */
-public class XmlConfiguratorImplTest {
+public class XmlConfiguratorImplTest extends XmlProcessor {
+
+    private static final String FILE_PATH = "/mundo.cfg.xml";
 
     private final XStream xStream = new XStream();
 
@@ -31,29 +32,31 @@ public class XmlConfiguratorImplTest {
 
     private final XmlConfigurator<BaseProcessNode> xmlConfigurator = new XmlConfiguratorImpl(baseXmlParser);
 
-    private final Map<String, List<Integer>> expectProcess = new HashMap<String, List<Integer>>() {{
-            put("process-001", Arrays.asList(0, 1));
-            put("process-002", Collections.singletonList(0));
-        }};
+    public XmlConfiguratorImplTest() {
+        super(FILE_PATH);
+    }
 
     @Test
     public void xmlConfiguratorImplBuildTest() {
-        InputStream mundoXmlStream = XmlSchemaTest.class.getResourceAsStream("/mundo.cfg.xml");
+        InputStream mundoXmlStream = getClass().getResourceAsStream("/mundo.cfg.xml");
         xStream.processAnnotations(XmlSchema.class);
         xStream.allowTypesByWildcard(new String[] {"com.bluslee.mundo.**"});
         Repository<BaseProcessNode> repository = xmlConfigurator.inputStream(mundoXmlStream).build();
         Set<ProcessEngine<BaseProcessNode>> processes = repository.processes();
-        //mundo.cfg.xml 配置了3个流程
-        Assert.assertThat(processes.size(), Matchers.is(3));
+        List<XmlSchema.ProcessSchema> dom4jProcessSchemas = getProcessSchemas();
+        Map<List<String>, List<XmlSchema.ProcessSchema>> expectDistinctProcessSchemas = dom4jProcessSchemas
+                .stream()
+                .collect(Collectors.groupingBy(processSchema -> Arrays.asList(processSchema.getId(), processSchema.getVersion().toString())));
+        Assert.assertThat(processes.size(), Matchers.is(expectDistinctProcessSchemas.size()));
         //检查流程id,版本号
-        expectProcess.forEach((id, versions) -> {
-            versions.forEach(version -> {
-                ProcessEngine<BaseProcessNode> actualProcess = repository.getProcess(id, version);
-                Assert.assertEquals(id, actualProcess.getId());
-                Assert.assertEquals(version, actualProcess.getVersion());
-            });
+        expectDistinctProcessSchemas.forEach((keys, val) -> {
+            String id = keys.get(0);
+            String versionStr = keys.get(1);
+            Integer version = Integer.parseInt(versionStr);
+            ProcessEngine<BaseProcessNode> actualProcess = repository.getProcess(id, version);
+            Assert.assertEquals(id, actualProcess.getId());
+            Assert.assertEquals(version, actualProcess.getVersion());
         });
-
     }
 
 }
