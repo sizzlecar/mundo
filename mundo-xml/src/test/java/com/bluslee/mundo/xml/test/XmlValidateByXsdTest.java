@@ -19,7 +19,7 @@ public class XmlValidateByXsdTest {
 
     @Test
     public void validateXmlTest() throws Exception {
-        String xsdFilePath = "/mundo.xsd";
+        String xsdFilePath = "/mundo-1.0.0.xsd";
         String xmlFilePath = "/mundo.cfg.xml";
         Schema schema = schemaFactory.newSchema(new StreamSource(getClass().getResourceAsStream(xsdFilePath)));
         Validator validator = schema.newValidator();

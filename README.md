@@ -33,7 +33,8 @@ process标签有两个属性，id与name，id是流程的唯一标识，不同�
 标签id不可以重复。
 
 ```xml
-<mundo>
+<?xml version="1.0" encoding="UTF-8"?>
+<mundo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://bluslee.com/POM/1.0.0" xsi:schemaLocation="http://bluslee.com/POM/1.0.0 http://bluslee.com/xsd/mundo-1.0.0.xsd">
     <process id="process-001" name="简单流程" version="0">
         <start id="START" name="开始"/>
         <activity id="SUP_CREATE" name="供应商创建单据"/>
