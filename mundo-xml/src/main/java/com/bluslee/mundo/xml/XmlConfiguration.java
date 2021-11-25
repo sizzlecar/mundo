@@ -17,6 +17,8 @@ import java.util.Properties;
  */
 public class XmlConfiguration implements Configuration {
 
+    private static final String MODEL = "xml";
+
     /**
      * 其他配置.
      */
@@ -104,4 +106,8 @@ public class XmlConfiguration implements Configuration {
         return initData;
     }
 
+    @Override
+    public String getMode() {
+        return MODEL;
+    }
 }

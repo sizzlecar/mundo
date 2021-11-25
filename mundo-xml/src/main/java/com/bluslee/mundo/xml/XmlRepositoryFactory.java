@@ -1,8 +1,7 @@
 package com.bluslee.mundo.xml;
 
 import com.bluslee.mundo.core.configuration.Configuration;
-import com.bluslee.mundo.core.configuration.RepositoryBuilder;
-import com.bluslee.mundo.core.exception.MundoException;
+import com.bluslee.mundo.core.configuration.RepositoryFactory;
 import com.bluslee.mundo.core.expression.BaseExecutor;
 import com.bluslee.mundo.core.process.Activity;
 import com.bluslee.mundo.core.process.EndNode;
@@ -13,13 +12,12 @@ import com.bluslee.mundo.core.process.Link;
 import com.bluslee.mundo.core.process.ProcessElementBuilder;
 import com.bluslee.mundo.core.process.ProcessEngineImpl;
 import com.bluslee.mundo.core.process.ProcessEngineBuilder;
+import com.bluslee.mundo.core.process.RepositoryBuilder;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessEngine;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.core.process.graph.DirectedValueGraphImpl;
-import com.bluslee.mundo.core.validate.ValidatorPipLine;
 import com.bluslee.mundo.xml.base.XmlParser;
-
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.ArrayList;
@@ -34,34 +32,28 @@ import java.util.stream.Collectors;
  *
  * @author carl.che
  */
-public abstract class XmlConfigurator<N extends BaseProcessNode> implements RepositoryBuilder<N> {
+public abstract class XmlRepositoryFactory<N extends BaseProcessNode> implements RepositoryFactory<N, byte[], XmlSchema> {
 
     private final XmlParser xmlParser;
 
-    public XmlConfigurator(final XmlParser xmlParser) {
+    public XmlRepositoryFactory(final XmlParser xmlParser) {
         this.xmlParser = xmlParser;
     }
 
-    /**
-     * 根据配置构建出流程图BaseProcess的示例.
-     *
-     * @return Repository
-     */
     @Override
-    public Repository<N> build(final Configuration configuration) {
-        synchronized (XmlConfigurator.class) {
-            configuration.init();
-            validatorPipLine.validate(configuration, (configuration, validatorPipLine, model) -> validatorPipLine.getValidators()
-                    .forEach(validator -> validator.validate(configuration, model)), null);
-            XmlSchema xmlSchema = parseXml();
-            validatorPipLine.validate(configuration, (configuration, validatorPipLine, model) -> validatorPipLine.getValidators()
-                    .forEach(validator -> validator.validate(configuration, model)), xmlSchema);
-            return processSchema2Repository(xmlSchema.getProcessList());
-        }
+    public byte[] load(final Configuration configuration) {
+        configuration.init();
+        return configuration.getInitData();
     }
 
-    private XmlSchema parseXml() throws MundoException {
-        return (XmlSchema) xmlParser.fromXML(new ByteArrayInputStream(configuration.getInitData()));
+    @Override
+    public XmlSchema parse(final Configuration configuration, final byte[] bytes) {
+        return (XmlSchema) xmlParser.fromXML(new ByteArrayInputStream(bytes));
+    }
+
+    @Override
+    public Repository<N> build(final Configuration configuration, final XmlSchema xmlSchema) {
+        return processSchema2Repository(xmlSchema.getProcessList());
     }
 
     private Repository<N> processSchema2Repository(final List<XmlSchema.ProcessSchema> processList) {
@@ -117,7 +109,7 @@ public abstract class XmlConfigurator<N extends BaseProcessNode> implements Repo
                             }).directedValueGraph(directedValueGraph).build();
                     return (ProcessEngine<BaseProcessNode>) processEngineImpl;
                 }).collect(Collectors.toSet());
-        return (Repository<N>) com.bluslee.mundo.core.process.RepositoryBuilder.build(processEngineList);
+        return (Repository<N>) RepositoryBuilder.build(processEngineList);
     }
 
 }

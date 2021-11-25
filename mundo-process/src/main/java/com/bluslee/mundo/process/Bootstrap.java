@@ -1,37 +1,47 @@
 package com.bluslee.mundo.process;
 
-import com.bluslee.mundo.core.configuration.RepositoryBuilder;
+import com.bluslee.mundo.core.configuration.Configuration;
+import com.bluslee.mundo.core.configuration.RepositoryFactory;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
+import com.bluslee.mundo.core.process.base.Repository;
+import com.bluslee.mundo.core.validate.ValidatorPipLine;
+import com.bluslee.mundo.core.validate.ValidatorPipLineFactory;
+import com.bluslee.mundo.process.utils.ReflectionUtils;
+
+import java.util.Set;
 
 /**
- * mundo Bootstrap.
+ * Bootstrap 默认实现.
  *
  * @author carl.che
- * @param <N> 流程图中基本类型
  */
-public interface Bootstrap<N extends BaseProcessNode> {
+public final class Bootstrap implements BaseBootstrap {
 
-    /**
-     * 寻找默认的配置器.
-     *
-     * @return 默认的配置器
-     */
-    RepositoryBuilder<N> defaultConfigurator();
+    private static volatile BaseBootstrap bootstrap;
 
-    /**
-     * 根据名字寻找配置器.
-     *
-     * @param name 配置器名称
-     * @return 对应的配置器
-     */
-    RepositoryBuilder<N> getConfigurator(String name);
+    private final ValidatorPipLineFactory validatorPipLineFactory = new ValidatorPipLineFactoryImpl();
 
-    /**
-     * 根据类型寻找配置器.
-     *
-     * @param clazz 配置器类型
-     * @return 对应的配置器
-     */
-    <T> RepositoryBuilder<N> getConfigurator(Class<T> clazz);
+    private Bootstrap() {
+    }
+
+    public static BaseBootstrap getInstance() {
+        if (bootstrap == null) {
+            synchronized (Bootstrap.class) {
+                if (bootstrap == null) {
+                    bootstrap = new Bootstrap();
+                }
+            }
+        }
+        return bootstrap;
+    }
+
+    @Override
+    public <N extends BaseProcessNode> Repository<N> build(final Configuration configuration) {
+        //根据配置模式，扫描对应包下的RepositoryBuilder，ValidatorPipLineImpl，
+        ValidatorPipLine build = validatorPipLineFactory.build(configuration);
+        Set<Class<? extends RepositoryFactory>> classes = ReflectionUtils.instance().subTypes(configuration, RepositoryFactory.class);
+        return null;
+
+    }
 
 }

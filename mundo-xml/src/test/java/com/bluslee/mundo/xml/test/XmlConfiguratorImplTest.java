@@ -1,19 +1,18 @@
 package com.bluslee.mundo.xml.test;
 
+import com.bluslee.mundo.core.configuration.Configuration;
+import com.bluslee.mundo.core.configuration.RepositoryFactory;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessEngine;
 import com.bluslee.mundo.core.process.base.Repository;
-import com.bluslee.mundo.xml.XmlConfigurator;
-import com.bluslee.mundo.xml.XmlConfiguratorImpl;
+import com.bluslee.mundo.xml.XmlRepositoryFactoryImpl;
 import com.bluslee.mundo.xml.XmlSchema;
-import com.bluslee.mundo.xml.ValidatorPipLineImpl;
 import com.bluslee.mundo.xml.XmlConfiguration;
 import com.bluslee.mundo.xml.base.BaseXmlParser;
 import com.thoughtworks.xstream.XStream;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
@@ -32,19 +31,22 @@ public class XmlConfiguratorImplTest extends XmlProcessor {
 
     private final BaseXmlParser baseXmlParser = new BaseXmlParser(xStream) { };
 
-    private final XmlConfigurator<BaseProcessNode> xmlConfigurator = new XmlConfiguratorImpl(baseXmlParser,
-            new ValidatorPipLineImpl(), new XmlConfiguration());
+    private final RepositoryFactory<BaseProcessNode, byte[], XmlSchema> xmlRepositoryBuilder = new XmlRepositoryFactoryImpl();
+
+    private final Configuration xmlConfiguration = new XmlConfiguration();
 
     public XmlConfiguratorImplTest() {
         super(FILE_PATH);
+        xStream.processAnnotations(XmlSchema.class);
+        xStream.allowTypesByWildcard(new String[] {"com.bluslee.mundo.**"});
     }
 
     @Test
     public void xmlConfiguratorImplBuildTest() {
-        xStream.processAnnotations(XmlSchema.class);
-        xStream.allowTypesByWildcard(new String[] {"com.bluslee.mundo.**"});
-        xmlConfigurator.setProperty("mundo.xml-path", "/mundo.cfg.xml");
-        Repository<BaseProcessNode> repository = xmlConfigurator.build();
+        xmlConfiguration.setProperty("mundo.xml-path", "/mundo.cfg.xml");
+        byte[] xmlByte = xmlRepositoryBuilder.load(xmlConfiguration);
+        XmlSchema xmlSchema = xmlRepositoryBuilder.parse(xmlConfiguration, xmlByte);
+        Repository<BaseProcessNode> repository = xmlRepositoryBuilder.build(xmlConfiguration, xmlSchema);
         Set<ProcessEngine<BaseProcessNode>> processes = repository.processes();
         List<XmlSchema.ProcessSchema> dom4jProcessSchemas = getProcessSchemas();
         Map<List<String>, List<XmlSchema.ProcessSchema>> expectDistinctProcessSchemas = dom4jProcessSchemas

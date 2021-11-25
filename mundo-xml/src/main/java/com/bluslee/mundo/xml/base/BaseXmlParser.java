@@ -1,5 +1,6 @@
 package com.bluslee.mundo.xml.base;
 
+import com.bluslee.mundo.xml.XmlSchema;
 import com.thoughtworks.xstream.XStream;
 import java.io.File;
 import java.io.InputStream;
@@ -16,6 +17,8 @@ public abstract class BaseXmlParser implements XmlParser {
 
     public BaseXmlParser(final XStream xStream) {
         this.xStream = xStream;
+        xStream.processAnnotations(XmlSchema.class);
+        xStream.allowTypesByWildcard(new String[] {"com.bluslee.mundo.**"});
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.bluslee.mundo.core.validate;
 
 import com.bluslee.mundo.core.configuration.Configuration;
+import com.bluslee.mundo.core.configuration.RepositoryFactory;
 import java.util.List;
 
 /**
@@ -35,11 +36,14 @@ public interface ValidatorPipLine {
      *
      * @param configuration    配置
      * @param validateStrategy 校验策略
+     * @param model 待校验的model
+     * @param lifeCycle 当前生命周期
      */
     default <T> void validate(final Configuration configuration,
                               final ValidateStrategy<T> validateStrategy,
-                              final T model) {
-        validateStrategy.validateStrategy(configuration, this, model);
+                              final T model,
+                              final RepositoryFactory.LifeCycle lifeCycle) {
+        validateStrategy.validateStrategy(configuration, this, model, lifeCycle);
     }
 
     @FunctionalInterface
@@ -50,15 +54,24 @@ public interface ValidatorPipLine {
          *
          * @param configuration    配置
          * @param validatorPipLine 校验流水线
+         * @param model 待校验的model
+         * @param lifeCycle 当前生命周期
          */
-        void validateStrategy(Configuration configuration, ValidatorPipLine validatorPipLine, T model);
+        void validateStrategy(Configuration configuration,
+                              ValidatorPipLine validatorPipLine,
+                              T model,
+                              RepositoryFactory.LifeCycle lifeCycle);
 
         /**
          * 默认的验证策略，依次校验.
          * @return 默认的验证策略
          */
         default ValidateStrategy<T> defaultValidateStrategy() {
-            return (configuration, validatorPipLine, model) -> validatorPipLine.getValidators().forEach(validator -> validator.validate(configuration, model));
+            return (configuration, validatorPipLine, model, lifeCycle) ->
+                    validatorPipLine.getValidators()
+                            .stream()
+                            .filter(validator -> validator.match(lifeCycle))
+                            .forEach(validator -> validator.validate(configuration, model));
         }
 
     }

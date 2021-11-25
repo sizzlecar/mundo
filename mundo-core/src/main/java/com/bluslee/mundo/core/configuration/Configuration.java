@@ -27,6 +27,12 @@ public interface Configuration {
     Object getProperty(String key);
 
     /**
+     * 获取当前配置的模式，比如XML.
+     * @return 配置模式
+     */
+    String getMode();
+
+    /**
      * 从文件中读取配置.
      *
      * @param inStream 配置文件InputStream
