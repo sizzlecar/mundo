@@ -33,7 +33,8 @@ process标签有两个属性，id与name，id是流程的唯一标识，不同�
 标签id不可以重复。
 
 ```xml
-<mundo>
+<?xml version="1.0" encoding="UTF-8"?>
+<mundo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://bluslee.com/POM/1.0.0" xsi:schemaLocation="http://bluslee.com/POM/1.0.0 http://bluslee.com/xsd/mundo-1.0.0.xsd">
     <process id="process-001" name="简单流程" version="0">
         <start id="START" name="开始"/>
         <activity id="SUP_CREATE" name="供应商创建单据"/>
@@ -62,7 +63,7 @@ process标签有两个属性，id与name，id是流程的唯一标识，不同�
 ```java
 package com.bluslee.mundo.process.test;
 
-import com.bluslee.mundo.core.configuration.Configurator;
+import com.bluslee.mundo.core.configuration.RepositoryBuilder;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.process.DefaultBootstrap;
@@ -79,29 +80,26 @@ public class BaseBootstrapTest {
 
     @Test
     public void defaultConfiguratorTest() {
-        //1. 用DefaultBootstrap的示例，获取配置器，这里使用了默认的配置器，即XML配置器
-        Configurator<BaseProcessNode> defaultConfigurator = DefaultBootstrap.getInstance().defaultConfigurator();
-        Assert.assertNotNull(defaultConfigurator);
-        //2. 设置配置文件的路径，属性名必须是mundo.xml-path
-        defaultConfigurator.setProperty("mundo.xml-path", "/mundo.cfg.xml");
-        //3. 调用build方法，这个时候配置器会根据配置解析XML，验证，加载定义的流程，返回 XML定义的流程的集合，即Repository
-        Repository<BaseProcessNode> repository = defaultConfigurator.build();
-        Assert.assertNotNull(defaultConfigurator);
-        Assert.assertEquals(1, repository.processes().size());
-        //4. 从Repository查找流程,可以获取全部流程，也可以根据id,version进行查询，如果不传version默认返回最新版本的流程
+        //1. 设置配置文件的路径，属性名必须是mundo.xml-path
+        Configuration configuration = new XmlConfiguration();
+        configuration.setProperty("mundo.xml-path", "/mundo.cfg.xml");
+        //2. 用Bootstrap的示例，传入配置构建Repository，调用build方法，这个时候配置器会根据配置解析XML，验证，加载定义的流程，返回 XML定义的流程的集合，即Repository
+        Repository<BaseProcessNode> repository = Bootstrap.getInstance().build(configuration);
+        Assert.assertNotNull(repository);
+        //3. 从Repository查找流程,可以获取全部流程，也可以根据id,version进行查询，如果不传version默认返回最新版本的流程
         ProcessEngine<BaseProcessNode> processEngine001 = repository.getProcess("process-001");
-        //5. 调用流程流程接口
-        //5.1 获取当前流程id
+        //4. 调用流程流程接口
+        //4.1 获取当前流程id
         processEngine001.getId();
-        //5.2 获取当前引擎版本号.
+        //4.2 获取当前引擎版本号.
         processEngine001.getVersion();
-        //5.3 根据id在当前流程中寻找对应的node
+        //4.3 根据id在当前流程中寻找对应的node
         BaseProcessNode node001 = processEngine001.getProcessNode("node-001");
-        //5.4 根据当前节点，以及参数找出下一个节点.
+        //4.4 根据当前节点，以及参数找出下一个节点.
         Map<String, Object> paraMap = new HashMap<>();
         paraMap.put("#approve", true);
         ProcessNodeWrap<BaseProcessNode> nextProcessNodeWrap = processEngine001.getNextProcessNode(node001, paraMap);
-        //5.5 获取下一个节点
+        //4.5 获取下一个节点
         if (nextProcessNodeWrap.parallel()) {
             //下一个节点是并行行节可能返回多个节点
             Set<BaseProcessNode> parallelNodes = nextProcessNodeWrap.getParallelNodes();

@@ -1,9 +1,10 @@
 package com.bluslee.mundo.process.test;
 
-import com.bluslee.mundo.core.configuration.Configurator;
+import com.bluslee.mundo.core.configuration.Configuration;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.Repository;
-import com.bluslee.mundo.process.DefaultBootstrap;
+import com.bluslee.mundo.process.Bootstrap;
+import com.bluslee.mundo.xml.XmlConfiguration;
 import com.bluslee.mundo.xml.XmlSchema;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,23 +16,21 @@ import java.util.stream.Collectors;
 /**
  * BaseBootstrapTest.
  * @author carl.che
- * @date 2021/11/9
  */
-public class BaseBootstrapTest extends XmlProcessor {
+public class BaseMainBootstrapTest extends XmlProcessor {
 
     private static final String FILE_PATH = "/mundo.cfg.xml";
 
-    public BaseBootstrapTest() {
+    public BaseMainBootstrapTest() {
         super(FILE_PATH);
     }
 
     @Test
-    public void defaultConfiguratorTest() {
-        Configurator<BaseProcessNode> defaultConfigurator = DefaultBootstrap.getInstance().defaultConfigurator();
-        Assert.assertNotNull(defaultConfigurator);
-        defaultConfigurator.setProperty("mundo.xml-path", "/mundo.cfg.xml");
-        Repository<BaseProcessNode> repository = defaultConfigurator.build();
-        Assert.assertNotNull(defaultConfigurator);
+    public void buildTest() {
+        Configuration configuration = new XmlConfiguration();
+        configuration.setProperty("mundo.xml-path", FILE_PATH);
+        Repository<BaseProcessNode> repository = Bootstrap.getInstance().build(configuration);
+        Assert.assertNotNull(repository);
         List<XmlSchema.ProcessSchema> dom4jProcessSchemas = getProcessSchemas();
         Map<List<String>, List<XmlSchema.ProcessSchema>> expectDistinctProcessSchemas = dom4jProcessSchemas
                 .stream()
