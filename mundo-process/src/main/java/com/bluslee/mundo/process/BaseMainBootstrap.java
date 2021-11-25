@@ -9,7 +9,7 @@ import com.bluslee.mundo.core.process.base.Repository;
  *
  * @author carl.che
  */
-public interface BaseBootstrap {
+public interface BaseMainBootstrap {
 
     /**
      * 根据配置获取对应的Repository.

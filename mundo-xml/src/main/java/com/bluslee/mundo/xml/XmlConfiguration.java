@@ -4,7 +4,6 @@ import com.bluslee.mundo.core.configuration.Configuration;
 import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.xml.base.XmlConstants;
 import java.io.InputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class XmlConfiguration implements Configuration {
     /**
      * 初始化完成后的XMl对应的inputStream.
      */
-    private InputStream initInputStream;
+    private byte[] initData;
 
     /**
      * setProperty.
@@ -79,29 +78,28 @@ public class XmlConfiguration implements Configuration {
         }
         Optional.ofNullable(properties.getProperty(XmlConstants.ConfigKey.XML_PATH_CONFIG_NAME))
                 .ifPresent(xmlPath -> {
-                    initInputStream = getClass().getResourceAsStream(xmlPath);
+                    try (InputStream inputStream = getClass().getResourceAsStream(xmlPath)) {
+                        byte[] data = new byte[inputStream.available()];
+                        inputStream.read(data);
+                        initData = data;
+                    } catch (IOException | NullPointerException e) {
+                        throw new MundoException("配置初始化发生错误", e);
+                    }
                     initFlag = true;
                     init();
                 });
         Optional.ofNullable(properties.getProperty(XmlConstants.ConfigKey.XML_STR_CONFIG_NAME))
                 .ifPresent(configXmlStr -> {
-                    initInputStream = new ByteArrayInputStream(configXmlStr.getBytes(StandardCharsets.UTF_8));
+                    initData = configXmlStr.getBytes(StandardCharsets.UTF_8);
                     initFlag = true;
                 });
-        Optional.ofNullable(initInputStream).orElseThrow(() -> new MundoException("没有有效的配置"));
+        Optional.ofNullable(initData).orElseThrow(() -> new MundoException("没有有效的配置"));
     }
 
     @Override
     public byte[] getInitData() {
         if (!initFlag) {
             throw new MundoException("当前配置还未完成初始化，请初始化后使用");
-        }
-        byte[] initData = null;
-        try {
-            initData = new byte[initInputStream.available()];
-            initInputStream.read(initData);
-        } catch (IOException e) {
-            throw new MundoException("读取配置发生错误", e);
         }
         return initData;
     }

@@ -29,7 +29,8 @@ public class XsdValidator implements Validator {
 
     public XsdValidator() {
         try {
-            schema = schemaFactory.newSchema(new StreamSource(XmlConstants.ConfigKey.XSD_PATH));
+            schema = schemaFactory.newSchema(new StreamSource(getClass()
+                    .getResourceAsStream(XmlConstants.ConfigKey.XSD_PATH)));
         } catch (SAXException | NullPointerException e) {
             throw new MundoException("初始化XSD发生错误", e);
         }

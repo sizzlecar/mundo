@@ -6,25 +6,24 @@ import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.core.validate.ValidatorPipLine;
 import com.bluslee.mundo.core.validate.ValidatorPipLineFactory;
-import com.bluslee.mundo.process.utils.ReflectionUtils;
-
-import java.util.Set;
 
 /**
  * Bootstrap 默认实现.
  *
  * @author carl.che
  */
-public final class Bootstrap implements BaseBootstrap {
+public final class Bootstrap implements BaseMainBootstrap {
 
-    private static volatile BaseBootstrap bootstrap;
+    private static volatile BaseMainBootstrap bootstrap;
 
-    private final ValidatorPipLineFactory validatorPipLineFactory = new ValidatorPipLineFactoryImpl();
+    private final BaseValidatorBootstrap validatorBootstrap = new ValidatorBootstrap();
+
+    private final BaseRepositoryFactoryBootstrap repositoryFactoryBootstrap = new RepositoryFactoryBootstrap();
 
     private Bootstrap() {
     }
 
-    public static BaseBootstrap getInstance() {
+    public static BaseMainBootstrap getInstance() {
         if (bootstrap == null) {
             synchronized (Bootstrap.class) {
                 if (bootstrap == null) {
@@ -38,10 +37,20 @@ public final class Bootstrap implements BaseBootstrap {
     @Override
     public <N extends BaseProcessNode> Repository<N> build(final Configuration configuration) {
         //根据配置模式，扫描对应包下的RepositoryBuilder，ValidatorPipLineImpl，
-        ValidatorPipLine build = validatorPipLineFactory.build(configuration);
-        Set<Class<? extends RepositoryFactory>> classes = ReflectionUtils.instance().subTypes(configuration, RepositoryFactory.class);
-        return null;
-
+        RepositoryFactory<N, Object, Object> repositoryFactory = repositoryFactoryBootstrap
+                .build(configuration);
+        ValidatorPipLineFactory validatorPipLineFactory = validatorBootstrap.build(configuration);
+        ValidatorPipLine validatorPipLine = validatorPipLineFactory.defaultValidatorPipLine(configuration);
+        ValidatorPipLine.ValidateStrategy<Object> validateStrategy = (config, pipLine, model, lifeCycle) ->
+                pipLine.getValidators()
+                        .stream()
+                        .filter(validator -> validator.match(lifeCycle))
+                        .forEach(validator -> validator.validate(config, model));
+        Object loadRes = repositoryFactory.load(configuration);
+        validatorPipLine.validate(configuration, validateStrategy, loadRes, RepositoryFactory.LifeCycle.LOAD);
+        Object parseRes = repositoryFactory.parse(configuration, loadRes);
+        validatorPipLine.validate(configuration, validateStrategy, loadRes, RepositoryFactory.LifeCycle.PARSE);
+        return repositoryFactory.build(configuration, parseRes);
     }
 
 }
