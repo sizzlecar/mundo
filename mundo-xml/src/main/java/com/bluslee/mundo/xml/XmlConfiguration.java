@@ -90,10 +90,18 @@ public class XmlConfiguration implements Configuration {
     }
 
     @Override
-    public InputStream getInitInputStream() {
+    public byte[] getInitData() {
         if (!initFlag) {
             throw new MundoException("当前配置还未完成初始化，请初始化后使用");
         }
-        return initInputStream;
+        byte[] initData = null;
+        try {
+            initData = new byte[initInputStream.available()];
+            initInputStream.read(initData);
+        } catch (IOException e) {
+            throw new MundoException("读取配置发生错误", e);
+        }
+        return initData;
     }
+
 }

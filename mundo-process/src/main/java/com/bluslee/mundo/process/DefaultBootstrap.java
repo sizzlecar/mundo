@@ -1,6 +1,6 @@
 package com.bluslee.mundo.process;
 
-import com.bluslee.mundo.core.configuration.Configurator;
+import com.bluslee.mundo.core.configuration.RepositoryBuilder;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.xml.XmlConfiguratorImpl;
 import com.bluslee.mundo.xml.XmlSchema;
@@ -18,7 +18,7 @@ public final class DefaultBootstrap implements Bootstrap<BaseProcessNode> {
 
     private final XStream xStream = new XStream();
 
-    private final Configurator<BaseProcessNode> xmlConfigurator = new XmlConfiguratorImpl(new BaseXmlParser(xStream) {
+    private final RepositoryBuilder<BaseProcessNode> xmlConfigurator = new XmlConfiguratorImpl(new BaseXmlParser(xStream) {
     });
 
     private DefaultBootstrap() {
@@ -36,19 +36,19 @@ public final class DefaultBootstrap implements Bootstrap<BaseProcessNode> {
     }
 
     @Override
-    public Configurator<BaseProcessNode> defaultConfigurator() {
+    public RepositoryBuilder<BaseProcessNode> defaultConfigurator() {
         xStream.processAnnotations(XmlSchema.class);
         xStream.allowTypesByWildcard(new String[]{"com.bluslee.mundo.**"});
         return xmlConfigurator;
     }
 
     @Override
-    public Configurator<BaseProcessNode> getConfigurator(final String name) {
+    public RepositoryBuilder<BaseProcessNode> getConfigurator(final String name) {
         return null;
     }
 
     @Override
-    public <T> Configurator<BaseProcessNode> getConfigurator(final Class<T> clazz) {
+    public <T> RepositoryBuilder<BaseProcessNode> getConfigurator(final Class<T> clazz) {
         return null;
     }
 }

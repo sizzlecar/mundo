@@ -1,6 +1,6 @@
 package com.bluslee.mundo.process.test;
 
-import com.bluslee.mundo.core.configuration.Configurator;
+import com.bluslee.mundo.core.configuration.RepositoryBuilder;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.process.DefaultBootstrap;
@@ -27,7 +27,7 @@ public class BaseBootstrapTest extends XmlProcessor {
 
     @Test
     public void defaultConfiguratorTest() {
-        Configurator<BaseProcessNode> defaultConfigurator = DefaultBootstrap.getInstance().defaultConfigurator();
+        RepositoryBuilder<BaseProcessNode> defaultConfigurator = DefaultBootstrap.getInstance().defaultConfigurator();
         Assert.assertNotNull(defaultConfigurator);
         defaultConfigurator.setProperty("mundo.xml-path", "/mundo.cfg.xml");
         Repository<BaseProcessNode> repository = defaultConfigurator.build();

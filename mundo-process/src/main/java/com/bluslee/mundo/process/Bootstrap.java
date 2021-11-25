@@ -1,6 +1,6 @@
 package com.bluslee.mundo.process;
 
-import com.bluslee.mundo.core.configuration.Configurator;
+import com.bluslee.mundo.core.configuration.RepositoryBuilder;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 
 /**
@@ -16,7 +16,7 @@ public interface Bootstrap<N extends BaseProcessNode> {
      *
      * @return 默认的配置器
      */
-    Configurator<N> defaultConfigurator();
+    RepositoryBuilder<N> defaultConfigurator();
 
     /**
      * 根据名字寻找配置器.
@@ -24,7 +24,7 @@ public interface Bootstrap<N extends BaseProcessNode> {
      * @param name 配置器名称
      * @return 对应的配置器
      */
-    Configurator<N> getConfigurator(String name);
+    RepositoryBuilder<N> getConfigurator(String name);
 
     /**
      * 根据类型寻找配置器.
@@ -32,6 +32,6 @@ public interface Bootstrap<N extends BaseProcessNode> {
      * @param clazz 配置器类型
      * @return 对应的配置器
      */
-    <T> Configurator<N> getConfigurator(Class<T> clazz);
+    <T> RepositoryBuilder<N> getConfigurator(Class<T> clazz);
 
 }

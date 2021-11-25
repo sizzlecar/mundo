@@ -42,5 +42,5 @@ public interface Configuration {
      * 获取初始化准备好的source inputStream.
      * @return 始化准备好的source inputStream
      */
-    InputStream getInitInputStream();
+    byte[] getInitData();
 }

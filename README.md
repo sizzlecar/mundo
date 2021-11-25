@@ -63,7 +63,7 @@ process标签有两个属性，id与name，id是流程的唯一标识，不同�
 ```java
 package com.bluslee.mundo.process.test;
 
-import com.bluslee.mundo.core.configuration.Configurator;
+import com.bluslee.mundo.core.configuration.RepositoryBuilder;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.process.DefaultBootstrap;

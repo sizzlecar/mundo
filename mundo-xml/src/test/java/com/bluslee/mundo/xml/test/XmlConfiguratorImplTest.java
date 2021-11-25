@@ -6,6 +6,8 @@ import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.xml.XmlConfigurator;
 import com.bluslee.mundo.xml.XmlConfiguratorImpl;
 import com.bluslee.mundo.xml.XmlSchema;
+import com.bluslee.mundo.xml.ValidatorPipLineImpl;
+import com.bluslee.mundo.xml.XmlConfiguration;
 import com.bluslee.mundo.xml.base.BaseXmlParser;
 import com.thoughtworks.xstream.XStream;
 import org.hamcrest.Matchers;
@@ -30,7 +32,8 @@ public class XmlConfiguratorImplTest extends XmlProcessor {
 
     private final BaseXmlParser baseXmlParser = new BaseXmlParser(xStream) { };
 
-    private final XmlConfigurator<BaseProcessNode> xmlConfigurator = new XmlConfiguratorImpl(baseXmlParser);
+    private final XmlConfigurator<BaseProcessNode> xmlConfigurator = new XmlConfiguratorImpl(baseXmlParser,
+            new ValidatorPipLineImpl(), new XmlConfiguration());
 
     public XmlConfiguratorImplTest() {
         super(FILE_PATH);
@@ -38,10 +41,10 @@ public class XmlConfiguratorImplTest extends XmlProcessor {
 
     @Test
     public void xmlConfiguratorImplBuildTest() {
-        InputStream mundoXmlStream = getClass().getResourceAsStream("/mundo.cfg.xml");
         xStream.processAnnotations(XmlSchema.class);
         xStream.allowTypesByWildcard(new String[] {"com.bluslee.mundo.**"});
-        Repository<BaseProcessNode> repository = xmlConfigurator.inputStream(mundoXmlStream).build();
+        xmlConfigurator.setProperty("mundo.xml-path", "/mundo.cfg.xml");
+        Repository<BaseProcessNode> repository = xmlConfigurator.build();
         Set<ProcessEngine<BaseProcessNode>> processes = repository.processes();
         List<XmlSchema.ProcessSchema> dom4jProcessSchemas = getProcessSchemas();
         Map<List<String>, List<XmlSchema.ProcessSchema>> expectDistinctProcessSchemas = dom4jProcessSchemas
