@@ -1,14 +1,25 @@
-# mundo
+# [mundo - 轻量级，可扩展的流程引擎](http://www.bluslee.com)
+
+**官方网站: http://www.bluslee.com**
+
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/sizzlecar/mundo/Java%20CI)
+![GitHub](https://img.shields.io/github/license/sizzlecar/mundo)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/sizzlecar/mundo)
+![GitHub last commit](https://img.shields.io/github/last-commit/sizzlecar/mundo)
 
 ## mundo是什么？
 
-mundo是一个已保持简单，职责单一为设计原则，轻量级，灵活的，高性能的流程引擎。
+mundo是一个轻量级，可扩展的流程引擎。
 
 ## mundo可以做什么？
 
-我们工作生活中有各种各样的流程，比如最常见的请假流程，可能只需要一个人审批。也有特定业务的复杂流程，比如零售行业
-中供应商向零售上申报商品的流程，可能需要十几个岗位审批，不同的业务条件审批的流程也是不同的，还可能为了加快审批的速度
-还会增加并行审批的节点。以上涉及到的流程都可以交给mundo管理。
+我们工作生活中有各种各样的流程，比如公司的请假流程，银行的贷款流程，特定的业务流程。
+1. 需要根据业务条件动态跳过某些流程中的节点
+2. 同一个流程有不同的版本，同时存在
+3. 涉及到复杂的串行与并行同时存在的流程
+4. 需要对流程进行热加载(规划中)
+
+以上涉及到的流程场景，全都可以交给mundo管理
 
 ## 快速开始
 
@@ -24,13 +35,31 @@ mundo是一个已保持简单，职责单一为设计原则，轻量级，灵活
 
 2. 定义流程
 
-mundo目前支持XML定义流程，XML的格式示例如下，根标签为mundo，mundo标签可以有多个process标签，一个process就对应一个流程，
-process标签有两个属性，id与name，id是流程的唯一标识，不同的流程id不可以重复。一个process标签可以有多个子标签，比如start标签代表流程的开始，
-一个完整的流程必须从start开始到end结束，接下来是activity标签代表流程中业务节点，比如示例中的“供应商创建单据”等，当遇到有分支的情况，比如审批
-这个时候我们就需要网关标签，代表后续出现分支，比如示例的的审批，只会出现两种通过或者不通过，这个时候我就需要排他网关exclusiveGateway，流程中
-只有业务节点还是不完整的，还需要一些连接，来明确节点与节点之间的流转，这就link标签，通过指定link标签的sourceId，targetId来描述业务节点的流转情况
-由网关发出的link需要指定一个表达式，mundo会根据表达式以及参数计算出走哪一个link,process中所有的子标签都有id与name属性，同一个process中，不同的
-标签id不可以重复。
+mundo目前支持XML定义流程,XML中允许出现的标签见下面的表格
+
+|  标签   | 描述  | 属性  |  属性描述  |
+|  ----  | ----  |  ----  | ----  |
+|  mundo | XML配置文件的根标签，一个XML文件有且只能有一个 |   |    |
+| process  | 流程标签，一个process标签就对应一个业务流程定义，一个mundo标签下，可以有多个process标签| id  |  流程的id与version构成流程的唯一键，一个XML文件内 process的id与version不能重复，否则会被覆盖 |
+|   | | name  |  流程的名称 |
+|   | | version  |  流程的版本号， 流程的id与version构成流程的唯一键，一个XML文件内 process标签的id与version不能重复，否则会被覆盖|
+|  start | 开始标签，代表流程的开始 | id  | 标签的唯一标识，一个process标签内不能出现id重复的标签，一个process标签下可以出现多个 |
+|   |  | name  | 标签的名称 |
+|  activity | 活动标签，代表流程中活动，比如某人的审批，某人的修改等 | id  | 标签的唯一标识，一个process标签内不能出现id重复的标签，一个process标签下可以出现多个 |
+|   |  | name  | 标签的名称 |
+|  exclusiveGateway | 排他网关标签，代表流程下一步出现分支，根据条件只会进入其中一个分支 | id  | 标签的唯一标识，一个process标签内不能出现id重复的标签，一个process标签下可以出现多个 |
+|   |  | name  | 标签的名称 |
+|  parallelGateway | 并行网关标签，代表流程下一步出现分支，流程可以同时到达下一步的多个分子 | id  | 标签的唯一标识，一个process标签内不能出现id重复的标签，一个process标签下可以出现多个 |
+|   |  | name  | 标签的名称 |
+|  link | link标签，代表流程中各个节点的流向，流程中的每个节点都至少有一条link | id  | 标签的唯一标识，一个process标签内不能出现id重复的标签，一个process标签下可以出现多个 |
+|   |  | name  | 标签的名称 |
+|   |  | sourceId  | link的出发节点id |
+|   |  | targetId  | link的目的节点id |
+|  conditionExpression | 表达式标签，代表由出发节点到目的节点需要满足的条件，使用OGNL解析表达式 |   |  |
+|  end | 结束标签，代表流程的终点 | id  | 标签的唯一标识，一个process标签内不能出现id重复的标签，一个process标签下可以出现多个 |
+|   |  | name  | 标签的名称 |
+
+如下是一个简单的完整的XML配置文件
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -38,13 +67,11 @@ process标签有两个属性，id与name，id是流程的唯一标识，不同�
     <process id="process-001" name="简单流程" version="0">
         <start id="START" name="开始"/>
         <activity id="SUP_CREATE" name="供应商创建单据"/>
-        <activity id="SUP_SUBMIT" name="供应商提交单据"/>
         <activity id="BUYER_APPROVE" name="采购审批单据"/>
         <activity id="SUP_UPDATE" name="供应商修改单据"/>
         <exclusiveGateway id="BUYER-APPROVE-GATEWAY" name="采购审批"/>
         <link id="START_SUP_CREATE" name="START_SUP_CREATE" sourceId="START" targetId="SUP_CREATE"/>
-        <link id="SUP_CREATE_SUP_SUBMIT" name="SUP_CREATE_SUP_SUBMIT" sourceId="SUP_CREATE" targetId="SUP_SUBMIT"/>
-        <link id="SUP_SUBMIT_BUYER_APPROVE" name="SUP_SUBMIT_BUYER_APPROVE" sourceId="SUP_SUBMIT" targetId="BUYER_APPROVE"/>
+        <link id="SUP_CREATE_BUYER_APPROVE" name="SUP_CREATE_BUYER_APPROVE" sourceId="SUP_CREATE" targetId="BUYER_APPROVE"/>
         <link id="BUYER_APPROVE_BUYER-APPROVE-GATEWAY" name="BUYER_APPROVE_BUYER-APPROVE-GATEWAY" sourceId="BUYER_APPROVE" targetId="buyer-approve-gateway"/>
         <link id="BUYER-APPROVE-GATEWAY_SUP_UPDATE" name="BUYER-APPROVE-GATEWAY_SUP_UPDATE" sourceId="BUYER-APPROVE-GATEWAY" targetId="SUP_UPDATE">
             <conditionExpression>#approve == false</conditionExpression>
@@ -58,7 +85,7 @@ process标签有两个属性，id与name，id是流程的唯一标识，不同�
 </mundo>
 ```   
 
-3. 启动流程
+3. 示例代码
 
 ```java
 package com.bluslee.mundo.process.test;
@@ -79,13 +106,12 @@ import java.util.HashMap;
 public class BaseBootstrapTest {
 
     @Test
-    public void defaultConfiguratorTest() {
+    public void bootstrapTest() {
         //1. 设置配置文件的路径，属性名必须是mundo.xml-path
         Configuration configuration = new XmlConfiguration();
         configuration.setProperty("mundo.xml-path", "/mundo.cfg.xml");
         //2. 用Bootstrap的示例，传入配置构建Repository，调用build方法，这个时候配置器会根据配置解析XML，验证，加载定义的流程，返回 XML定义的流程的集合，即Repository
         Repository<BaseProcessNode> repository = Bootstrap.getInstance().build(configuration);
-        Assert.assertNotNull(repository);
         //3. 从Repository查找流程,可以获取全部流程，也可以根据id,version进行查询，如果不传version默认返回最新版本的流程
         ProcessEngine<BaseProcessNode> processEngine001 = repository.getProcess("process-001");
         //4. 调用流程流程接口
@@ -97,9 +123,10 @@ public class BaseBootstrapTest {
         BaseProcessNode node001 = processEngine001.getProcessNode("node-001");
         //4.4 根据当前节点，以及参数找出下一个节点.
         Map<String, Object> paraMap = new HashMap<>();
+        //XML中表达式中出现的参数，使用OGNL解析
         paraMap.put("#approve", true);
-        ProcessNodeWrap<BaseProcessNode> nextProcessNodeWrap = processEngine001.getNextProcessNode(node001, paraMap);
         //4.5 获取下一个节点
+        ProcessNodeWrap<BaseProcessNode> nextProcessNodeWrap = processEngine001.getNextProcessNode(node001, paraMap);
         if (nextProcessNodeWrap.parallel()) {
             //下一个节点是并行行节可能返回多个节点
             Set<BaseProcessNode> parallelNodes = nextProcessNodeWrap.getParallelNodes();
