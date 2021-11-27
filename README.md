@@ -3,7 +3,8 @@
 **官方网站: http://www.bluslee.com**
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/sizzlecar/mundo/Java%20CI)
-![GitHub](https://img.shields.io/github/license/sizzlecar/mundo)
+![License](https://img.shields.io/github/license/sizzlecar/mundo)
+![GitHub stars](https://img.shields.io/github/stars/sizzlecar/mundo)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/sizzlecar/mundo)
 ![GitHub last commit](https://img.shields.io/github/last-commit/sizzlecar/mundo)
 
@@ -150,3 +151,8 @@ mundo关于流程的定义参考了BPMN规范，但尽可能的保持简单。Fl
 mundo的思路与Flowable也有所不同，不论业务有多少个流程实例，mundo中一个流程定义只有一个流程实例，业务中流程实例只需要保存当前实例处于流程的位置
 当流程节点需要进行下一步时，业务侧提供当前节点，业务参数，mundo根据流程的定义计算出下一步返回给业务侧。总结一下flowable是一个大的全的应用，而mundo
 是一个简单高效的流程引擎组件。
+
+## 项目地址
+
+[GitHub](https://github.com/sizzlecar/mundo)
+[gitee](https://gitee.com/sizzle_carl/mundo)
