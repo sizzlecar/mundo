@@ -9,6 +9,7 @@ import com.bluslee.mundo.xml.XmlRepositoryFactoryImpl;
 import com.bluslee.mundo.xml.XmlSchema;
 import com.bluslee.mundo.xml.XmlConfiguration;
 import com.bluslee.mundo.xml.base.BaseXmlParser;
+import com.bluslee.mundo.xml.base.XmlConstants;
 import com.thoughtworks.xstream.XStream;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -43,7 +44,7 @@ public class XmlConfiguratorImplTest extends XmlProcessor {
 
     @Test
     public void xmlConfiguratorImplBuildTest() {
-        xmlConfiguration.setProperty("mundo.xml-path", "/mundo.cfg.xml");
+        xmlConfiguration.setProperty(XmlConstants.ConfigKey.XML_PATH_CONFIG_NAME, "/mundo.cfg.xml");
         byte[] xmlByte = xmlRepositoryBuilder.load(xmlConfiguration);
         XmlSchema xmlSchema = xmlRepositoryBuilder.parse(xmlConfiguration, xmlByte);
         Repository<BaseProcessNode> repository = xmlRepositoryBuilder.build(xmlConfiguration, xmlSchema);

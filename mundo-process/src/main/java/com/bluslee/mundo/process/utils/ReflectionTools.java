@@ -2,6 +2,7 @@ package com.bluslee.mundo.process.utils;
 
 import com.bluslee.mundo.core.configuration.Configuration;
 import com.bluslee.mundo.core.exception.MundoException;
+import com.bluslee.mundo.process.constants.Constants;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.reflections.Reflections;
@@ -31,7 +32,7 @@ public final class ReflectionTools {
     private final Map<String, String> defaultModePackageMap = new HashMap<>();
 
     private ReflectionTools() {
-        defaultModePackageMap.put("xml", "com.bluslee.mundo.xml");
+        defaultModePackageMap.put(Constants.ConfigKey.Mode.XML, Constants.ConfigKey.Mode.XML_PACKAGE_NAME);
     }
 
     public static ReflectionTools instance() {
@@ -71,7 +72,7 @@ public final class ReflectionTools {
     public <T> Set<Class<? extends T>> subTypes(final Configuration configuration, final Class<T> clazz) {
         String defaultPackageName = defaultModePackageMap.get(configuration.getMode());
         if (defaultPackageName == null) {
-            Object configPackage = configuration.getProperty("mode.package");
+            Object configPackage = configuration.getProperty(Constants.ConfigKey.MODE_PACKAGE_NAME);
             if (configPackage == null) {
                 return null;
             }
@@ -130,7 +131,7 @@ public final class ReflectionTools {
     public <T> T firstNoParamConstructorSubInstance(final Configuration configuration, final Class<T> clazz) {
         String defaultPackageName = defaultModePackageMap.get(configuration.getMode());
         if (defaultPackageName == null) {
-            Object configPackage = configuration.getProperty("mode.package");
+            Object configPackage = configuration.getProperty(Constants.ConfigKey.MODE_PACKAGE_NAME);
             if (configPackage == null) {
                 return null;
             }

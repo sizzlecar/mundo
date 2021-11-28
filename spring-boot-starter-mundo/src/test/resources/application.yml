@@ -1,0 +1,4 @@
+mundo:
+  enabled: true
+  xml:
+    xml-path: /mundo.cfg.xml
