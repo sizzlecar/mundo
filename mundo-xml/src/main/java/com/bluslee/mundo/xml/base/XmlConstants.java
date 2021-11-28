@@ -14,12 +14,17 @@ public abstract class XmlConstants {
         /**
          * XML配置文件路径默认属性名.
          */
-        public static final String XML_PATH_CONFIG_NAME = "mundo.xml-path";
+        public static final String XML_PATH_CONFIG_NAME = "mundo.xml.xml-path";
 
         /**
          * XML字符串配置属性名.
          */
-        public static final String XML_STR_CONFIG_NAME = "mundo.xml-str";
+        public static final String XML_STR_CONFIG_NAME = "mundo.xml.xml-str";
+
+        /**
+         * XML配置包名.
+         */
+        public static final String XML_PACKAGE_NAME = "mundo.xml.xml-package-name";
 
         /**
          * XML对应XSD文件路径.

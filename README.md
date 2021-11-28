@@ -27,11 +27,21 @@ mundo是一个轻量级，可扩展的流程引擎。
 1. 添加mundo依赖，mundo目前还没有发布到maven仓库，请手动下载
 
 ```xml
-<dependency>
-    <groupId>com.bluslee</groupId>
-    <artifactId>mundo-process</artifactId>
-    <version>last.version</version>
-</dependency>
+<dependencys>
+    <!--非spring环境-->
+    <dependency>
+        <groupId>com.bluslee</groupId>
+        <artifactId>mundo-process</artifactId>
+        <version>last.version</version>
+    </dependency>
+
+    <!--springboot-->
+    <dependency>
+        <groupId>com.bluslee</groupId>
+        <artifactId>spring-boot-starter-mundo</artifactId>
+        <version>last.version</version>
+    </dependency>
+</dependencys>
 ```
 
 2. 定义流程
@@ -88,6 +98,7 @@ mundo目前支持XML定义流程,XML中允许出现的标签见下面的表格
 
 3. 示例代码
 
+- 非spring环境
 ```java
 package com.bluslee.mundo.process.test;
 
@@ -105,12 +116,12 @@ import java.util.HashMap;
  * @date 2021/11/9
  */
 public class BaseBootstrapTest {
-
+    
     @Test
     public void bootstrapTest() {
         //1. 设置配置文件的路径，属性名必须是mundo.xml-path
         Configuration configuration = new XmlConfiguration();
-        configuration.setProperty("mundo.xml-path", "/mundo.cfg.xml");
+        configuration.setProperty(XmlConstants.ConfigKey.XML_PATH_CONFIG_NAME, "/mundo.cfg.xml");
         //2. 用Bootstrap的示例，传入配置构建Repository，调用build方法，这个时候配置器会根据配置解析XML，验证，加载定义的流程，返回 XML定义的流程的集合，即Repository
         Repository<BaseProcessNode> repository = Bootstrap.getInstance().build(configuration);
         //3. 从Repository查找流程,可以获取全部流程，也可以根据id,version进行查询，如果不传version默认返回最新版本的流程
@@ -137,6 +148,72 @@ public class BaseBootstrapTest {
         }
     }
 }
+```
+
+- springboot
+
+```yaml
+mundo:
+  enabled: true
+  xml:
+    xml-path: /mundo.cfg.xml
+```
+
+```java
+package com.bluslee.mundo.springboot.starter.test;
+
+import com.bluslee.mundo.core.process.base.BaseProcessNode;
+import com.bluslee.mundo.core.process.base.Repository;
+import com.bluslee.mundo.xml.XmlSchema;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
+ * MundoStarterTest.
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = MundoStarterTest.class)
+@SpringBootApplication
+public class MundoStarterTest {
+
+    @Autowired
+    private Repository<? extends BaseProcessNode> repository;
+
+    @Test
+    public void test() {
+        ProcessEngine<BaseProcessNode> processEngine001 = repository.getProcess("process-001");
+        //1. 调用流程流程接口
+        //1.1 获取当前流程id
+        processEngine001.getId();
+        //1.2 获取当前引擎版本号.
+        processEngine001.getVersion();
+        //1.3 根据id在当前流程中寻找对应的node
+        BaseProcessNode node001 = processEngine001.getProcessNode("node-001");
+        //1.4 根据当前节点，以及参数找出下一个节点.
+        Map<String, Object> paraMap = new HashMap<>();
+        //XML中表达式中出现的参数，使用OGNL解析
+        paraMap.put("#approve", true);
+        //1.5 获取下一个节点
+        ProcessNodeWrap<BaseProcessNode> nextProcessNodeWrap = processEngine001.getNextProcessNode(node001, paraMap);
+        if (nextProcessNodeWrap.parallel()) {
+            //下一个节点是并行行节可能返回多个节点
+            Set<BaseProcessNode> parallelNodes = nextProcessNodeWrap.getParallelNodes();
+        }else {
+            //非并行节点
+            BaseProcessNode nextNode = nextProcessNodeWrap.get();
+        }
+    }
+}
+
 ```
 
 ## 为什么要选择mundo

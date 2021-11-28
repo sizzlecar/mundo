@@ -1,36 +1,37 @@
-package com.bluslee.mundo.process.test;
+package com.bluslee.mundo.springboot.starter.test;
 
-import com.bluslee.mundo.core.configuration.Configuration;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.Repository;
-import com.bluslee.mundo.process.Bootstrap;
-import com.bluslee.mundo.xml.XmlConfiguration;
 import com.bluslee.mundo.xml.XmlSchema;
-import com.bluslee.mundo.xml.base.XmlConstants;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * BaseBootstrapTest.
- * @author carl.che
+ * MundoStarterTest.
  */
-public class BaseMainBootstrapTest extends XmlProcessor {
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = MundoStarterTest.class)
+@SpringBootApplication
+public class MundoStarterTest extends XmlProcessor {
 
-    private static final String FILE_PATH = "/mundo.cfg.xml";
+    @Autowired
+    private Repository<? extends BaseProcessNode> repository;
 
-    public BaseMainBootstrapTest() {
-        super(FILE_PATH);
+    public MundoStarterTest() {
+        super("/mundo.cfg.xml");
     }
 
     @Test
-    public void buildTest() {
-        Configuration configuration = new XmlConfiguration();
-        configuration.setProperty(XmlConstants.ConfigKey.XML_PATH_CONFIG_NAME, FILE_PATH);
-        Repository<BaseProcessNode> repository = Bootstrap.getInstance().build(configuration);
+    public void test() {
         Assert.assertNotNull(repository);
         List<XmlSchema.ProcessSchema> dom4jProcessSchemas = getProcessSchemas();
         Map<List<String>, List<XmlSchema.ProcessSchema>> expectDistinctProcessSchemas = dom4jProcessSchemas

@@ -12,6 +12,7 @@
         <module>mundo-core</module>
         <module>mundo-xml</module>
         <module>mundo-process</module>
+        <module>spring-boot-starter-mundo</module>
     </modules>
 
     <name>mundo</name>
@@ -41,6 +42,7 @@
         <dom4j.version>2.1.3</dom4j.version>
         <jaxen.version>1.2.0</jaxen.version>
         <reflections.version>0.10.2</reflections.version>
+        <spring.boot.starter.version>2.6.0</spring.boot.starter.version>
     </properties>
 
     <dependencyManagement>
@@ -74,6 +76,12 @@
             <dependency>
                 <groupId>com.bluslee</groupId>
                 <artifactId>mundo-xml</artifactId>
+                <version>${mundo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.bluslee</groupId>
+                <artifactId>mundo-process</artifactId>
                 <version>${mundo.version}</version>
             </dependency>
 
@@ -132,6 +140,19 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring.boot.starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.starter.version}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>
