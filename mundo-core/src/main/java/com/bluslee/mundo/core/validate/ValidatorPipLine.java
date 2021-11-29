@@ -8,7 +8,6 @@ import java.util.List;
  * Validator流水线，提供从不同方向进行进行校验的服务.
  *
  * @author carl.che
- * @date 2021/11/24
  */
 public interface ValidatorPipLine {
 

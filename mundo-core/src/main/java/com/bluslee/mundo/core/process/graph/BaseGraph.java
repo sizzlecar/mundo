@@ -131,7 +131,7 @@ public interface BaseGraph<N> {
     /**
      * 有向图：判断当前图中是否存在这样的边 nodeU -> nodeV<br/>
      * 无向图：判断当前图中是否存在这样的边 nodeU - nodeV，nodeV - nodeU.
-     *
+     * @param edge 边
      * @return true 有关联，false 无关联
      */
     boolean hasEdgeConnecting(Edge<N> edge);
