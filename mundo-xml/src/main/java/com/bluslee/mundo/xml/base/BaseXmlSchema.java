@@ -48,7 +48,6 @@ public abstract class BaseXmlSchema {
      * setId.
      *
      * @param id id
-     * @return id
      */
     public void setId(final String id) {
         this.id = id;

@@ -37,6 +37,7 @@ public interface ValidatorPipLine {
      * @param validateStrategy 校验策略
      * @param model 待校验的model
      * @param lifeCycle 当前生命周期
+     * @param <T> 待校验的model类型
      */
     default <T> void validate(final Configuration configuration,
                               final ValidateStrategy<T> validateStrategy,
@@ -45,6 +46,10 @@ public interface ValidatorPipLine {
         validateStrategy.validateStrategy(configuration, this, model, lifeCycle);
     }
 
+    /**
+     * 校验策略函数式接口.
+     * @param <T> 待校验的model类型
+     */
     @FunctionalInterface
     interface ValidateStrategy<T> {
 

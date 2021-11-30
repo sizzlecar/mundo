@@ -12,7 +12,6 @@ import java.util.Properties;
 /**
  * XML 配置相关.
  * @author carl.che
- * @date 2021/11/24
  */
 public class XmlConfiguration implements Configuration {
 

@@ -32,7 +32,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：向图中添加一条 nodeU -> nodeV 值为value的边，如果边已存在则更新值<br/>
+     * 有向图：向图中添加一条 nodeU to nodeV 值为value的边，如果边已存在则更新值
      * 无向图：向图中添加一条 nodeU - nodeV 值为value的边，如果边已存在则更新值.
      *
      * @param nodeV nodeV
@@ -46,7 +46,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：向图中添加一条 nodeU -> nodeV 值为value的边，如果边已存在则更新值<br/>
+     * 有向图：向图中添加一条 nodeU to nodeV 值为value的边，如果边已存在则更新值
      * 无向图：向图中添加一条 nodeU - nodeV 值为value的边，如果边已存在则更新值.
      *
      * @param edge  边
@@ -70,7 +70,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：删除 nodeU -> nodeV 这样的边 如果在图中存在的话<br/>
+     * 有向图：删除 nodeU to nodeV 这样的边 如果在图中存在的话
      * 无向图：删除 nodeU - nodeV 这样的边 如果在图中存在的话.
      *
      * @param nodeU nodeU
@@ -83,7 +83,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：删除 nodeU -> nodeV 这样的边 如果在图中存在的话<br/>
+     * 有向图：删除 nodeU to nodeV 这样的边 如果在图中存在的话
      * 无向图：删除 nodeU - nodeV 这样的边 如果在图中存在的话.
      *
      * @param edge 边
@@ -150,7 +150,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：获取指定节点的所有的前驱节点(关联边的source节点)<br/>
+     * 有向图：获取指定节点的所有的前驱节点(关联边的source节点)
      * 无向图：等于 adjacentNodes.
      *
      * @param node 指定节点
@@ -162,7 +162,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：获取指定节点所有的后驱节点(关联边的target节点)<br/>
+     * 有向图：获取指定节点所有的后驱节点(关联边的target节点)
      * 无向图：等于 adjacentNodes(node).
      *
      * @param node 指定节点
@@ -174,7 +174,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：获取指定节点的所有关联的边<br/>
+     * 有向图：获取指定节点的所有关联的边
      * 无向图：获取指定节点的所有关联的边.
      *
      * @param node 指定节点
@@ -190,7 +190,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：获取指定节点相关联边的数量(出边 + 入边)<br/>
+     * 有向图：获取指定节点相关联边的数量(出边 + 入边)
      * 无向图：获取指定节点相关联边的数量.
      *
      * @param node 指定节点
@@ -202,7 +202,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：获取指定节点入边的数量<br/>
+     * 有向图：获取指定节点入边的数量
      * 无向图：获取指定节点相关联边的数量.
      *
      * @param node 指定节点
@@ -214,7 +214,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：获取指定节点出边的数量<br/>
+     * 有向图：获取指定节点出边的数量
      * 无向图：获取指定节点相关联边的数量.
      *
      * @param node 指定节点
@@ -226,7 +226,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：判断当前图中是否存在这样的边 nodeU -> nodeV<br/>
+     * 有向图：判断当前图中是否存在这样的边 nodeU to nodeV
      * 无向图：判断当前图中是否存在这样的边 nodeU - nodeV，nodeV - nodeU.
      *
      * @param nodeU nodeU
@@ -239,7 +239,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：判断当前图中是否存在这样的边 nodeU -> nodeV<br/>
+     * 有向图：判断当前图中是否存在这样的边 nodeU to nodeV
      * 无向图：判断当前图中是否存在这样的边 nodeU - nodeV，nodeV - nodeU.
      *
      * @return true 有关联，false 无关联
@@ -250,7 +250,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：如果途中存在 nodeU -> nodeV 则返回该边的值，否则返回null<br/>
+     * 有向图：如果途中存在 nodeU to nodeV 则返回该边的值，否则返回null
      * 无向图：如果途中存在 nodeU - nodeV 则返回该边的值，否则返回null.
      *
      * @param nodeU nodeU
@@ -263,7 +263,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：如果途中存在 nodeU -> nodeV 则返回该边的值，否则返回null<br/>
+     * 有向图：如果途中存在 nodeU to nodeV 则返回该边的值，否则返回null
      * 无向图：如果途中存在 nodeU - nodeV 则返回该边的值，否则返回null.
      *
      * @param edge 边
@@ -275,7 +275,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：如果图中包含 nodeU -> nodeV 的边则返回该边对应的值，否则返回defaultValue<br/>
+     * 有向图：如果图中包含 nodeU to nodeV 的边则返回该边对应的值，否则返回defaultValue
      * 无向图：如果图中包含 nodeU - nodeV 的边则返回该边对应的值，否则返回defaultValue.
      *
      * @param nodeU        nodeU
@@ -289,7 +289,7 @@ public class DirectedValueGraphImpl<N extends BaseProcessNode, V> extends BaseDi
     }
 
     /**
-     * 有向图：如果图中包含 nodeU -> nodeV 的边则返回该边对应的值，否则返回defaultValue<br/>
+     * 有向图：如果图中包含 nodeU  nodeV 的边则返回该边对应的值，否则返回defaultValue
      * 无向图：如果图中包含 nodeU - nodeV 的边则返回该边对应的值，否则返回defaultValue.
      *
      * @param edge         edge

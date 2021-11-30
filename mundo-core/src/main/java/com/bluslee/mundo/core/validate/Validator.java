@@ -7,7 +7,6 @@ import com.bluslee.mundo.core.exception.MundoException;
 /**
  * Validator接口，提供校验服务.
  * @author carl.che
- * @date 2021/11/24
  */
 public interface Validator {
 
@@ -29,7 +28,7 @@ public interface Validator {
 
     /**
      * 验证顺序，升序.
-     * @return
+     * @return 顺序，越小优先级越高
      */
     int order();
 }

@@ -12,7 +12,6 @@ import java.util.Set;
 /**
  * 常规校验.
  * @author carl.che
- * @date 2021/11/24
  */
 public class GeneralValidator implements Validator {
 

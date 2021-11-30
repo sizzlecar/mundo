@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 /**
  * ValidatorPipLine实现.
  * @author carl.che
- * @date 2021/11/24
  */
 public class ValidatorPipLineImpl implements ValidatorPipLine {
 
