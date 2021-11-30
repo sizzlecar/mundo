@@ -17,7 +17,6 @@ public abstract class BaseActivity extends BaseProcessNode {
     }
 
     /**
-     *
      * 无参构造函数.
      */
     public BaseActivity() {
