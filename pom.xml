@@ -307,7 +307,10 @@
                         <aggregate>true</aggregate>
                         <encoding>${project.build.sourceEncoding}</encoding>
                         <quiet>true</quiet>
-                        <format>xml</format>
+                        <formats>
+                            <format>html</format>
+                            <format>xml</format>
+                        </formats>
                         <instrumentation>
                             <ignoreTrivial>true</ignoreTrivial>
                         </instrumentation>

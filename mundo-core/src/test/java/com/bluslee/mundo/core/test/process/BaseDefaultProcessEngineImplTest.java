@@ -12,6 +12,7 @@ import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessNodeWrap;
 import com.bluslee.mundo.core.process.graph.DirectedValueGraphImpl;
 import com.bluslee.mundo.core.process.graph.Edge;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -111,7 +112,7 @@ public class BaseDefaultProcessEngineImplTest {
     public void getProcessNodeTest() {
         processNodeMap.forEach((id, node) -> {
             BaseProcessNode processNode = baseDefaultProcessEngine.getProcessNode(id);
-            Assert.assertThat(processNode.getId(), Matchers.equalTo(id));
+            MatcherAssert.assertThat(processNode.getId(), Matchers.equalTo(id));
         });
     }
 
