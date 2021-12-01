@@ -205,9 +205,9 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.1.0</version>
                     <configuration>
-                        <charset>UTF-8</charset>
-                        <encoding>UTF-8</encoding>
-                        <docencoding>UTF-8</docencoding>
+                        <charset>${project.build.sourceEncoding}</charset>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <docencoding>${project.build.sourceEncoding}</docencoding>
                     </configuration>
                     <executions>
                         <execution>
@@ -279,7 +279,7 @@
                     <configuration>
                         <configLocation>/checkstyle.xml</configLocation>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        <encoding>UTF-8</encoding>
+                        <encoding>${project.build.sourceEncoding}</encoding>
                         <consoleOutput>true</consoleOutput>
                     </configuration>
                     <dependencies>
@@ -295,11 +295,22 @@
                     <artifactId>cobertura-maven-plugin</artifactId>
                     <version>2.7</version>
                     <configuration>
-                        <formats>
-                            <format>html</format>
-                            <format>xml</format>
-                        </formats>
-                        <check/>
+                        <check>
+                            <branchRate>70</branchRate>
+                            <lineRate>70</lineRate>
+                            <haltOnFailure>true</haltOnFailure>
+                            <totalBranchRate>70</totalBranchRate>
+                            <totalLineRate>70</totalLineRate>
+                            <packageLineRate>70</packageLineRate>
+                            <packageBranchRate>70</packageBranchRate>
+                        </check>
+                        <aggregate>true</aggregate>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <quiet>true</quiet>
+                        <format>xml</format>
+                        <instrumentation>
+                            <ignoreTrivial>true</ignoreTrivial>
+                        </instrumentation>
                     </configuration>
                 </plugin>
             </plugins>
