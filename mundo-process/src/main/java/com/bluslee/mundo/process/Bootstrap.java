@@ -49,7 +49,7 @@ public final class Bootstrap implements BaseMainBootstrap {
         Object loadRes = repositoryFactory.load(configuration);
         validatorPipLine.validate(configuration, validateStrategy, loadRes, RepositoryFactory.LifeCycle.LOAD);
         Object parseRes = repositoryFactory.parse(configuration, loadRes);
-        validatorPipLine.validate(configuration, validateStrategy, loadRes, RepositoryFactory.LifeCycle.PARSE);
+        validatorPipLine.validate(configuration, validateStrategy, parseRes, RepositoryFactory.LifeCycle.PARSE);
         return repositoryFactory.build(configuration, parseRes);
     }
 

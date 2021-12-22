@@ -18,12 +18,12 @@ import java.util.Optional;
  * @author carl.che
  */
 @EnableConfigurationProperties(MundoProperties.class)
-@ConditionalOnProperty(prefix = "mundo", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "mundo", name = "enabled", havingValue = "true")
 @Configuration
 public class MundoAutoConfiguration {
 
     @Bean
-    public Repository<? extends BaseProcessNode> createBaseMainBootstrap(final MundoProperties mundoProperties) {
+    public Repository<? extends BaseProcessNode> createRepository(final MundoProperties mundoProperties) {
         MundoProperties.Xml mundoPropertiesXml = mundoProperties.getXml();
         com.bluslee.mundo.core.configuration.Configuration mundoConfig = null;
         if (mundoPropertiesXml != null) {
