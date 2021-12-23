@@ -1,5 +1,6 @@
 package com.bluslee.mundo.springboot.starter.test;
 
+import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.springboot.starter.MundoAutoConfiguration;
@@ -48,6 +49,13 @@ public class MundoAutoConfigurationEnabledTrueTest extends MundoStarterTest {
                 .stream()
                 .collect(Collectors.groupingBy(processSchema -> Arrays.asList(processSchema.getId(), processSchema.getVersion().toString())));
         Assert.assertEquals(expectDistinctProcessSchemas.size(), repository.processes().size());
+    }
+
+    @Test
+    public void createBeanNoXmlConfigTest() {
+        MundoAutoConfiguration mundoAutoConfiguration = new MundoAutoConfiguration();
+        MundoProperties noXmlConfig = new MundoProperties();
+        Assert.assertThrows(MundoException.class, () -> mundoAutoConfiguration.createRepository(noXmlConfig));
     }
 
 }
