@@ -5,12 +5,8 @@ import com.bluslee.mundo.springboot.starter.MundoProperties;
 import com.google.common.base.CaseFormat;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -22,11 +18,8 @@ import java.util.Optional;
  * 读取配置mundo.enabled == true的配置文件单元测试.
  * @author carl.che
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = MundoPropertiesEnabledTrueTest.class)
-@SpringBootApplication
 @ActiveProfiles(value = "enabled-true")
-public class MundoPropertiesEnabledTrueTest {
+public class MundoPropertiesEnabledTrueTest extends MundoStarterTest {
 
     @Autowired(required = false)
     private MundoProperties actualProperties;
