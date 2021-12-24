@@ -28,10 +28,15 @@ public final class ReflectionTools {
             .maximumSize(10)
             .build();
 
-    private final Map<String, String> defaultModePackageMap = new HashMap<>();
+    private final Map<String, String> defaultModePackageMap;
 
     private ReflectionTools() {
+        defaultModePackageMap = new HashMap<>();
         defaultModePackageMap.put(Constants.ConfigKey.Mode.XML, Constants.ConfigKey.Mode.XML_PACKAGE_NAME);
+    }
+
+    private ReflectionTools(final Map<String, String> defaultModePackageMap) {
+        this.defaultModePackageMap = defaultModePackageMap;
     }
 
     public static ReflectionTools instance() {
@@ -39,6 +44,17 @@ public final class ReflectionTools {
             synchronized (ReflectionTools.class) {
                 if (reflectionTools == null) {
                     reflectionTools = new ReflectionTools();
+                }
+            }
+        }
+        return reflectionTools;
+    }
+
+    public static ReflectionTools instance(final Map<String, String> defaultModePackageMap) {
+        if (reflectionTools == null) {
+            synchronized (ReflectionTools.class) {
+                if (reflectionTools == null) {
+                    reflectionTools = new ReflectionTools(defaultModePackageMap);
                 }
             }
         }
