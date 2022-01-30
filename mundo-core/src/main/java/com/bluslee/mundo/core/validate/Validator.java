@@ -1,7 +1,7 @@
 package com.bluslee.mundo.core.validate;
 
 import com.bluslee.mundo.core.configuration.Configuration;
-import com.bluslee.mundo.core.configuration.RepositoryFactory;
+import com.bluslee.mundo.core.constant.LifeCycle;
 import com.bluslee.mundo.core.exception.MundoException;
 
 /**
@@ -24,7 +24,7 @@ public interface Validator {
      * @param lifeCycle build的哪一阶段
      * @return true 需要校验，false 不需要校验
      */
-    boolean match(RepositoryFactory.LifeCycle lifeCycle);
+    boolean match(LifeCycle lifeCycle);
 
     /**
      * 验证顺序，升序.

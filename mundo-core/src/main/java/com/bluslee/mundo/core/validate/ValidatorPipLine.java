@@ -1,7 +1,7 @@
 package com.bluslee.mundo.core.validate;
 
 import com.bluslee.mundo.core.configuration.Configuration;
-import com.bluslee.mundo.core.configuration.RepositoryFactory;
+import com.bluslee.mundo.core.constant.LifeCycle;
 import java.util.List;
 
 /**
@@ -42,7 +42,7 @@ public interface ValidatorPipLine {
     default <T> void validate(final Configuration configuration,
                               final ValidateStrategy<T> validateStrategy,
                               final T model,
-                              final RepositoryFactory.LifeCycle lifeCycle) {
+                              final LifeCycle lifeCycle) {
         validateStrategy.validateStrategy(configuration, this, model, lifeCycle);
     }
 
@@ -64,7 +64,7 @@ public interface ValidatorPipLine {
         void validateStrategy(Configuration configuration,
                               ValidatorPipLine validatorPipLine,
                               T model,
-                              RepositoryFactory.LifeCycle lifeCycle);
+                              LifeCycle lifeCycle);
 
         /**
          * 默认的验证策略，依次校验.

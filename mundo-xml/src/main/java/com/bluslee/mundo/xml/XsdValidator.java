@@ -1,7 +1,7 @@
 package com.bluslee.mundo.xml;
 
 import com.bluslee.mundo.core.configuration.Configuration;
-import com.bluslee.mundo.core.configuration.RepositoryFactory;
+import com.bluslee.mundo.core.constant.LifeCycle;
 import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.core.validate.Validator;
 import com.bluslee.mundo.xml.base.XmlConstants;
@@ -24,7 +24,7 @@ public class XsdValidator implements Validator {
 
     private final Schema schema;
 
-    private final RepositoryFactory.LifeCycle matchLifeCycle;
+    private final LifeCycle matchLifeCycle;
 
     public XsdValidator() {
         try {
@@ -33,7 +33,7 @@ public class XsdValidator implements Validator {
         } catch (SAXException | NullPointerException e) {
             throw new MundoException("初始化XSD发生错误", e);
         }
-        this.matchLifeCycle = RepositoryFactory.LifeCycle.LOAD;
+        this.matchLifeCycle = LifeCycle.LOAD;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class XsdValidator implements Validator {
     }
 
     @Override
-    public boolean match(final RepositoryFactory.LifeCycle lifeCycle) {
+    public boolean match(final LifeCycle lifeCycle) {
         return Objects.equals(matchLifeCycle, lifeCycle);
     }
 

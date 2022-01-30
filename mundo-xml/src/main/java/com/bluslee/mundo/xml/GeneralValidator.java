@@ -1,7 +1,7 @@
 package com.bluslee.mundo.xml;
 
 import com.bluslee.mundo.core.configuration.Configuration;
-import com.bluslee.mundo.core.configuration.RepositoryFactory;
+import com.bluslee.mundo.core.constant.LifeCycle;
 import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.core.validate.Validator;
 import jakarta.validation.ConstraintViolation;
@@ -17,11 +17,11 @@ public class GeneralValidator implements Validator {
 
     private final jakarta.validation.Validator validation;
 
-    private final RepositoryFactory.LifeCycle matchLifeCycle;
+    private final LifeCycle matchLifeCycle;
 
     public GeneralValidator() {
         this.validation = Validation.buildDefaultValidatorFactory().getValidator();
-        this.matchLifeCycle = RepositoryFactory.LifeCycle.PARSE;
+        this.matchLifeCycle = LifeCycle.PARSE;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class GeneralValidator implements Validator {
     }
 
     @Override
-    public boolean match(final RepositoryFactory.LifeCycle lifeCycle) {
+    public boolean match(final LifeCycle lifeCycle) {
         return Objects.equals(matchLifeCycle, lifeCycle);
     }
 

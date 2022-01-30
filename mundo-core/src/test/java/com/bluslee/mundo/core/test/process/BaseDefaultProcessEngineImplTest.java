@@ -1,11 +1,14 @@
 package com.bluslee.mundo.core.test.process;
 
+import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.core.expression.BaseExecutor;
+import com.bluslee.mundo.core.process.Activity;
 import com.bluslee.mundo.core.process.ProcessElementBuilder;
 import com.bluslee.mundo.core.process.Link;
 import com.bluslee.mundo.core.process.EndNode;
 import com.bluslee.mundo.core.process.ParallelGateway;
 import com.bluslee.mundo.core.process.ExclusiveGateway;
+import com.bluslee.mundo.core.process.StartNode;
 import com.bluslee.mundo.core.process.base.BaseGateway;
 import com.bluslee.mundo.core.process.base.BaseProcessEngine;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
@@ -24,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
@@ -54,7 +58,7 @@ public class BaseDefaultProcessEngineImplTest {
             put("END", ProcessElementBuilder.instance("END").name("审批结束").endNode());
         }};
 
-    private final List<Link> processLinkList = new ArrayList<Link>();
+    private final List<Link> processLinkList = new ArrayList<>();
 
     private final DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
 
@@ -143,6 +147,54 @@ public class BaseDefaultProcessEngineImplTest {
             ProcessNodeWrap<BaseProcessNode> expectNode = this.graphNext(node, paraMap);
             Assert.assertEquals(expectNode, processNodeWrap);
         });
+    }
+
+    @Test
+    public void startNodeNoContainsNodeTest() {
+        StartNode noContainsNode = ProcessElementBuilder.instance("NO-LINK-START").name("NO-LINK-START").startNode();
+        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+    }
+
+    @Test
+    public void startNodeNoSuccessorTest() {
+        StartNode noContainsNode = ProcessElementBuilder.instance("NO-LINK-START").name("NO-LINK-START").startNode();
+        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+    }
+
+    @Test
+    public void parallelGatewayNoContainsNodeTest() {
+        ParallelGateway noContainsNode = ProcessElementBuilder.instance("NO-LINK-PARALLEL-GATEWAY").name("NO-LINK-PARALLEL-GATEWAY").parallelGateway();
+        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+    }
+
+    @Test
+    public void parallelGatewayNoSuccessorTest() {
+        ParallelGateway noContainsNode = ProcessElementBuilder.instance("NO-LINK-START-PARALLEL-GATEWAY").name("NO-LINK-PARALLEL-GATEWAY").parallelGateway();
+        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+    }
+
+    @Test
+    public void exclusiveGatewayNoContainsNodeTest() {
+        ExclusiveGateway noContainsNode = ProcessElementBuilder.instance("NO-LINK-EXCLUSIVE-GATEWAY").name("NO-LINK-EXCLUSIVE-GATEWAY").exclusiveGateway();
+        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+    }
+
+    @Test
+    public void exclusiveGatewayNoSuccessorTest() {
+        ExclusiveGateway noContainsNode = ProcessElementBuilder.instance("NO-LINK-START-EXCLUSIVE-GATEWAY").name("NO-LINK-EXCLUSIVE-GATEWAY").exclusiveGateway();
+        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+    }
+
+    @Test
+    public void activityNoContainsNodeTest() {
+        Activity noContainsNode = ProcessElementBuilder.instance("NO-LINK-ACTIVITY").name("NO-LINK-ACTIVITY").activity();
+        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+    }
+
+    @Test
+    public void activityNoSuccessorTest() {
+        Activity noContainsNode = ProcessElementBuilder.instance("NO-LINK-ACTIVITY").name("NO-LINK-ACTIVITY").activity();
+        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
     }
 
     @Test

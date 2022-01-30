@@ -31,18 +31,4 @@ public abstract class BaseProcessNode extends BaseElement {
      */
     public abstract <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(MutableValueGraph<N, V> processGraph, Map<String, Object> parameterMap, Execute execute);
 
-    /**
-     * toString.
-     *
-     * @return toString
-     */
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("BaseProcessNode{");
-        sb.append("id='").append(getId()).append('\'');
-        sb.append(", name='").append(getName()).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
-
 }
