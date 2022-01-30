@@ -2,11 +2,10 @@
 
 **官方网站: http://www.bluslee.com**
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/sizzlecar/mundo/Java%20CI)
+![Travis (.org) branch](https://img.shields.io/travis/sizzlecar/mundo/master)
 ![License](https://img.shields.io/github/license/sizzlecar/mundo)
 ![GitHub stars](https://img.shields.io/github/stars/sizzlecar/mundo)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/sizzlecar/mundo)
-![GitHub last commit](https://img.shields.io/github/last-commit/sizzlecar/mundo)
+![Codecov branch](https://img.shields.io/codecov/c/github/sizzlecar/mundo/master)
 
 ## mundo是什么？
 

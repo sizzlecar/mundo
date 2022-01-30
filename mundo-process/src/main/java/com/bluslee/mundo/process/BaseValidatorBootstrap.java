@@ -11,6 +11,7 @@ public interface BaseValidatorBootstrap {
 
     /**
      * build ValidatorPipLineFactory.
+     * @param configuration 配置
      * @return ValidatorPipLineFactory
      */
     ValidatorPipLineFactory build(Configuration configuration);

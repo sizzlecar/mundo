@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 /**
  * Edge 图中的边的基类.
- *
+ * @param <N> 节点的类型
  * @author carl.che
  */
 public abstract class Edge<N> {
@@ -98,6 +98,7 @@ public abstract class Edge<N> {
     /**
      * 如果node属于当前边的一端，那么返回另一端的节点.
      *
+     * @param node 指定的节点
      * @return 边的另外一段的节点
      */
     public final N adjacentNode(final N node) {
@@ -114,6 +115,8 @@ public abstract class Edge<N> {
      * Two ordered {@link Edge}s are equal if their {@link #source()} and {@link #target()}
      * are equal. Two unordered {@link Edge}s are equal if they contain the same nodes. An
      * ordered {@link Edge} is never equal to an unordered {@link Edge}.
+     *
+     * @param obj 待比较的对象
      */
     @Override
     public abstract boolean equals(Object obj);

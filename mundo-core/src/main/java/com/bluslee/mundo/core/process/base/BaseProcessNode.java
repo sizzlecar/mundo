@@ -25,22 +25,10 @@ public abstract class BaseProcessNode extends BaseElement {
      * @param processGraph 有向图
      * @param parameterMap 参数map
      * @param execute      执行器
+     * @param <N>          BaseProcessNode类型
+     * @param <V>          边的值的类型
      * @return 下一个节点包装器
      */
     public abstract <N extends BaseProcessNode, V> ProcessNodeWrap<N> next(MutableValueGraph<N, V> processGraph, Map<String, Object> parameterMap, Execute execute);
-
-    /**
-     * toString.
-     *
-     * @return toString
-     */
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("BaseProcessNode{");
-        sb.append("id='").append(getId()).append('\'');
-        sb.append(", name='").append(getName()).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
 
 }

@@ -4,6 +4,7 @@ import com.bluslee.mundo.core.process.Link;
 import com.bluslee.mundo.core.process.ProcessElementBuilder;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.graph.DirectedValueGraphImpl;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,12 +58,12 @@ public class BaseDirectedValueGraphTest {
 
     @Test
     public void nodeSizeTest() {
-        Assert.assertThat(directedValueGraph.nodes().size(), Matchers.is(processNodeMap.size()));
+        MatcherAssert.assertThat(directedValueGraph.nodes().size(), Matchers.is(processNodeMap.size()));
     }
 
     @Test
     public void edgeCountTest() {
-        Assert.assertThat(directedValueGraph.edges().size(), Matchers.is(processLinkList.size()));
+        MatcherAssert.assertThat(directedValueGraph.edges().size(), Matchers.is(processLinkList.size()));
     }
 
     @Test
@@ -73,7 +74,7 @@ public class BaseDirectedValueGraphTest {
             if (conditionExpression != null && conditionExpression.trim().length() > 1) {
                 Optional<String> edgeValueOpt = directedValueGraph.edgeValue(link.getSource(), link.getTarget());
                 Assert.assertTrue(edgeValueOpt.isPresent());
-                Assert.assertThat(conditionExpression, Matchers.is(edgeValueOpt.get()));
+                MatcherAssert.assertThat(conditionExpression, Matchers.is(edgeValueOpt.get()));
             }
         });
     }

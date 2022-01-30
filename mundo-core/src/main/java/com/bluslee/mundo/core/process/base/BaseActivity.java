@@ -7,10 +7,18 @@ package com.bluslee.mundo.core.process.base;
  */
 public abstract class BaseActivity extends BaseProcessNode {
 
+    /**
+     * 有参构造函数.
+     * @param id    id
+     * @param name  name
+     */
     public BaseActivity(final String id, final String name) {
         super(id, name);
     }
 
+    /**
+     * 无参构造函数.
+     */
     public BaseActivity() {
     }
 

@@ -3,7 +3,6 @@ package com.bluslee.mundo.core.expression;
 import com.bluslee.mundo.core.exception.MundoException;
 import ognl.AbstractMemberAccess;
 import ognl.DefaultTypeConverter;
-import ognl.MemberAccess;
 import ognl.OgnlContext;
 import ognl.Ognl;
 import ognl.OgnlException;
@@ -20,16 +19,14 @@ import java.util.Map;
  */
 public abstract class BaseExecutor implements Execute {
 
-    private final MemberAccess memberAccess = new AbstractMemberAccess() {
+    private final OgnlContext context = (OgnlContext) Ognl.createDefaultContext(this, new AbstractMemberAccess() {
         @Override
         public boolean isAccessible(final Map context, final Object target, final Member member, final String propertyName) {
             int modifiers = member.getModifiers();
             return Modifier.isPublic(modifiers);
         }
-    };
-
-    private final OgnlContext context = (OgnlContext) Ognl.createDefaultContext(this, memberAccess, new DefaultClassResolver(),
-            new DefaultTypeConverter());
+        }, new DefaultClassResolver(),
+           new DefaultTypeConverter());
 
     /**
      * 解析表达式，并根据参数执行得到结果.
@@ -43,7 +40,7 @@ public abstract class BaseExecutor implements Execute {
     @Override
     public <T, E> T executeExpression(final E expression, final Map<String, Object> parameterMap) {
         context.setValues(parameterMap);
-        T val = null;
+        T val;
         try {
             val = (T) Ognl.getValue(Ognl.parseExpression(expression.toString()), context, context.getRoot());
         } catch (OgnlException e) {

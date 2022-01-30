@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * 提供对XML解析功能.
  * @author carl.che
  */
-public abstract class XmlProcessor {
+public class XmlProcessor {
 
     private final Document document;
 
