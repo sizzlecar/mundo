@@ -2,6 +2,7 @@ package com.bluslee.mundo.process;
 
 import com.bluslee.mundo.core.configuration.Configuration;
 import com.bluslee.mundo.core.configuration.RepositoryFactory;
+import com.bluslee.mundo.core.constant.LifeCycle;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.core.validate.ValidatorPipLine;
@@ -47,9 +48,9 @@ public final class Bootstrap implements BaseMainBootstrap {
                         .filter(validator -> validator.match(lifeCycle))
                         .forEach(validator -> validator.validate(config, model));
         Object loadRes = repositoryFactory.load(configuration);
-        validatorPipLine.validate(configuration, validateStrategy, loadRes, RepositoryFactory.LifeCycle.LOAD);
+        validatorPipLine.validate(configuration, validateStrategy, loadRes, LifeCycle.LOAD);
         Object parseRes = repositoryFactory.parse(configuration, loadRes);
-        validatorPipLine.validate(configuration, validateStrategy, loadRes, RepositoryFactory.LifeCycle.PARSE);
+        validatorPipLine.validate(configuration, validateStrategy, parseRes, LifeCycle.PARSE);
         return repositoryFactory.build(configuration, parseRes);
     }
 

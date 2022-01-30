@@ -47,7 +47,7 @@ public interface BaseGraph<N> {
     Set<N> adjacentNodes(N node);
 
     /**
-     * 有向图：获取指定节点的所有的前驱节点(关联边的source节点)<br/>
+     * 有向图：获取指定节点的所有的前驱节点(关联边的source节点)
      * 无向图：等于 adjacentNodes.
      *
      * @param node 指定节点
@@ -56,7 +56,7 @@ public interface BaseGraph<N> {
     Set<N> predecessors(N node);
 
     /**
-     * 有向图：获取指定节点所有的后驱节点(关联边的target节点)<br/>
+     * 有向图：获取指定节点所有的后驱节点(关联边的target节点)
      * 无向图：等于 adjacentNodes(node).
      *
      * @param node 指定节点
@@ -65,7 +65,7 @@ public interface BaseGraph<N> {
     Set<N> successors(N node);
 
     /**
-     * 有向图：获取指定节点的所有关联的边<br/>
+     * 有向图：获取指定节点的所有关联的边
      * 无向图：获取指定节点的所有关联的边.
      *
      * @param node 指定节点
@@ -74,7 +74,7 @@ public interface BaseGraph<N> {
     Set<Edge<N>> incidentEdges(N node);
 
     /**
-     * 有向图：获取指定节点的所有出边<br/>
+     * 有向图：获取指定节点的所有出边
      * 无向图：获取指定节点的所有关联的边.
      *
      * @param node 指定节点
@@ -83,7 +83,7 @@ public interface BaseGraph<N> {
     Set<Edge<N>> outgoingEdges(N node);
 
     /**
-     * 有向图：获取指定节点的所有入边<br/>
+     * 有向图：获取指定节点的所有入边
      * 无向图：获取指定节点的所有关联的边.
      *
      * @param node 指定节点
@@ -92,7 +92,7 @@ public interface BaseGraph<N> {
     Set<Edge<N>> incomingEdges(N node);
 
     /**
-     * 有向图：获取指定节点相关联边的数量(出边 + 入边)<br/>
+     * 有向图：获取指定节点相关联边的数量(出边 + 入边)
      * 无向图：获取指定节点相关联边的数量.
      *
      * @param node 指定节点
@@ -101,7 +101,7 @@ public interface BaseGraph<N> {
     int degree(N node);
 
     /**
-     * 有向图：获取指定节点入边的数量<br/>
+     * 有向图：获取指定节点入边的数量
      * 无向图：获取指定节点相关联边的数量.
      *
      * @param node 指定节点
@@ -110,7 +110,7 @@ public interface BaseGraph<N> {
     int inDegree(N node);
 
     /**
-     * 有向图：获取指定节点出边的数量<br/>
+     * 有向图：获取指定节点出边的数量
      * 无向图：获取指定节点相关联边的数量.
      *
      * @param node 指定节点
@@ -119,7 +119,7 @@ public interface BaseGraph<N> {
     int outDegree(N node);
 
     /**
-     * 有向图：判断当前图中是否存在这样的边 nodeU -> nodeV<br/>
+     * 有向图：判断当前图中是否存在这样的边 nodeU to nodeV
      * 无向图：判断当前图中是否存在这样的边 nodeU - nodeV，nodeV - nodeU.
      *
      * @param nodeU nodeU
@@ -129,9 +129,9 @@ public interface BaseGraph<N> {
     boolean hasEdgeConnecting(N nodeU, N nodeV);
 
     /**
-     * 有向图：判断当前图中是否存在这样的边 nodeU -> nodeV<br/>
+     * 有向图：判断当前图中是否存在这样的边 nodeU to nodeV
      * 无向图：判断当前图中是否存在这样的边 nodeU - nodeV，nodeV - nodeU.
-     *
+     * @param edge 边
      * @return true 有关联，false 无关联
      */
     boolean hasEdgeConnecting(Edge<N> edge);

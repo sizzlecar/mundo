@@ -1,14 +1,13 @@
 package com.bluslee.mundo.core.validate;
 
 import com.bluslee.mundo.core.configuration.Configuration;
-import com.bluslee.mundo.core.configuration.RepositoryFactory;
+import com.bluslee.mundo.core.constant.LifeCycle;
 import java.util.List;
 
 /**
  * Validator流水线，提供从不同方向进行进行校验的服务.
  *
  * @author carl.che
- * @date 2021/11/24
  */
 public interface ValidatorPipLine {
 
@@ -38,14 +37,19 @@ public interface ValidatorPipLine {
      * @param validateStrategy 校验策略
      * @param model 待校验的model
      * @param lifeCycle 当前生命周期
+     * @param <T> 待校验的model类型
      */
     default <T> void validate(final Configuration configuration,
                               final ValidateStrategy<T> validateStrategy,
                               final T model,
-                              final RepositoryFactory.LifeCycle lifeCycle) {
+                              final LifeCycle lifeCycle) {
         validateStrategy.validateStrategy(configuration, this, model, lifeCycle);
     }
 
+    /**
+     * 校验策略函数式接口.
+     * @param <T> 待校验的model类型
+     */
     @FunctionalInterface
     interface ValidateStrategy<T> {
 
@@ -60,7 +64,7 @@ public interface ValidatorPipLine {
         void validateStrategy(Configuration configuration,
                               ValidatorPipLine validatorPipLine,
                               T model,
-                              RepositoryFactory.LifeCycle lifeCycle);
+                              LifeCycle lifeCycle);
 
         /**
          * 默认的验证策略，依次校验.

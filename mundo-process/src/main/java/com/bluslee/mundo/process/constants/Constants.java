@@ -3,7 +3,6 @@ package com.bluslee.mundo.process.constants;
 /**
  * 一些共通的常量.
  * @author carl.che
- * @date 2021/11/24
  */
 public abstract class Constants {
 

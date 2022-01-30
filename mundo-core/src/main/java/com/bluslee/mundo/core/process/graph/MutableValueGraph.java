@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface MutableValueGraph<N, V> extends BaseGraph<N> {
 
     /**
-     * 有向图：如果途中存在 nodeU -> nodeV 则返回该边的值，否则返回null<br/>
+     * 有向图：如果途中存在 nodeU to nodeV 则返回该边的值，否则返回null
      * 无向图：如果途中存在 nodeU - nodeV 则返回该边的值，否则返回null.
      *
      * @param nodeU nodeU
@@ -22,7 +22,7 @@ public interface MutableValueGraph<N, V> extends BaseGraph<N> {
     Optional<V> edgeValue(N nodeU, N nodeV);
 
     /**
-     * 有向图：如果途中存在 nodeU -> nodeV 则返回该边的值，否则返回null<br/>
+     * 有向图：如果途中存在 nodeU to nodeV 则返回该边的值，否则返回null
      * 无向图：如果途中存在 nodeU - nodeV 则返回该边的值，否则返回null.
      *
      * @param edge 边
@@ -31,7 +31,7 @@ public interface MutableValueGraph<N, V> extends BaseGraph<N> {
     Optional<V> edgeValue(Edge<N> edge);
 
     /**
-     * 有向图：如果图中包含 nodeU -> nodeV 的边则返回该边对应的值，否则返回defaultValue<br/>
+     * 有向图：如果图中包含 nodeU to nodeV 的边则返回该边对应的值，否则返回defaultValue
      * 无向图：如果图中包含 nodeU - nodeV 的边则返回该边对应的值，否则返回defaultValue.
      *
      * @param nodeU        nodeU
@@ -42,7 +42,7 @@ public interface MutableValueGraph<N, V> extends BaseGraph<N> {
     V edgeValueOrDefault(N nodeU, N nodeV, V defaultValue);
 
     /**
-     * 有向图：如果图中包含 nodeU -> nodeV 的边则返回该边对应的值，否则返回defaultValue<br/>
+     * 有向图：如果图中包含 nodeU to nodeV 的边则返回该边对应的值，否则返回defaultValue
      * 无向图：如果图中包含 nodeU - nodeV 的边则返回该边对应的值，否则返回defaultValue.
      *
      * @param edge         edge
@@ -60,7 +60,7 @@ public interface MutableValueGraph<N, V> extends BaseGraph<N> {
     boolean addNode(N node);
 
     /**
-     * 有向图：向图中添加一条 nodeU -> nodeV 值为value的边，如果边已存在则更新值<br/>
+     * 有向图：向图中添加一条 nodeU to nodeV 值为value的边，如果边已存在则更新值
      * 无向图：向图中添加一条 nodeU - nodeV 值为value的边，如果边已存在则更新值.
      *
      * @param nodeV nodeV
@@ -71,7 +71,7 @@ public interface MutableValueGraph<N, V> extends BaseGraph<N> {
     V putEdgeValue(N nodeU, N nodeV, V value);
 
     /**
-     * 有向图：向图中添加一条 nodeU -> nodeV 值为value的边，如果边已存在则更新值<br/>
+     * 有向图：向图中添加一条 nodeU to nodeV 值为value的边，如果边已存在则更新值
      * 无向图：向图中添加一条 nodeU - nodeV 值为value的边，如果边已存在则更新值.
      *
      * @param edge  边
@@ -89,7 +89,7 @@ public interface MutableValueGraph<N, V> extends BaseGraph<N> {
     boolean removeNode(N node);
 
     /**
-     * 有向图：删除 nodeU -> nodeV 这样的边 如果在图中存在的话<br/>
+     * 有向图：删除 nodeU to nodeV 这样的边 如果在图中存在的话
      * 无向图：删除 nodeU - nodeV 这样的边 如果在图中存在的话.
      *
      * @param nodeU nodeU
@@ -99,7 +99,7 @@ public interface MutableValueGraph<N, V> extends BaseGraph<N> {
     V removeEdge(N nodeU, N nodeV);
 
     /**
-     * 有向图：删除 nodeU -> nodeV 这样的边 如果在图中存在的话<br/>
+     * 有向图：删除 nodeU to nodeV 这样的边 如果在图中存在的话
      * 无向图：删除 nodeU - nodeV 这样的边 如果在图中存在的话.
      *
      * @param edge 边

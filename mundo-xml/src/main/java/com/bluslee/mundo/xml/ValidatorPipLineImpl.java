@@ -1,7 +1,7 @@
 package com.bluslee.mundo.xml;
 
 import com.bluslee.mundo.core.configuration.Configuration;
-import com.bluslee.mundo.core.configuration.RepositoryFactory;
+import com.bluslee.mundo.core.constant.LifeCycle;
 import com.bluslee.mundo.core.validate.Validator;
 import com.bluslee.mundo.core.validate.ValidatorPipLine;
 import com.google.common.collect.Lists;
@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 /**
  * ValidatorPipLine实现.
  * @author carl.che
- * @date 2021/11/24
  */
 public class ValidatorPipLineImpl implements ValidatorPipLine {
 
@@ -46,7 +45,7 @@ public class ValidatorPipLineImpl implements ValidatorPipLine {
     public <T> void validate(final Configuration configuration,
                              final ValidateStrategy<T> validateStrategy,
                              final T model,
-                             final RepositoryFactory.LifeCycle lifeCycle) {
+                             final LifeCycle lifeCycle) {
         validateStrategy.validateStrategy(configuration, this, model, lifeCycle);
     }
 }

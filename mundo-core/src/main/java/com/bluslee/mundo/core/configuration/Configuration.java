@@ -5,7 +5,6 @@ import java.io.InputStream;
 /**
  * 配置接口，提供跟配置相关服务.
  * @author carl.che
- * @date 2021/11/24
  */
 public interface Configuration {
 
