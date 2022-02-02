@@ -26,6 +26,7 @@ public class XmlSchema {
     @XStreamImplicit(itemFieldName = "process")
     @Size(min = 1, max = 1000, message = "process最多配置{min}-{max}个流程")
     @Valid
+    @NotNull
     private List<ProcessSchema> processList;
 
     /**
@@ -99,7 +100,7 @@ public class XmlSchema {
          * 并行网关节点集合.
          */
         @XStreamImplicit(itemFieldName = "parallelGateway")
-        @Size(min = 1, max = 1000, message = "parallelGateway节点数量只能在{min}-{max}之间")
+        @Size(max = 1000, message = "parallelGateway节点数量只能在{min}-{max}之间")
         private List<ProcessParallelGatewaySchema> parallelGatewayList;
 
         /**

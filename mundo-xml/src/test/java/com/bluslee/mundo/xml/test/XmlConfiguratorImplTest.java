@@ -2,18 +2,20 @@ package com.bluslee.mundo.xml.test;
 
 import com.bluslee.mundo.core.configuration.Configuration;
 import com.bluslee.mundo.core.configuration.RepositoryFactory;
+import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.base.ProcessEngine;
 import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.xml.XmlRepositoryFactoryImpl;
 import com.bluslee.mundo.xml.XmlSchema;
 import com.bluslee.mundo.xml.XmlConfiguration;
-import com.bluslee.mundo.xml.base.BaseXmlParser;
 import com.bluslee.mundo.xml.base.XmlConstants;
 import com.thoughtworks.xstream.XStream;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
@@ -29,8 +31,6 @@ public class XmlConfiguratorImplTest extends XmlProcessor {
     private static final String FILE_PATH = "/mundo.cfg.xml";
 
     private final XStream xStream = new XStream();
-
-    private final BaseXmlParser baseXmlParser = new BaseXmlParser(xStream) { };
 
     private final RepositoryFactory<BaseProcessNode, byte[], XmlSchema> xmlRepositoryBuilder = new XmlRepositoryFactoryImpl();
 
@@ -63,6 +63,22 @@ public class XmlConfiguratorImplTest extends XmlProcessor {
             Assert.assertEquals(id, actualProcess.getId());
             Assert.assertEquals(version, actualProcess.getVersion());
         });
+    }
+
+    @Test
+    public void noInitTest() {
+        Configuration configuration = new XmlConfiguration();
+        Assert.assertThrows(MundoException.class, configuration::getInitData);
+    }
+
+    @Test
+    public void getInitDataTest() throws IOException {
+        Configuration configuration = new XmlConfiguration();
+        InputStream resourceAsStream = getClass().getResourceAsStream("/mundo.properties");
+        configuration.load(resourceAsStream);
+        configuration.init();
+        byte[] initData = configuration.getInitData();
+        Assert.assertNotNull(initData);
     }
 
 }
