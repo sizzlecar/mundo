@@ -25,6 +25,16 @@ public class BaseXmlSchemaTest {
         Assert.assertNotEquals(baseXmlSchema, baseXmlSchema2);
         Assert.assertNotEquals(baseXmlSchema, obj);
         Assert.assertNotEquals(baseXmlSchema, nullObj);
+    }
 
+    @Test
+    public void hashcodeTest() {
+        BaseXmlSchema baseXmlSchema = new BaseXmlSchema() {
+        };
+        baseXmlSchema.setId("test01");
+        baseXmlSchema.setName("test01");
+        BaseXmlSchema baseXmlSchema2 = new BaseXmlSchema() {
+        };
+        Assert.assertNotEquals(baseXmlSchema.hashCode(), baseXmlSchema2.hashCode());
     }
 }

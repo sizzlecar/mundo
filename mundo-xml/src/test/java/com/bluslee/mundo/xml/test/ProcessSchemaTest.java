@@ -23,8 +23,16 @@ public class ProcessSchemaTest extends XmlProcessor {
         XmlSchema.ProcessSchema processSchema1 = new XmlSchema.ProcessSchema();
         Object obj = new Object();
         Object nullObj = null;
+        Assert.assertEquals(processSchema, processSchema);
         Assert.assertNotEquals(processSchema, processSchema1);
         Assert.assertNotEquals(processSchema, obj);
         Assert.assertNotEquals(processSchema, nullObj);
+    }
+
+    @Test
+    public void hashcodeTest() {
+        XmlSchema.ProcessSchema processSchema = new XmlSchema.ProcessSchema("process01", "process01");
+        XmlSchema.ProcessSchema processSchema1 = new XmlSchema.ProcessSchema("process02", "process02");
+        Assert.assertNotEquals(processSchema.hashCode(), processSchema1.hashCode());
     }
 }

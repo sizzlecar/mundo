@@ -36,4 +36,10 @@ public class GeneralValidatorTest extends XmlProcessor {
         generalValidator.validate(new XmlConfiguration(), processSchemas.get(0));
     }
 
+    @Test
+    public void orderTest() {
+        GeneralValidator generalValidator = new GeneralValidator();
+        generalValidator.order();
+    }
+
 }

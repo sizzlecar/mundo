@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.XStream;
 import org.junit.Assert;
 import org.junit.Test;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,4 +41,32 @@ public class XmlSchemaTest extends XmlProcessor {
         }
     }
 
+    @Test
+    public void equalsTest() {
+        XmlSchema xmlSchema = new XmlSchema();
+        XmlSchema.ProcessSchema processSchema1 = new XmlSchema.ProcessSchema();
+        processSchema1.setId("processSchema1");
+        XmlSchema.ProcessSchema processSchema2 = new XmlSchema.ProcessSchema();
+        processSchema2.setId("processSchema2");
+        xmlSchema.setProcessList(Collections.singletonList(processSchema1));
+        Assert.assertEquals(xmlSchema, xmlSchema);
+        XmlSchema xmlSchema1 = new XmlSchema();
+        xmlSchema1.setProcessList(Collections.singletonList(processSchema1));
+        Assert.assertEquals(xmlSchema, xmlSchema1);
+        xmlSchema1.setProcessList(null);
+        Assert.assertNotEquals(xmlSchema, xmlSchema1);
+        Object obj = new Object();
+        Assert.assertNotEquals(xmlSchema, obj);
+        Assert.assertNotEquals(xmlSchema, null);
+    }
+
+    @Test
+    public void hashcodeTest() {
+        XmlSchema xmlSchema = new XmlSchema();
+        XmlSchema xmlSchema1 = new XmlSchema();
+        XmlSchema.ProcessSchema processSchema = new XmlSchema.ProcessSchema();
+        processSchema.setId("processSchema");
+        xmlSchema.setProcessList(Collections.singletonList(processSchema));
+        Assert.assertNotEquals(xmlSchema.hashCode(), xmlSchema1.hashCode());
+    }
 }

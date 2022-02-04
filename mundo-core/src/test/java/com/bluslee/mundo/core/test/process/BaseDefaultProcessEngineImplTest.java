@@ -157,8 +157,10 @@ public class BaseDefaultProcessEngineImplTest {
 
     @Test
     public void startNodeNoSuccessorTest() {
-        StartNode noContainsNode = ProcessElementBuilder.instance("NO-LINK-START").name("NO-LINK-START").startNode();
-        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+        StartNode noSuccessorNode = ProcessElementBuilder.instance("START1").name("START1").startNode();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(noSuccessorNode);
+        Assert.assertThrows(MundoException.class, () -> noSuccessorNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
     }
 
     @Test
@@ -169,8 +171,11 @@ public class BaseDefaultProcessEngineImplTest {
 
     @Test
     public void parallelGatewayNoSuccessorTest() {
-        ParallelGateway noContainsNode = ProcessElementBuilder.instance("NO-LINK-START-PARALLEL-GATEWAY").name("NO-LINK-PARALLEL-GATEWAY").parallelGateway();
-        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+        ParallelGateway noSuccessorNode = ProcessElementBuilder.instance("NO-LINK-START-PARALLEL-GATEWAY").name("NO-LINK-PARALLEL-GATEWAY").parallelGateway();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(noSuccessorNode);
+        Assert.assertThrows(MundoException.class, () -> noSuccessorNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+
     }
 
     @Test
@@ -181,8 +186,10 @@ public class BaseDefaultProcessEngineImplTest {
 
     @Test
     public void exclusiveGatewayNoSuccessorTest() {
-        ExclusiveGateway noContainsNode = ProcessElementBuilder.instance("NO-LINK-START-EXCLUSIVE-GATEWAY").name("NO-LINK-EXCLUSIVE-GATEWAY").exclusiveGateway();
-        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+        ExclusiveGateway noSuccessorNode = ProcessElementBuilder.instance("NO-LINK-START-EXCLUSIVE-GATEWAY").name("NO-LINK-EXCLUSIVE-GATEWAY").exclusiveGateway();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(noSuccessorNode);
+        Assert.assertThrows(MundoException.class, () -> noSuccessorNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
     }
 
     @Test
@@ -193,8 +200,10 @@ public class BaseDefaultProcessEngineImplTest {
 
     @Test
     public void activityNoSuccessorTest() {
-        Activity noContainsNode = ProcessElementBuilder.instance("NO-LINK-ACTIVITY").name("NO-LINK-ACTIVITY").activity();
-        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+        Activity noSuccessorNode = ProcessElementBuilder.instance("NO-LINK-ACTIVITY").name("NO-LINK-ACTIVITY").activity();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(noSuccessorNode);
+        Assert.assertThrows(MundoException.class, () -> noSuccessorNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
     }
 
     @Test
