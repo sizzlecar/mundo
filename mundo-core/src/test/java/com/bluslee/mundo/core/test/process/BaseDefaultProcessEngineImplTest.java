@@ -207,6 +207,17 @@ public class BaseDefaultProcessEngineImplTest {
     }
 
     @Test
+    public void activeNextTest() {
+        Activity activity1 = ProcessElementBuilder.instance("activity1").name("activity1").activity();
+        Activity activity2 = ProcessElementBuilder.instance("activity2").name("activity2").activity();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(activity1);
+        directedValueGraph.addNode(activity2);
+        directedValueGraph.putEdgeValue(activity1, activity2, "false");
+        Assert.assertThrows(MundoException.class, () -> activity1.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+    }
+
+    @Test
     public void forecastProcessNodeTest() {
         Map<String, Object> paraMap = new HashMap<>();
         paraMap.put("buyerApprove", true);

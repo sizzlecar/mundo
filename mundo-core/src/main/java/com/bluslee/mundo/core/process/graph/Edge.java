@@ -43,18 +43,6 @@ public abstract class Edge<N> {
     }
 
     /**
-     * 根据图是否有向创建边.
-     *
-     * @param <N>   节点类型
-     * @param nodeV nodeV
-     * @param nodeU nodeU
-     * @param graph 图
-     */
-    static <N> Edge<N> of(final BaseGraph<?> graph, final N nodeU, final N nodeV) {
-        return graph.isDirected() ? ordered(nodeU, nodeV) : unordered(nodeU, nodeV);
-    }
-
-    /**
      * 边是否有向.
      *
      * @return true 有向，false 无向
