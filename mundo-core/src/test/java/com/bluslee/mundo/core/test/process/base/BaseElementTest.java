@@ -21,5 +21,6 @@ public class BaseElementTest {
         };
         Assert.assertEquals(baseElement1, baseElement2);
         Assert.assertNotEquals(baseElement1, baseElement3);
+        Assert.assertNotEquals(baseElement1, new Object());
     }
 }
