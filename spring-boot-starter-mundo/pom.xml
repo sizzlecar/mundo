@@ -8,7 +8,9 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <version>0.0.1-SNAPSHOT</version>
+    <name>spring-boot-starter-mundo</name>
+    <url>http://www.bluslee.com</url>
     <artifactId>spring-boot-starter-mundo</artifactId>
 
     <properties>
