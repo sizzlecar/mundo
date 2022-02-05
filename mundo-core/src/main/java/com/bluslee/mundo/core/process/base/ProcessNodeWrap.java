@@ -40,51 +40,6 @@ public abstract class ProcessNodeWrap<N> {
     }
 
     /**
-     * 根据node，parallelNodes判断两个对象是否相等.
-     *
-     * @param o 带比较的对象
-     * @return true 相等，false 不相等
-     */
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ProcessNodeWrap<?> that = (ProcessNodeWrap<?>) o;
-        return Objects.equals(node, that.node) && Objects.equals(parallelNodes, that.parallelNodes);
-    }
-
-    /**
-     * 根据node, parallelNodes生成hashcode.
-     *
-     * @return hashcode
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(node, parallelNodes);
-    }
-
-    /**
-     * 根据node，parallelNodes生成toString.
-     *
-     * @return toString
-     */
-    @Override
-    public String toString() {
-        return "ProcessNodeWrap{"
-                +
-                "node="
-                + node
-                +
-                ", parallelNodes=" + parallelNodes
-                +
-                '}';
-    }
-
-    /**
      * 当前节点是否是并行节点.
      *
      * @return true 是，false 否
@@ -119,6 +74,24 @@ public abstract class ProcessNodeWrap<N> {
         public Set<N> getParallelNodes() {
             return super.getParallelNodes();
         }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getParallelNodes());
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            ParallelNode<?> that = (ParallelNode<?>) o;
+            return Objects.equals(getParallelNodes(), that.getParallelNodes());
+
+        }
     }
 
     public static final class UnParallelNode<N> extends ProcessNodeWrap<N> {
@@ -140,6 +113,23 @@ public abstract class ProcessNodeWrap<N> {
         @Override
         public Set<N> getParallelNodes() {
             throw new MundoException("UnParallelNode not support getParallelNodes");
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(get());
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            UnParallelNode<?> that = (UnParallelNode<?>) o;
+            return Objects.equals(get(), that.get());
         }
     }
 

@@ -1,19 +1,23 @@
 package com.bluslee.mundo.core.test.process.graph;
 
+import com.bluslee.mundo.core.process.Activity;
 import com.bluslee.mundo.core.process.Link;
 import com.bluslee.mundo.core.process.ProcessElementBuilder;
 import com.bluslee.mundo.core.process.base.BaseProcessNode;
 import com.bluslee.mundo.core.process.graph.DirectedValueGraphImpl;
+import com.bluslee.mundo.core.process.graph.Edge;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * BaseDirectedValueGraphTest.
@@ -77,5 +81,144 @@ public class BaseDirectedValueGraphTest {
                 MatcherAssert.assertThat(conditionExpression, Matchers.is(edgeValueOpt.get()));
             }
         });
+    }
+
+    @Test
+    public void putEdgeValueTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        String val = "test";
+        directedValueGraph.putEdgeValue(ordered, val);
+        Assert.assertTrue(directedValueGraph.hasEdgeConnecting(ordered));
+        Assert.assertEquals(directedValueGraph.edgeValueOrDefault(ordered, null), val);
+    }
+
+    @Test
+    public void removeNodeTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        directedValueGraph.addNode(node1);
+        Assert.assertTrue(directedValueGraph.nodes().contains(node1));
+        directedValueGraph.removeNode(node1);
+        Assert.assertFalse(directedValueGraph.nodes().contains(node1));
+    }
+
+    @Test
+    public void removeEdge() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        String val = "test";
+        directedValueGraph.putEdgeValue(ordered, val);
+        Assert.assertTrue(directedValueGraph.hasEdgeConnecting(ordered));
+        directedValueGraph.removeEdge(ordered);
+        Assert.assertFalse(directedValueGraph.hasEdgeConnecting(ordered));
+    }
+
+    @Test
+    public void removeEdge2() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        String val = "test";
+        directedValueGraph.putEdgeValue(ordered, val);
+        Assert.assertTrue(directedValueGraph.hasEdgeConnecting(ordered));
+        directedValueGraph.removeEdge(node1, node2);
+        Assert.assertFalse(directedValueGraph.hasEdgeConnecting(ordered));
+    }
+
+    @Test
+    public void edgesTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Assert.assertEquals(directedValueGraph.edges().size(), 0);
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        directedValueGraph.putEdgeValue(ordered, "test");
+        Assert.assertEquals(directedValueGraph.edges(), Collections.singleton(ordered));
+    }
+
+    @Test
+    public void isDirectedTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Assert.assertTrue(directedValueGraph.isDirected());
+    }
+
+    @Test
+    public void allowsSelfLoopsTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Assert.assertTrue(directedValueGraph.allowsSelfLoops());
+    }
+
+    @Test
+    public void adjacentNodesTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        directedValueGraph.putEdgeValue(ordered, "test");
+        Set<BaseProcessNode> adjacentNodes = directedValueGraph.adjacentNodes(node1);
+        Assert.assertEquals(Collections.singleton(node2), adjacentNodes);
+    }
+
+    @Test
+    public void predecessorsTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        directedValueGraph.putEdgeValue(ordered, "test");
+        Set<BaseProcessNode> node1Predecessors = directedValueGraph.predecessors(node1);
+        Set<BaseProcessNode> node2Predecessors = directedValueGraph.predecessors(node2);
+        Assert.assertEquals(Collections.singleton(node1), node2Predecessors);
+        Assert.assertEquals(0, node1Predecessors.size());
+    }
+
+    @Test
+    public void degreeTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        directedValueGraph.putEdgeValue(ordered, "test");
+        Assert.assertEquals(1, directedValueGraph.degree(node1));
+        Assert.assertEquals(1, directedValueGraph.degree(node2));
+    }
+
+    @Test
+    public void inDegreeTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        directedValueGraph.putEdgeValue(ordered, "test");
+        Assert.assertEquals(0, directedValueGraph.inDegree(node1));
+        Assert.assertEquals(1, directedValueGraph.inDegree(node2));
+    }
+
+    @Test
+    public void outDegreeTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        directedValueGraph.putEdgeValue(ordered, "test");
+        Assert.assertEquals(1, directedValueGraph.outDegree(node1));
+        Assert.assertEquals(0, directedValueGraph.outDegree(node2));
+    }
+
+    @Test
+    public void incomingEdgesTest() {
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        Activity node1 = ProcessElementBuilder.instance("node1").activity();
+        Activity node2 = ProcessElementBuilder.instance("node2").activity();
+        Edge<BaseProcessNode> ordered = Edge.ordered(node1, node2);
+        directedValueGraph.putEdgeValue(ordered, "test");
+        Assert.assertEquals(0, directedValueGraph.incomingEdges(node1).size());
+        Assert.assertEquals(Collections.singleton(ordered), directedValueGraph.incomingEdges(node2));
     }
 }

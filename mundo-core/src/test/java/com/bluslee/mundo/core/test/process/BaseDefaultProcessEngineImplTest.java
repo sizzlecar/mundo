@@ -8,6 +8,7 @@ import com.bluslee.mundo.core.process.Link;
 import com.bluslee.mundo.core.process.EndNode;
 import com.bluslee.mundo.core.process.ParallelGateway;
 import com.bluslee.mundo.core.process.ExclusiveGateway;
+import com.bluslee.mundo.core.process.ProcessEngineImpl;
 import com.bluslee.mundo.core.process.StartNode;
 import com.bluslee.mundo.core.process.base.BaseGateway;
 import com.bluslee.mundo.core.process.base.BaseProcessEngine;
@@ -157,8 +158,10 @@ public class BaseDefaultProcessEngineImplTest {
 
     @Test
     public void startNodeNoSuccessorTest() {
-        StartNode noContainsNode = ProcessElementBuilder.instance("NO-LINK-START").name("NO-LINK-START").startNode();
-        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+        StartNode noSuccessorNode = ProcessElementBuilder.instance("START1").name("START1").startNode();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(noSuccessorNode);
+        Assert.assertThrows(MundoException.class, () -> noSuccessorNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
     }
 
     @Test
@@ -169,8 +172,11 @@ public class BaseDefaultProcessEngineImplTest {
 
     @Test
     public void parallelGatewayNoSuccessorTest() {
-        ParallelGateway noContainsNode = ProcessElementBuilder.instance("NO-LINK-START-PARALLEL-GATEWAY").name("NO-LINK-PARALLEL-GATEWAY").parallelGateway();
-        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+        ParallelGateway noSuccessorNode = ProcessElementBuilder.instance("NO-LINK-START-PARALLEL-GATEWAY").name("NO-LINK-PARALLEL-GATEWAY").parallelGateway();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(noSuccessorNode);
+        Assert.assertThrows(MundoException.class, () -> noSuccessorNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+
     }
 
     @Test
@@ -181,8 +187,10 @@ public class BaseDefaultProcessEngineImplTest {
 
     @Test
     public void exclusiveGatewayNoSuccessorTest() {
-        ExclusiveGateway noContainsNode = ProcessElementBuilder.instance("NO-LINK-START-EXCLUSIVE-GATEWAY").name("NO-LINK-EXCLUSIVE-GATEWAY").exclusiveGateway();
-        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+        ExclusiveGateway noSuccessorNode = ProcessElementBuilder.instance("NO-LINK-START-EXCLUSIVE-GATEWAY").name("NO-LINK-EXCLUSIVE-GATEWAY").exclusiveGateway();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(noSuccessorNode);
+        Assert.assertThrows(MundoException.class, () -> noSuccessorNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
     }
 
     @Test
@@ -193,8 +201,21 @@ public class BaseDefaultProcessEngineImplTest {
 
     @Test
     public void activityNoSuccessorTest() {
-        Activity noContainsNode = ProcessElementBuilder.instance("NO-LINK-ACTIVITY").name("NO-LINK-ACTIVITY").activity();
-        Assert.assertThrows(MundoException.class, () -> noContainsNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+        Activity noSuccessorNode = ProcessElementBuilder.instance("NO-LINK-ACTIVITY").name("NO-LINK-ACTIVITY").activity();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(noSuccessorNode);
+        Assert.assertThrows(MundoException.class, () -> noSuccessorNode.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
+    }
+
+    @Test
+    public void activeNextTest() {
+        Activity activity1 = ProcessElementBuilder.instance("activity1").name("activity1").activity();
+        Activity activity2 = ProcessElementBuilder.instance("activity2").name("activity2").activity();
+        DirectedValueGraphImpl<BaseProcessNode, String> directedValueGraph = new DirectedValueGraphImpl<>();
+        directedValueGraph.addNode(activity1);
+        directedValueGraph.addNode(activity2);
+        directedValueGraph.putEdgeValue(activity1, activity2, "false");
+        Assert.assertThrows(MundoException.class, () -> activity1.next(directedValueGraph, Collections.emptyMap(), baseExecutor));
     }
 
     @Test
@@ -210,6 +231,31 @@ public class BaseDefaultProcessEngineImplTest {
             graphForecast(node, paraMap, expectNodeList);
             Assert.assertEquals(expectNodeList, processNodeList);
         });
+    }
+
+    @Test
+    public void getNextProcessNodeTest2() {
+        Activity activity = ProcessElementBuilder.instance("no-exist-node").activity();
+        Assert.assertThrows(MundoException.class, () -> baseDefaultProcessEngine.getNextProcessNode(activity, Collections.emptyMap()));
+    }
+
+    @Test
+    public void forecastProcessNodeTest2() {
+        Activity activity = ProcessElementBuilder.instance("no-exist-node").activity();
+        Assert.assertThrows(MundoException.class, () -> baseDefaultProcessEngine.forecastProcessNode(activity, Collections.emptyMap()));
+        Assert.assertThrows(MundoException.class, () -> baseDefaultProcessEngine.forecastProcessNode("no-exist-node", Collections.emptyMap()));
+    }
+
+    @Test
+    public void equalsTest() {
+        BaseProcessEngine<BaseProcessNode, String> baseDefaultProcessEngine = new ProcessEngineImpl(baseExecutor, directedValueGraph, "id1", 0);
+        BaseProcessEngine<BaseProcessNode, String> baseDefaultProcessEngine2 = new ProcessEngineImpl(baseExecutor, directedValueGraph, "id1", 1);
+        BaseProcessEngine<BaseProcessNode, String> baseDefaultProcessEngine3 = new ProcessEngineImpl(baseExecutor, directedValueGraph, "id1", 0);
+        Assert.assertTrue(baseDefaultProcessEngine.equals(baseDefaultProcessEngine));
+        Assert.assertTrue(baseDefaultProcessEngine.equals(baseDefaultProcessEngine3));
+        Assert.assertFalse(baseDefaultProcessEngine.equals(baseDefaultProcessEngine2));
+        Assert.assertFalse(baseDefaultProcessEngine.equals(new Object()));
+        Assert.assertFalse(baseDefaultProcessEngine.equals(null));
     }
 
     private ProcessNodeWrap<BaseProcessNode> graphNext(final BaseProcessNode currentNode, final Map<String, Object> paraMap) {

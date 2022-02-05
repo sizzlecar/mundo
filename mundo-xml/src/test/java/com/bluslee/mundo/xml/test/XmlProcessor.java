@@ -52,6 +52,16 @@ public abstract class XmlProcessor {
         return document.selectNodes(xPathExpression);
     }
 
+    /**
+     * 获取XML文件对应的XmlSchema model.
+     * @return XmlSchema model
+     */
+    protected XmlSchema getXmlSchema() {
+        XmlSchema xmlSchema = new XmlSchema();
+        xmlSchema.setProcessList(getProcessSchemas());
+        return xmlSchema;
+    }
+
     protected List<XmlSchema.ProcessSchema> getProcessSchemas() {
         List<Node> processNodes = document.selectNodes("/" + xpathDefaultNs + "mundo/" + xpathDefaultNs + "process");
         return processNodes.stream().map(processNode -> {

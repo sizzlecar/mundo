@@ -26,6 +26,7 @@ public class XmlSchema {
     @XStreamImplicit(itemFieldName = "process")
     @Size(min = 1, max = 1000, message = "process最多配置{min}-{max}个流程")
     @Valid
+    @NotNull
     private List<ProcessSchema> processList;
 
     /**
@@ -99,7 +100,7 @@ public class XmlSchema {
          * 并行网关节点集合.
          */
         @XStreamImplicit(itemFieldName = "parallelGateway")
-        @Size(min = 1, max = 1000, message = "parallelGateway节点数量只能在{min}-{max}之间")
+        @Size(max = 1000, message = "parallelGateway节点数量只能在{min}-{max}之间")
         private List<ProcessParallelGatewaySchema> parallelGatewayList;
 
         /**
@@ -190,17 +191,18 @@ public class XmlSchema {
                 return false;
             }
             ProcessSchema that = (ProcessSchema) o;
-            return Objects.equals(version, that.version)
-                    && Objects.equals(startList, that.startList)
-                    && Objects.equals(activityList, that.activityList)
-                    && Objects.equals(exclusiveGatewayList, that.exclusiveGatewayList)
-                    && Objects.equals(linkList, that.linkList)
-                    && Objects.equals(endList, that.endList);
+            return super.equals(that)
+                            && Objects.equals(version, that.version)
+                            && Objects.equals(startList, that.startList)
+                            && Objects.equals(activityList, that.activityList)
+                            && Objects.equals(exclusiveGatewayList, that.exclusiveGatewayList)
+                            && Objects.equals(linkList, that.linkList)
+                            && Objects.equals(endList, that.endList);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(version, startList, activityList, exclusiveGatewayList, linkList, endList);
+            return Objects.hash(getId(), getName(), startList, activityList, exclusiveGatewayList, linkList, endList);
         }
 
     }
@@ -337,12 +339,12 @@ public class XmlSchema {
                 return false;
             }
             ProcessLinkSchema that = (ProcessLinkSchema) o;
-            return sourceId.equals(that.sourceId) && targetId.equals(that.targetId) && Objects.equals(conditionExpression, that.conditionExpression);
+            return super.equals(that) && sourceId.equals(that.sourceId) && targetId.equals(that.targetId) && Objects.equals(conditionExpression, that.conditionExpression);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), sourceId, targetId, conditionExpression);
+            return Objects.hash(getId(), getName(), sourceId, targetId, conditionExpression);
         }
     }
 
