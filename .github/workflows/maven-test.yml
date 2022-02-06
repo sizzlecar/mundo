@@ -22,4 +22,4 @@ jobs:
         with:
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
-          directory: ./target/cobertura/
+          files: ./target/site/cobertura/coverage.xml
