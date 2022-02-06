@@ -16,10 +16,10 @@ jobs:
       - name: Build with Maven
         run: |
           mvn --batch-mode --update-snapshots verify
-          mvn cobertura:cobertura
-      - uses: actions/checkout@master
-      - uses: codecov/codecov-action@v2
+          mvn cobertura:cobertura -Dcobertura.report.format=xml
+      - name : Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
-          files : ./target/cobertura/cobertura.ser #target/cobertura/cobertura.ser
+          directory: ./target/cobertura/
