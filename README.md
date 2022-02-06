@@ -2,7 +2,7 @@
 
 **官方网站: http://www.bluslee.com**
 
-![Travis (.org) branch](https://img.shields.io/travis/sizzlecar/mundo/master)
+![GitHub Workflow Status](https://img.shields.io:/github/workflow/status/sizzlecar/mundo/Java%20CI)
 ![License](https://img.shields.io/github/license/sizzlecar/mundo)
 ![GitHub stars](https://img.shields.io/github/stars/sizzlecar/mundo)
 ![Codecov branch](https://img.shields.io/codecov/c/github/sizzlecar/mundo/master)
