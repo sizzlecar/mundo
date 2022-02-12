@@ -23,7 +23,7 @@ mundo是一个轻量级，可扩展的流程引擎。
 
 ## 快速开始
 
-1. 添加mundo依赖，mundo目前还没有发布到maven仓库，请手动下载
+1. 添加mundo依赖
 
 ```xml
 <dependencys>
@@ -31,14 +31,14 @@ mundo是一个轻量级，可扩展的流程引擎。
     <dependency>
         <groupId>com.bluslee</groupId>
         <artifactId>mundo-process</artifactId>
-        <version>last.version</version>
+        <version>0.0.1</version>
     </dependency>
 
     <!--springboot-->
     <dependency>
         <groupId>com.bluslee</groupId>
         <artifactId>spring-boot-starter-mundo</artifactId>
-        <version>last.version</version>
+        <version>0.0.1</version>
     </dependency>
 </dependencys>
 ```
