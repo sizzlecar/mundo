@@ -8,6 +8,14 @@
     <artifactId>mundo</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1</version>
+    <description>mundo是一个轻量级，可扩展的流程引擎</description>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
     <modules>
         <module>mundo-core</module>
         <module>mundo-xml</module>
