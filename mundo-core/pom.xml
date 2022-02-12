@@ -5,12 +5,12 @@
     <parent>
         <artifactId>mundo</artifactId>
         <groupId>com.bluslee</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mundo-core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>mundo-core</name>
     <url>http://www.bluslee.com</url>
 

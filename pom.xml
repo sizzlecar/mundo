@@ -7,7 +7,7 @@
     <groupId>com.bluslee</groupId>
     <artifactId>mundo</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <modules>
         <module>mundo-core</module>
         <module>mundo-xml</module>
@@ -37,7 +37,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <xstream.version>1.4.19</xstream.version>
         <guava.version>31.0.1-jre</guava.version>
-        <mundo.version>0.0.1-SNAPSHOT</mundo.version>
+        <mundo.version>0.0.1</mundo.version>
         <junit.version>4.13.1</junit.version>
         <hibernate-validator.version>7.0.0.Final</hibernate-validator.version>
         <hibernate-validator-cdi.version>7.0.0.Final</hibernate-validator-cdi.version>
