@@ -58,7 +58,7 @@
         <jaxen.version>1.2.0</jaxen.version>
         <reflections.version>0.10.2</reflections.version>
         <spring.boot.starter.version>2.6.0</spring.boot.starter.version>
-        <snakeyaml.version>1.31</snakeyaml.version>
+        <snakeyaml.version>1.32</snakeyaml.version>
     </properties>
 
     <dependencyManagement>
