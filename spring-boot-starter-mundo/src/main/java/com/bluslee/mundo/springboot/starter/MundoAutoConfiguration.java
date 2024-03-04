@@ -17,15 +17,15 @@ import java.util.Optional;
  * mundo springboot Configuration.
  * @author carl.che
  */
+@Configuration
 @EnableConfigurationProperties(MundoProperties.class)
 @ConditionalOnProperty(prefix = "mundo", name = "enabled", havingValue = "true")
-@Configuration
 public class MundoAutoConfiguration {
 
     @Bean
     public Repository<? extends BaseProcessNode> createRepository(final MundoProperties mundoProperties) {
         MundoProperties.Xml mundoPropertiesXml = mundoProperties.getXml();
-        com.bluslee.mundo.core.configuration.Configuration mundoConfig = null;
+        com.bluslee.mundo.core.configuration.Configuration mundoConfig;
         if (mundoPropertiesXml != null) {
             mundoConfig = ReflectionTools.instance().firstNoParamConstructorSubInstance(mundoPropertiesXml.getXmlPackageName(),
                     com.bluslee.mundo.core.configuration.Configuration.class);

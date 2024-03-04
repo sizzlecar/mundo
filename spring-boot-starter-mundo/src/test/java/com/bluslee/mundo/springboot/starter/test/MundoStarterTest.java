@@ -1,5 +1,6 @@
 package com.bluslee.mundo.springboot.starter.test;
 
+import com.bluslee.mundo.springboot.starter.MundoAutoConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author carl.che
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = MundoStarterTest.class)
+@SpringBootTest(classes = MundoAutoConfiguration.class)
 @SpringBootApplication
 public class MundoStarterTest {
 
