@@ -6,8 +6,8 @@ import com.bluslee.mundo.core.process.base.Repository;
 import com.bluslee.mundo.springboot.starter.MundoAutoConfiguration;
 import com.bluslee.mundo.springboot.starter.MundoProperties;
 import com.bluslee.mundo.xml.XmlSchema;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import java.util.Arrays;
@@ -32,12 +32,12 @@ public class MundoAutoConfigurationEnabledTrueTest extends MundoStarterTest {
 
     @Test
     public void autowiredTest() {
-        Assert.assertNotNull(repository);
+        Assertions.assertNotNull(repository);
         List<XmlSchema.ProcessSchema> dom4jProcessSchemas = xmlProcessor.getProcessSchemas();
         Map<List<String>, List<XmlSchema.ProcessSchema>> expectDistinctProcessSchemas = dom4jProcessSchemas
                 .stream()
                 .collect(Collectors.groupingBy(processSchema -> Arrays.asList(processSchema.getId(), processSchema.getVersion().toString())));
-        Assert.assertEquals(expectDistinctProcessSchemas.size(), repository.processes().size());
+        Assertions.assertEquals(expectDistinctProcessSchemas.size(), repository.processes().size());
     }
 
     @Test
@@ -48,14 +48,13 @@ public class MundoAutoConfigurationEnabledTrueTest extends MundoStarterTest {
         Map<List<String>, List<XmlSchema.ProcessSchema>> expectDistinctProcessSchemas = dom4jProcessSchemas
                 .stream()
                 .collect(Collectors.groupingBy(processSchema -> Arrays.asList(processSchema.getId(), processSchema.getVersion().toString())));
-        Assert.assertEquals(expectDistinctProcessSchemas.size(), repository.processes().size());
+        Assertions.assertEquals(expectDistinctProcessSchemas.size(), repository.processes().size());
     }
 
     @Test
     public void createBeanNoXmlConfigTest() {
         MundoAutoConfiguration mundoAutoConfiguration = new MundoAutoConfiguration();
         MundoProperties noXmlConfig = new MundoProperties();
-        Assert.assertThrows(MundoException.class, () -> mundoAutoConfiguration.createRepository(noXmlConfig));
+        Assertions.assertThrows(MundoException.class, () -> mundoAutoConfiguration.createRepository(noXmlConfig));
     }
-
 }

@@ -1,8 +1,8 @@
 package com.bluslee.mundo.springboot.starter.test;
 
 import com.bluslee.mundo.springboot.starter.MundoProperties;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -18,7 +18,7 @@ public class MundoPropertiesEnabledFalseTest extends MundoStarterTest {
 
     @Test
     public void parsePropertiesTest() {
-        Assert.assertNull(actualProperties);
+        Assertions.assertNull(actualProperties);
     }
 
 }
