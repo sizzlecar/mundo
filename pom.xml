@@ -314,30 +314,49 @@
                     </dependencies>
                 </plugin>
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>cobertura-maven-plugin</artifactId>
-                    <version>2.7</version>
-                    <configuration>
-                        <check>
-                            <branchRate>70</branchRate>
-                            <lineRate>70</lineRate>
-                            <haltOnFailure>true</haltOnFailure>
-                            <totalBranchRate>70</totalBranchRate>
-                            <totalLineRate>70</totalLineRate>
-                            <packageLineRate>70</packageLineRate>
-                            <packageBranchRate>70</packageBranchRate>
-                        </check>
-                        <aggregate>true</aggregate>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                        <quiet>true</quiet>
-                        <formats>
-                            <format>html</format>
-                            <format>xml</format>
-                        </formats>
-                        <instrumentation>
-                            <ignoreTrivial>true</ignoreTrivial>
-                        </instrumentation>
-                    </configuration>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.8</version>
+                    <executions>
+                        <execution>
+                            <id>prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>check</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <rule>
+                                        <element>BUNDLE</element>
+                                        <limits>
+                                            <limit>
+                                                <counter>LINE</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>0.70</minimum>
+                                            </limit>
+                                            <limit>
+                                                <counter>BRANCH</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>0.70</minimum>
+                                            </limit>
+                                        </limits>
+                                    </rule>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -380,8 +399,8 @@
                         <artifactId>maven-site-plugin</artifactId>
                     </plugin>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>cobertura-maven-plugin</artifactId>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -430,8 +449,8 @@
                         <artifactId>maven-site-plugin</artifactId>
                     </plugin>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>cobertura-maven-plugin</artifactId>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
