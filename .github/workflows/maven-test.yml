@@ -21,6 +21,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
           files: ./mundo-core/target/site/jacoco/jacoco.xml,./mundo-xml/target/site/jacoco/jacoco.xml,./mundo-process/target/site/jacoco/jacoco.xml,./spring-boot-starter-mundo/target/site/jacoco/jacoco.xml,./target/site/jacoco-aggregate/jacoco.xml
