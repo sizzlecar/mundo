@@ -23,4 +23,4 @@ jobs:
         with:
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
-          files: ./*/target/site/jacoco/jacoco.xml
+          files: ./mundo-core/target/site/jacoco/jacoco.xml,./mundo-xml/target/site/jacoco/jacoco.xml,./mundo-process/target/site/jacoco/jacoco.xml,./spring-boot-starter-mundo/target/site/jacoco/jacoco.xml,./target/site/jacoco-aggregate/jacoco.xml

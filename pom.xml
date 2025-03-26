@@ -332,6 +332,13 @@
                             </goals>
                         </execution>
                         <execution>
+                            <id>report-aggregate</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report-aggregate</goal>
+                            </goals>
+                        </execution>
+                        <execution>
                             <id>check</id>
                             <goals>
                                 <goal>check</goal>
