@@ -43,7 +43,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <xstream.version>1.4.19</xstream.version>
+        <xstream.version>1.4.21</xstream.version>
         <guava.version>32.0.0-jre</guava.version>
         <mundo.version>0.0.1</mundo.version>
         <junit.version>4.13.1</junit.version>
