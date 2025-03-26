@@ -3,8 +3,8 @@ package com.bluslee.mundo.springboot.starter.test;
 import com.bluslee.mundo.core.exception.MundoException;
 import com.bluslee.mundo.springboot.starter.MundoProperties;
 import com.google.common.base.CaseFormat;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.yaml.snakeyaml.Yaml;
@@ -27,7 +27,7 @@ public class MundoPropertiesEnabledTrueTest extends MundoStarterTest {
     @Test
     public void parsePropertiesTest() {
         //mundo.enabled == true, MundoProperties不能为空
-        Assert.assertNotNull(actualProperties);
+        Assertions.assertNotNull(actualProperties);
         //使用Yaml直接读取配置文件比较配置文件与注入的属性是否一致
         Yaml yaml = new Yaml();
         InputStream resourceAsStream = getClass().getResourceAsStream("/application-enabled-true.yml");
@@ -35,7 +35,7 @@ public class MundoPropertiesEnabledTrueTest extends MundoStarterTest {
         Optional<Map> mundoMapOpt = Optional.ofNullable(yamlMap)
                 .flatMap(map -> Optional.ofNullable(map.get("mundo")))
                 .flatMap(mundoObj -> Optional.ofNullable((Map) mundoObj));
-        Assert.assertTrue(mundoMapOpt.isPresent());
+        Assertions.assertTrue(mundoMapOpt.isPresent());
         propertyEquals(mundoMapOpt.get(), actualProperties);
     }
 
@@ -56,7 +56,7 @@ public class MundoPropertiesEnabledTrueTest extends MundoStarterTest {
             } catch (NoSuchMethodException e) {
                 throw new MundoException("get method error", e);
             }
-            Assert.assertNotNull(declaredMethod);
+            Assertions.assertNotNull(declaredMethod);
             Object invokeRes = null;
             try {
                 invokeRes = declaredMethod.invoke(instance, null);
@@ -66,7 +66,7 @@ public class MundoPropertiesEnabledTrueTest extends MundoStarterTest {
             if (val instanceof Map) {
                 propertyEquals((Map) val, invokeRes);
             } else {
-                Assert.assertEquals(val, invokeRes);
+                Assertions.assertEquals(val, invokeRes);
             }
         });
     }
